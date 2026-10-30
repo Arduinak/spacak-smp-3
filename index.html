@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spacak SMP – Session 3</title>
+<meta name="description" content="Spacak SMP – Session 3. Open pokračovanie nášho serveru. Štart 1. 11. o 17:00.">
+<meta name="theme-color" content="#090b12">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Geist:wght@300..700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#090b12; --ink:#f3f5fa; --dim:#9ba4be; --line:rgba(255,255,255,.12);
+  --accent:#7be06b; --accent-ink:#07150a; --accent-hi:#97ec89; --bad:#ff7d7d;
+  --display:'Bricolage Grotesque','Geist',system-ui,sans-serif;
+  --sans:'Geist',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:400 17px/1.55 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+:focus-visible{outline:2px solid #fff;outline-offset:3px}
+canvas,img{image-rendering:pixelated}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;isolation:isolate}
+#pano{position:absolute;inset:0;width:100%;height:100%;z-index:-3}
+.shade{position:absolute;inset:0;z-index:-2;pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(4,6,16,.55),transparent 62%),
+    linear-gradient(to bottom,rgba(4,6,16,.5),transparent 22%),
+    linear-gradient(to bottom,transparent 68%,var(--bg) 100%)}
+
+.bar{position:absolute;top:0;left:0;right:0}
+.bar-in{max-width:1240px;margin:0 auto;padding:22px 28px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px;font:600 18px/1 var(--display);letter-spacing:-.01em}
+.brand img{width:30px;height:30px;border-radius:7px}
+.pill{display:inline-flex;align-items:center;gap:10px;padding:8px 16px 8px 14px;font-size:15px;font-weight:500;border-radius:99px;
+  background:rgba(9,12,24,.5);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--bad);flex:none}
+.on .dot,.dot.on{background:var(--accent);animation:ping 2.4s var(--ease) infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 55%,transparent)}80%,100%{box-shadow:0 0 0 9px color-mix(in srgb,var(--accent) 0%,transparent)}}
+
+.hero-in{max-width:1240px;min-height:100svh;margin:0 auto;padding:120px 28px 56px;
+  display:grid;grid-template-columns:1fr minmax(380px,500px);gap:56px;align-items:end}
+h1{font:800 clamp(64px,11.5vw,176px)/.9 var(--display);font-variation-settings:'opsz' 96;letter-spacing:-.05em;
+  text-shadow:0 4px 40px rgba(0,0,0,.35)}
+.sub{margin-top:26px;font-size:clamp(18px,1.7vw,22px);line-height:1.4;color:rgba(255,255,255,.84);max-width:34ch}
+
+/* glass panel */
+.panel{position:relative;overflow:hidden;padding:24px 26px 26px;border-radius:22px;
+  background:rgba(9,12,24,.58);border:1px solid var(--line);backdrop-filter:blur(22px) saturate(1.4);-webkit-backdrop-filter:blur(22px) saturate(1.4);
+  box-shadow:0 40px 80px -30px rgba(0,0,0,.75),inset 0 1px 0 rgba(255,255,255,.12)}
+.panel.hidden{display:none}
+.panel.pop{animation:pop .5s var(--ease)}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+.ptitle{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:500;color:var(--dim);margin-bottom:18px}
+.ptitle.ok{color:var(--ink)}
+
+.units{display:grid;grid-template-columns:repeat(4,1fr)}
+.unit{padding-left:clamp(10px,2vw,18px);border-left:1px solid var(--line)}
+.unit:first-child{padding-left:0;border-left:0}
+.unit .n{display:block;font:600 clamp(40px,5.3vw,66px)/1 var(--display);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.unit small{display:block;margin-top:8px;font-size:14px;color:var(--dim)}
+.when{margin-top:24px;font-size:15px;color:var(--dim)}
+.when b{color:var(--ink);font-weight:500}
+.tick{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.08)}
+.tick i{display:block;height:100%;width:0;background:var(--accent)}
+
+.ipbox{display:flex;align-items:center;gap:12px;padding:8px 8px 8px 18px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid var(--line)}
+.ipbox code{flex:1;min-width:0;font:600 clamp(20px,2.3vw,27px)/1.2 var(--sans);letter-spacing:-.015em;font-variant-numeric:tabular-nums;user-select:all;overflow-wrap:anywhere}
+.btn{font:600 16px var(--sans);color:var(--accent-ink);background:var(--accent);border:0;border-radius:10px;padding:12px 18px;cursor:pointer;white-space:nowrap;
+  transition:background .2s,transform .2s var(--ease)}
+.btn:hover{background:var(--accent-hi)}
+.btn:active{transform:scale(.97)}
+.steps{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:20px;list-style:none;counter-reset:s;font-size:15px;color:var(--dim)}
+.steps li{display:flex;align-items:center;gap:9px;counter-increment:s}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:22px;height:22px;border-radius:50%;
+  font-size:12px;font-weight:600;color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 45%,transparent)}
+
+/* ---------- status ---------- */
+.wrap{max-width:1240px;margin:0 auto;padding:40px 28px 96px}
+.head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:44px}
+h2{font:700 clamp(30px,3.4vw,42px)/1.05 var(--display);letter-spacing:-.03em}
+.upd{color:var(--dim);font-size:14px}
+.cols{display:grid;grid-template-columns:minmax(280px,1fr) 1.35fr;gap:72px;align-items:start}
+.srvhead{display:flex;align-items:center;gap:14px;margin-bottom:34px}
+.icon{width:52px;height:52px;border-radius:11px}
+.nm{font:600 22px/1.2 var(--display);letter-spacing:-.01em}
+.big{font:700 clamp(96px,13vw,168px)/.86 var(--display);font-variation-settings:'opsz' 96;letter-spacing:-.06em;font-variant-numeric:tabular-nums}
+.big small{font-size:.34em;font-weight:500;letter-spacing:-.03em;color:var(--dim);margin-left:.08em}
+.cap{margin-top:16px;color:var(--dim)}
+.meter{margin-top:22px;height:4px;max-width:340px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden}
+.meter i{display:block;height:100%;width:0;border-radius:99px;background:var(--accent);transition:width .9s var(--ease)}
+
+.spec{border-bottom:1px solid var(--line)}
+.spec div{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:18px 0;border-top:1px solid var(--line)}
+.spec dt{color:var(--dim)}
+.spec dd{display:flex;align-items:center;gap:10px;white-space:pre-line}
+.spec dd.bad{color:var(--bad)}
+
+h3{font:600 22px/1.2 var(--display);letter-spacing:-.015em;margin:72px 0 20px}
+.players{display:flex;flex-wrap:wrap;gap:10px}
+.pl{display:flex;align-items:center;gap:11px;padding:6px 16px 6px 6px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.04);font-weight:500}
+.pl img{width:34px;height:34px;border-radius:9px}
+.empty{color:var(--dim)}
+.skel{animation:sk 1.4s ease-in-out infinite}
+@keyframes sk{50%{opacity:.4}}
+
+footer{border-top:1px solid var(--line)}
+.foot{max-width:1240px;margin:0 auto;padding:40px 28px 20px;display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap}
+.owners{display:flex;gap:32px;flex-wrap:wrap}
+.person{display:flex;align-items:center;gap:14px}
+.person img{width:48px;height:48px;border-radius:11px}
+.person b{display:block;font-weight:600;line-height:1.2}
+.person span{color:var(--dim);font-size:15px}
+.host{color:var(--dim);font-size:15px;text-align:right;line-height:1.45}
+.host b{color:var(--ink);font-weight:500}
+.legal{max-width:1240px;margin:0 auto;padding:0 28px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--dim);font-size:14px}
+.theme{display:inline-flex;align-items:center;gap:9px;font:500 13px var(--sans);color:var(--dim);background:transparent;border:1px solid var(--line);
+  border-radius:99px;padding:6px 14px 6px 11px;cursor:pointer;transition:color .2s,border-color .2s}
+.theme:hover{color:var(--ink);border-color:var(--accent)}
+.theme i{width:10px;height:10px;background:var(--accent);flex:none}
+
+@media (max-width:960px){
+  .hero-in{grid-template-columns:1fr;gap:36px;padding-top:104px}
+  .sub{margin-top:20px}
+  .cols{grid-template-columns:1fr;gap:48px}
+}
+@media (max-width:560px){
+  .bar-in{padding:16px 18px}
+  .hero-in,.wrap,.foot,.legal{padding-left:18px;padding-right:18px}
+  .panel{padding:20px 18px 22px}
+  .ipbox{flex-direction:column;align-items:stretch;padding:14px}
+  .ipbox .btn{padding:13px}
+  .spec div{grid-template-columns:110px 1fr}
+  .host{text-align:left}
+  .brand span{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<canvas id="fx" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50"></canvas>
+
+<header class="hero" id="hero">
+  <canvas id="pano" aria-hidden="true"></canvas>
+  <div class="shade" aria-hidden="true"></div>
+
+  <div class="bar"><div class="bar-in">
+    <div class="brand"><img id="brandIcon" alt="" width="30" height="30"><span>Spacak SMP</span></div>
+    <div class="pill" id="liveMini"><i class="dot"></i><span id="liveTxt">Načítavam…</span></div>
+  </div></div>
+
+  <div class="hero-in">
+    <div>
+      <h1>Spacak<br>SMP</h1>
+      <p class="sub" id="sub">Session 3: open pokračovanie nášho serveru</p>
+    </div>
+
+    <div id="stage">
+      <section class="panel" id="countdown" aria-label="Odpočet do štartu">
+        <p class="ptitle">Server sa otvára o</p>
+        <div class="units" role="timer" aria-live="off">
+          <div class="unit"><span class="n" id="d">00</span><small id="ld">dní</small></div>
+          <div class="unit"><span class="n" id="h">00</span><small id="lh">hodín</small></div>
+          <div class="unit"><span class="n" id="m">00</span><small id="lm">minút</small></div>
+          <div class="unit"><span class="n" id="s">00</span><small id="ls">sekúnd</small></div>
+        </div>
+        <p class="when"><b id="whenDate">nedeľa 1. novembra 2026</b>, o <b>17:00</b> SEČ</p>
+        <div class="tick" aria-hidden="true"><i id="tick"></i></div>
+      </section>
+
+      <section class="panel hidden" id="reveal" aria-label="Pripojenie na server">
+        <p class="ptitle ok"><i class="dot on"></i>Server je otvorený</p>
+        <div class="ipbox">
+          <code id="ipText">…</code>
+          <button class="btn" id="copyBtn" type="button">Kopírovať IP</button>
+        </div>
+        <ol class="steps">
+          <li>Multiplayer</li><li>Add Server</li><li>Vlož adresu</li>
+        </ol>
+      </section>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="wrap" aria-labelledby="h-stav">
+    <div class="head"><h2 id="h-stav">Stav servera</h2><span class="upd" id="upd"></span></div>
+
+    <div class="cols">
+      <div>
+        <div class="srvhead"><img class="icon" id="icon" alt="" width="52" height="52"><span class="nm">Spacak SMP</span></div>
+        <div class="big"><span id="pc" class="skel">–</span><small id="pm"></small></div>
+        <p class="cap" id="pcap">Načítavam…</p>
+        <div class="meter"><i id="pbar"></i></div>
+      </div>
+      <dl class="spec">
+        <div><dt>Stav</dt><dd><i class="dot" id="statDot"></i><span id="statTxt" class="skel">…</span></dd></div>
+        <div><dt>Verzia</dt><dd id="ver">–</dd></div>
+        <div><dt>Správa servera</dt><dd id="motd">–</dd></div>
+      </dl>
+    </div>
+
+    <h3>Kto práve hrá</h3>
+    <div class="players" id="players"><span class="empty skel">Načítavam…</span></div>
+  </section>
+
+  <footer>
+    <div class="foot">
+      <div class="owners">
+        <div class="person"><img data-head="Ferenzhy" alt="Minecraft hlava Ferenzhy" width="48" height="48"><div><b>Ferenzhy</b><span>Majiteľ</span></div></div>
+        <div class="person"><img data-head="Spacesov_Mc" alt="Minecraft hlava Spacesov_Mc" width="48" height="48"><div><b>Spacesov_Mc</b><span>Majiteľ #2</span></div></div>
+      </div>
+      <div class="host">Hosting zabezpečuje<br><b>Minecraft-Hosting.eu</b></div>
+    </div>
+    <div class="legal"><p>Spacak SMP nie je spojený s Mojang ani Microsoft.</p><button class="theme" id="themeBtn" type="button" title="Prepnúť tému pozadia"><i></i><span id="themeTxt">Téma</span></button></div>
+  </footer>
+</main>
+
+<script>
+(() => {
+  'use strict';
+  const IP = '176.9.21.120:25739';
+  const TARGET = Date.parse('2026-11-01T17:00:00+01:00');   // 1. 11. 2026 17:00 SEČ
+  const q = new URLSearchParams(location.search);          // ?open  alebo  ?countdown=15  na test
+  const target = q.has('countdown') ? Date.now() + (Number(q.get('countdown')) || 10) * 1000 : TARGET;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = s => document.querySelector(s);
+  const pad = n => String(n).padStart(2, '0');
+  const plural = (n, [one, few, many]) => n === 1 ? one : (n >= 2 && n <= 4 ? few : many);
+  const hracov = n => `${n} ${plural(n, ['hráč', 'hráči', 'hráčov'])}`;
+  const LBL = { d: ['deň', 'dni', 'dní'], h: ['hodina', 'hodiny', 'hodín'], m: ['minúta', 'minúty', 'minút'], s: ['sekunda', 'sekundy', 'sekúnd'] };
+
+  function mulberry(a) {
+    return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  }
+  const mk = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+
+  /* ---------- ikona: grass blok ---------- */
+  (function icon() {
+    const r = mulberry(7), dirt = ['#866043', '#79553a', '#6b4a30', '#5c3e27', '#7d5a3e'], grass = ['#5a9a38', '#4c8a2e', '#69ad42', '#3f7a26'];
+    const ic = mk(16, 16), g = ic.getContext('2d');
+    for (let j = 0; j < 16; j++) for (let i = 0; i < 16; i++) {
+      const green = j < 3 || (j === 3 && r() < .6) || (j === 4 && r() < .2);
+      const p = green ? grass : dirt;
+      g.fillStyle = p[(r() * p.length) | 0]; g.fillRect(i, j, 1, 1);
+    }
+    window.__grassIcon = ic.toDataURL();
+    $('#icon').src = window.__grassIcon; $('#brandIcon').src = window.__grassIcon;
+  })();
+
+  /* ---------- hlavy hráčov (s fallbackom) ---------- */
+  const headSrc = (name, size) => [
+    `https://mc-heads.net/avatar/${encodeURIComponent(name)}/${size}`,
+    `https://minotar.net/helm/${encodeURIComponent(name)}/${size}.png`,
+    `https://crafatar.com/avatars/${encodeURIComponent(name)}?size=${size}&overlay`
+  ];
+  function loadHead(img, name, size) {
+    const list = headSrc(name, size); let i = 0;
+    img.onerror = () => { if (++i < list.length) img.src = list[i]; else img.style.visibility = 'hidden'; };
+    img.src = list[0];
+  }
+  document.querySelectorAll('img[data-head]').forEach(img => loadHead(img, img.dataset.head, 112));
+
+  /* ---------- témy pozadia ---------- */
+  const THEMES = {
+    leto: {
+      label: 'Leto', accent: '#7be06b', ink: '#07150a',
+      sky: [[0, [6, 10, 28]], [.42, [14, 22, 56]], [.7, [30, 43, 92]], [1, [58, 76, 130]]],
+      star: { tint: '205,215,255', per: 650 },
+      moon: { x: .66, y: .1, k: .06, min: 8, max: 14, body: '#e9edf8', crater: '#c3cadf', glow: '190,205,255', ga: .045 },
+      clouds: { color: 'rgba(150,165,225,.13)', n: 9, y0: .08, span: .3 },
+      layers: [
+        { seed: 21, base: .60, amp: .12, q: 4, speed: 1.1, body: '#0e1836', top: '#2b3f78', rim: 1 },
+        { seed: 34, base: .69, amp: .07, q: 3, speed: 2.4, body: '#10282f', top: '#1b4040', rim: 1,
+          trees: { kind: 'oak', gap: 60, s: 2, trunk: '#0b1a1d', leaf: '#0d2a2a', leaf2: '#0a2124' } },
+        { seed: 48, base: .83, amp: .03, q: 2, speed: 5, body: '#3b2a1d', top: '#4f8d34', rim: 2, top2: '#3f7229', rim2: 1,
+          speckle: ['#2f2116', '#4a3626', '#45301f'],
+          trees: { kind: 'oak', gap: 150, s: 3, trunk: '#4a3220', leaf: '#1f5224', leaf2: '#2b6a2c' } }
+      ],
+      fx: []
+    },
+    halloween: {
+      label: 'Halloween', accent: '#ff8a1f', ink: '#1f0e00',
+      sky: [[0, [10, 4, 24]], [.45, [34, 10, 50]], [.75, [104, 30, 70]], [1, [196, 82, 48]]],
+      star: { tint: '255,225,200', per: 1300 },
+      moon: { x: .7, y: .12, k: .11, min: 14, max: 26, body: '#ffb84d', crater: '#e0892a', glow: '255,150,50', ga: .06 },
+      clouds: { color: 'rgba(140,70,160,.17)', n: 8, y0: .1, span: .32 },
+      layers: [
+        { seed: 61, base: .58, amp: .14, q: 4, speed: 1.1, body: '#2c1342', top: '#7a3a78', rim: 1 },
+        { seed: 74, base: .70, amp: .06, q: 3, speed: 2.4, body: '#1d0e28', top: '#4a2250', rim: 1,
+          trees: { kind: 'dead', gap: 75, s: 2, trunk: '#07030a' }, props: [{ kind: 'haunted', at: .12 }] },
+        { seed: 88, base: .84, amp: .028, q: 2, speed: 5, body: '#2a181c', top: '#55662a', rim: 2, top2: '#3b4a1c', rim2: 1,
+          speckle: ['#1f1115', '#3a2227', '#33201a'],
+          trees: { kind: 'dead', gap: 210, s: 3, trunk: '#150b10' }, props: [{ kind: 'pumpkin', gap: 120 }, { kind: 'tomb', gap: 150 }] }
+      ],
+      fx: ['bats']
+    },
+    zima: {
+      label: 'Zima', accent: '#8fd3ff', ink: '#04121f',
+      sky: [[0, [6, 12, 36]], [.4, [16, 36, 78]], [.7, [44, 82, 132]], [1, [120, 160, 200]]],
+      star: { tint: '215,230,255', per: 700 },
+      moon: { x: .7, y: .1, k: .06, min: 8, max: 14, body: '#eef6ff', crater: '#bfd3ea', glow: '170,210,255', ga: .05 },
+      clouds: { color: 'rgba(190,210,240,.12)', n: 7, y0: .08, span: .27 },
+      aurora: true,
+      layers: [
+        { seed: 23, base: .58, amp: .15, q: 4, speed: 1.1, body: '#1f3560', top: '#d4e4f8', rim: 2, top2: '#6f90bd', rim2: 2 },
+        { seed: 36, base: .69, amp: .07, q: 3, speed: 2.4, body: '#27406b', top: '#9fbbe0', rim: 2, top2: '#5c7cab', rim2: 2,
+          trees: { kind: 'spruce', gap: 55, s: 2, col: '#123a3a', col2: '#0e2f33', snow: '#a9c6e6' }, props: [{ kind: 'cabin', at: .12 }] },
+        { seed: 50, base: .83, amp: .03, q: 2, speed: 5, body: '#3c5784', top: '#dbe8f7', rim: 2, top2: '#a8c0de', rim2: 2,
+          speckle: ['#2f476f', '#4a6892', '#e6f0fb'],
+          trees: { kind: 'spruce', gap: 130, s: 3, col: '#14503f', col2: '#1b6149', snow: '#eaf3fc' } }
+      ],
+      fx: ['snow'], snow: 1
+    },
+    novyrok: {
+      label: 'Nový rok', accent: '#ffd166', ink: '#231800',
+      sky: [[0, [5, 6, 22]], [.45, [18, 16, 56]], [.75, [46, 26, 86]], [1, [100, 46, 112]]],
+      star: { tint: '255,235,210', per: 500 },
+      moon: null, clouds: null,
+      layers: [
+        { kind: 'city', seed: 91, base: .56, amp: .1, q: 2, speed: 1.1, body: '#1b2150', top: '#3d4a8c', rim: 1, bw: [9, 20], win: { p: .1, c: ['#ffd98a', '#ff9d5c'] } },
+        { kind: 'city', seed: 92, base: .68, amp: .07, q: 2, speed: 2.4, body: '#0d1130', top: '#2b3678', rim: 1, bw: [12, 26], win: { p: .22, c: ['#ffd98a', '#ffb86b', '#9fd8ff', '#ff8fb5'] } },
+        { seed: 77, base: .84, amp: .02, q: 2, speed: 5, body: '#1b2342', top: '#e2ebf8', rim: 2, top2: '#9db3d4', rim2: 1,
+          speckle: ['#141b34', '#27325a', '#ffffff'],
+          trees: { kind: 'spruce', gap: 150, s: 3, col: '#0f3d36', col2: '#0b2f2f', snow: '#e6f0fb', lights: true } }
+      ],
+      fx: ['fireworks', 'snow'], snow: .35
+    }
+  };
+  const THEME_ORDER = ['leto', 'halloween', 'zima', 'novyrok'];
+  const THEME_KEY = 'spacak-theme';
+  // automatika podľa dátumu (MMDD): Nový rok 29.12.–3.1., Halloween 18.10.–2.11., Zima 1.12.–14.2., inak Leto
+  function autoTheme(d = new Date()) {
+    const md = (d.getMonth() + 1) * 100 + d.getDate();
+    if (md >= 1229 || md <= 103) return 'novyrok';
+    if (md >= 1018 && md <= 1102) return 'halloween';
+    if (md >= 1201 || md <= 214) return 'zima';
+    return 'leto';
+  }
+  let theme = THEMES.leto, themeId = 'leto';
+
+  /* ---------- panoráma: nočná krajina z blokov ---------- */
+  const hero = $('#hero'), pano = $('#pano'), pg = pano.getContext('2d');
+  const PERIOD = 1200;
+  let PW = 0, PH = 0, sky = null, layers = [], clouds = [], twinkle = [], running = false, visible = true;
+  let bats = [], flakes = [], fw = null, strips = null;
+
+  function heights(seed, base, amp, q) {
+    const r = mulberry(seed), comps = [3, 5, 9, 17, 31].map(f => [f, r() * 6.283, 1 / Math.pow(f, .7)]);
+    const norm = comps.reduce((s, c) => s + c[2], 0), out = new Int16Array(PERIOD);
+    for (let x = 0; x < PERIOD; x++) {
+      let h = 0; for (const [f, ph, a] of comps) h += a * Math.sin(6.283 * f * x / PERIOD + ph);
+      out[x] = Math.round((base + h / norm * amp) / q) * q;
+    }
+    return out;
+  }
+
+  /* stromy a rekvizity: kreslia sa okolo bodu (0,0) = zem */
+  function tree(x, y, s, trunk, leaf, leaf2, r) {
+    return (c) => {
+      const th = (4 + ((r() * 3) | 0)) * s;
+      c.fillStyle = trunk; c.fillRect(x, y - th, s, th + s);
+      const rowsW = [3, 5, 5, 3];
+      rowsW.forEach((w, k) => {
+        for (let i = 0; i < w; i++) {
+          if ((i === 0 || i === w - 1) && w === 5 && r() < .25) continue;
+          c.fillStyle = r() < .35 ? leaf2 : leaf;
+          c.fillRect(x + Math.floor(s / 2) - Math.floor(w / 2) * s + i * s, y - th - (rowsW.length - 1 - k) * s + s * -1 + s, s, s);
+        }
+      });
+    };
+  }
+  function deadTree(c, T, r) {
+    const s = T.s, th = (6 + ((r() * 4) | 0)) * s;
+    c.fillStyle = T.trunk; c.fillRect(0, -th, s, th + s);
+    for (const side of [-1, 1]) {
+      const hb = th * (.4 + r() * .35), L = 3 + ((r() * 3) | 0);
+      for (let i = 0; i < L; i++) c.fillRect(side < 0 ? -(i + 1) * s : (i + 1) * s, -hb - i * s, s, s);
+      c.fillRect(side < 0 ? -L * s : L * s, -hb - L * s, s, s);
+    }
+    c.fillRect(-s, -th - s, s, s); c.fillRect(s, -th - 2 * s, s, s);
+  }
+  const XMAS = ['#ff4d6d', '#ffd166', '#4cc9f0', '#80ed99'];
+  function spruce(c, T, r) {
+    const s = T.s, rows = [[1, 1], [3, 0], [3, 1], [5, 0], [5, 1], [7, 0], [7, 1], [9, 0]], top = -s * (rows.length + 1);
+    c.fillStyle = '#2c1f18'; c.fillRect(0, -s, s, s * 2);
+    rows.forEach(([w, snow], i) => {
+      for (let j = 0; j < w; j++) {
+        let col = snow ? T.snow : (r() < .35 ? T.col2 : T.col);
+        if (T.lights && !snow && r() < .14) col = XMAS[(r() * 4) | 0];
+        c.fillStyle = col; c.fillRect((j - (w >> 1)) * s, top + i * s, s, s);
+      }
+    });
+  }
+  const PROPS = {
+    pumpkin(c) {
+      c.fillStyle = 'rgba(255,150,40,.10)'; c.fillRect(-10, -13, 21, 14); c.fillRect(-7, -10, 15, 11);
+      [[2, 5], [0, 9], [0, 9], [0, 9], [0, 9], [1, 7]].forEach(([ox, w], i) => { c.fillStyle = '#e8761a'; c.fillRect(-4 + ox, -6 + i, w, 1); });
+      c.fillStyle = '#b85410'; c.fillRect(-1, -5, 1, 5); c.fillRect(2, -5, 1, 5);
+      c.fillStyle = '#3d5a1c'; c.fillRect(-1, -8, 2, 2);
+      c.fillStyle = '#ffe27a'; c.fillRect(-3, -4, 2, 1); c.fillRect(1, -4, 2, 1); c.fillRect(-2, -2, 5, 1);
+    },
+    tomb(c) {
+      c.fillStyle = '#4a4358'; c.fillRect(-4, -9, 8, 9); c.fillRect(-3, -11, 6, 2);
+      c.fillStyle = '#6a627a'; c.fillRect(-4, -9, 1, 9); c.fillRect(-3, -11, 6, 1);
+      c.fillStyle = '#2a2433'; c.fillRect(0, -8, 1, 5); c.fillRect(-1, -7, 3, 1);
+    },
+    haunted(c) {
+      c.fillStyle = 'rgba(255,150,40,.10)'; c.fillRect(-15, -20, 30, 16);
+      c.fillStyle = '#06020a'; c.fillRect(-17, -22, 34, 30); c.fillRect(10, -42, 10, 22);
+      [40, 34, 28, 22, 16, 10, 4].forEach((w, i) => c.fillRect(-w / 2, -24 - i * 2, w, 2));
+      [14, 10, 6, 2].forEach((w, i) => c.fillRect(15 - w / 2, -44 - i * 2, w, 2));
+      c.fillStyle = '#ffb347'; c.fillRect(-12, -16, 4, 5); c.fillRect(-2, -16, 4, 5); c.fillRect(8, -14, 3, 4); c.fillRect(13, -36, 3, 4);
+      c.fillStyle = '#e8761a'; c.fillRect(-12, -12, 4, 1);
+    },
+    cabin(c) {
+      c.fillStyle = 'rgba(255,200,100,.12)'; c.fillRect(-14, -13, 28, 14);
+      c.fillStyle = '#2a1c18'; c.fillRect(-13, -14, 26, 22);
+      c.fillStyle = '#3a2c30'; c.fillRect(6, -26, 4, 10);
+      [32, 26, 20, 14, 8].forEach((w, i) => { c.fillStyle = '#1d1620'; c.fillRect(-w / 2, -16 - i * 2, w, 2); c.fillStyle = '#e8f2ff'; c.fillRect(-w / 2, -16 - i * 2, w, 1); });
+      c.fillStyle = '#e8f2ff'; c.fillRect(6, -27, 4, 1);
+      c.fillStyle = '#ffd27a'; c.fillRect(-9, -9, 5, 5); c.fillRect(3, -9, 5, 5);
+      c.fillStyle = '#120c0a'; c.fillRect(-2, -7, 3, 7);
+    }
+  };
+
+  function city(c, def, r) {
+    const H = new Int16Array(PERIOD), bottom = Math.round(PH * .8), base = def.base * PH, amp = def.amp * PH;
+    for (let x = 0; x < PERIOD;) {
+      const w = def.bw[0] + ((r() * (def.bw[1] - def.bw[0])) | 0), x1 = Math.min(PERIOD, x + w);
+      const y = Math.round((base + amp - r() * amp * 2) / def.q) * def.q;
+      c.fillStyle = def.body; c.fillRect(x, y, x1 - x, PH - y);
+      c.fillStyle = def.top; c.fillRect(x, y, x1 - x, def.rim);
+      if (r() < .25 && x1 - x > 8) { c.fillStyle = def.body; c.fillRect(x + ((x1 - x) >> 1), y - 6, 1, 6); }
+      for (let xi = x; xi < x1; xi++) H[xi] = y;
+      for (let wy = y + 5; wy < bottom; wy += 5) for (let wx = x + 2; wx + 2 <= x1 - 1; wx += 4)
+        if (r() < def.win.p) { c.fillStyle = def.win.c[(r() * def.win.c.length) | 0]; c.fillRect(wx, wy, 2, 2); }
+      x = x1;
+    }
+    return H;
+  }
+  function buildLayer(def) {
+    const cv = mk(PERIOD, PH), c = cv.getContext('2d'), r = mulberry(def.seed + 99);
+    let H;
+    if (def.kind === 'city') H = city(c, def, r);
+    else {
+      H = heights(def.seed, def.base * PH, def.amp * PH, def.q);
+      for (let x = 0; x < PERIOD; x++) {
+        const y = H[x];
+        c.fillStyle = def.body; c.fillRect(x, y, 1, PH - y);
+        c.fillStyle = def.top; c.fillRect(x, y, 1, def.rim);
+        if (def.top2) { c.fillStyle = def.top2; c.fillRect(x, y + def.rim, 1, def.rim2); }
+        if (def.speckle) for (let k = 0; k < 3; k++) {
+          c.fillStyle = def.speckle[(r() * def.speckle.length) | 0];
+          c.fillRect(x, y + def.rim + def.rim2 + ((r() * (PH - y)) | 0), 1, 1);
+        }
+      }
+    }
+    const put = (x, y, fn, margin) => {
+      for (const dx of [0, PERIOD, -PERIOD]) {
+        const xx = x + dx; if (xx < -margin || xx > PERIOD + margin) continue;
+        c.save(); c.translate(xx, y); fn(); c.restore();
+      }
+    };
+    if (def.trees) {
+      const T = def.trees, n = Math.round(PERIOD / T.gap);
+      for (let k = 0; k < n; k++) {
+        const x = Math.floor((k + r() * .8) * T.gap), y = H[x], rr = mulberry(k * 31 + def.seed);
+        put(x, y, () => {
+          if (T.kind === 'oak') tree(0, 0, T.s, T.trunk, T.leaf, T.leaf2, rr)(c);
+          else if (T.kind === 'dead') { c.fillStyle = T.trunk; deadTree(c, T, rr); }
+          else spruce(c, T, rr);
+        }, 20 * T.s);
+      }
+    }
+    if (def.props) {
+      const pr = mulberry(def.seed + 7);
+      for (const p of def.props) {
+        const xs = p.at != null ? [Math.round(p.at * PERIOD)]
+          : Array.from({ length: Math.round(PERIOD / p.gap) }, (_, k) => Math.floor((k + pr() * .8) * p.gap));
+        for (const x of xs) put(x, H[x], () => PROPS[p.kind](c), 60);
+      }
+    }
+    cv.speed = def.speed;
+    return cv;
+  }
+  function skyColor(t, stops) {
+    for (let i = 1; i < stops.length; i++) if (t <= stops[i][0]) {
+      const [t0, a] = stops[i - 1], [t1, b] = stops[i], k = (t - t0) / (t1 - t0);
+      return `rgb(${a.map((v, j) => Math.round(v + (b[j] - v) * k)).join(',')})`;
+    }
+    return `rgb(${stops[stops.length - 1][1].join(',')})`;
+  }
+  function makeStrips() {
+    return [[90, 255, 180], [80, 220, 255], [190, 120, 255]].map(([R, G, B]) => {
+      const cv = mk(2, 64), x = cv.getContext('2d');
+      for (let i = 0; i < 16; i++) { x.fillStyle = `rgba(${R},${G},${B},${(Math.pow(i / 15, 1.7) * .62).toFixed(3)})`; x.fillRect(0, i * 4, 2, 4); }
+      return cv;
+    });
+  }
+  function buildPano() {
+    const ps = Math.max(3, Math.round(innerHeight / 190));
+    PW = Math.ceil(hero.clientWidth / ps); PH = Math.ceil(hero.clientHeight / ps);
+    pano.width = PW; pano.height = PH;
+    const r = mulberry(5), th = theme;
+
+    sky = mk(PW, PH); const s = sky.getContext('2d'), B = 4;
+    for (let y = 0; y < PH; y += B) {
+      s.fillStyle = skyColor(y / PH, th.sky); s.fillRect(0, y, PW, B);
+      s.fillStyle = skyColor((y + B) / PH, th.sky);
+      for (let x = 0; x < PW; x += 2) s.fillRect(x, y + B - 1, 1, 1);
+      for (let x = 0; x < PW; x += 4) s.fillRect(x + (y / B % 2 ? 2 : 0), y + B - 2, 1, 1);
+    }
+    twinkle = [];
+    for (let i = 0; i < Math.round(PW * PH / th.star.per); i++) {
+      const x = (r() * PW) | 0, y = (r() * PH * .5) | 0, bright = r() < .3;
+      s.fillStyle = `rgba(${th.star.tint},${bright ? .85 : .4})`; s.fillRect(x, y, 1, 1);
+      if (bright) twinkle.push({ x, y, p: r() * 6.28 });
+    }
+    if (th.moon) {
+      const M = th.moon, m = Math.max(M.min, Math.min(M.max, Math.round(PH * M.k) & ~1)), kk = m / 12;
+      const mx = Math.round(PW * M.x), my = Math.round(PH * M.y);
+      for (let k = 3; k >= 1; k--) { const g = Math.round(k * 3 * kk); s.fillStyle = `rgba(${M.glow},${M.ga * (4 - k)})`; s.fillRect(mx - g, my - g, m + g * 2, m + g * 2); }
+      s.fillStyle = M.body; s.fillRect(mx, my, m, m);
+      s.fillStyle = M.crater;
+      [[2, 2, 3, 2], [7, 3, 2, 3], [3, 7, 3, 3], [8, 8, 2, 2]].forEach(([a, b, w, h]) =>
+        s.fillRect(mx + Math.round(a * kk), my + Math.round(b * kk), Math.max(1, Math.round(w * kk)), Math.max(1, Math.round(h * kk))));
+    }
+
+    layers = th.layers.map(buildLayer);
+    clouds = th.clouds ? Array.from({ length: th.clouds.n }, () => ({ x: r() * PERIOD, y: Math.round(PH * (th.clouds.y0 + r() * th.clouds.span)), w: 14 + ((r() * 24) | 0), h: 3 + ((r() * 3) | 0), b: 2 + ((r() * 4) | 0) })) : [];
+
+    const F = th.fx, fr = mulberry(1234);
+    bats = F.includes('bats') ? Array.from({ length: 7 }, () => ({ x: fr() * (PW + 60), y: PH * (.12 + fr() * .34), v: (10 + fr() * 22) * (fr() < .75 ? 1 : -1), a: 3 + fr() * 8, p: fr() * 6.28, s: fr() < .4 ? 2 : 1 })) : [];
+    flakes = F.includes('snow') ? Array.from({ length: Math.round(PW * PH / 900 * (th.snow || 1)) }, () => {
+      const big = fr() < .22; return { x: fr() * PW, y: fr() * PH, s: big ? 2 : 1, v: big ? 26 + fr() * 14 : 12 + fr() * 12, d: 2 + fr() * 5, p: fr() * 6.28, a: .55 + fr() * .4 };
+    }) : [];
+    fw = F.includes('fireworks') ? { rk: [], pt: [], next: 600, last: 0 } : null;
+    if (th.aurora && !strips) strips = makeStrips();
+  }
+
+  /* efekty nad pozadím */
+  const BAT = [['#..#..#', '##.#.##', '.#####.', '..#.#..'], ['..#.#..', '.#####.', '##.#.##', '#.....#']];
+  function drawBats(t) {
+    pg.fillStyle = '#0b0510';
+    for (const b of bats) {
+      const span = PW + 60, x = (((b.x + t * b.v / 1000) % span) + span) % span - 30;
+      const y = Math.round(b.y + Math.sin(t / 900 + b.p) * b.a), fr = Math.floor(t / 140 + b.p) % 2;
+      BAT[fr].forEach((row, j) => { for (let i = 0; i < 7; i++) if (row[i] === '#') pg.fillRect(Math.round(x) + i * b.s, y + j * b.s, b.s, b.s); });
+    }
+  }
+  function drawSnow(t) {
+    for (const f of flakes) {
+      const x = (((f.x + Math.sin(t / 1400 + f.p) * f.d + t * 3 / 1000) % PW) + PW) % PW, y = (f.y + t * f.v / 1000) % PH;
+      pg.fillStyle = `rgba(255,255,255,${f.a})`; pg.fillRect(Math.round(x), Math.round(y), f.s, f.s);
+    }
+  }
+  function drawAurora(t) {
+    for (let x = 0; x < PW; x += 2) {
+      const y1 = PH * .3 + Math.sin(x / 90 + t / 4000) * PH * .05 + (Math.sin(x / 42 + t / 2600) + Math.sin(x / 17 - t / 1700) * .5) * 2;
+      const h = PH * (.16 + .07 * Math.sin(x / 55 + t / 3100 + 1)), k = Math.sin(x / 120 + t / 6000) > .55 ? 1 : (Math.sin(x / 90 - t / 5000) < -.7 ? 2 : 0);
+      pg.globalAlpha = .4 + .3 * Math.sin(x / 70 + t / 2000);
+      pg.drawImage(strips[k], 0, 0, 2, 64, x, Math.round(y1 - h), 2, Math.round(h));
+    }
+    pg.globalAlpha = 1;
+  }
+  const FW_COL = ['#ffd166', '#ff7aa8', '#7be0ff', '#ffffff', '#b4ff7a'];
+  function burstAt(list, x, y, col, n, rnd) {
+    for (let i = 0; i < n; i++) {
+      const a = 6.283 * i / n + rnd() * .2, sp = .5 + rnd() * 1.1;
+      list.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 1, c: col });
+    }
+  }
+  function drawFireworks(t) {
+    const dt = Math.min(50, t - (fw.last || t)), k = dt / 16.67; fw.last = t;
+    if (t >= fw.next) {
+      fw.next = t + 600 + Math.random() * 1000;
+      fw.rk.push({ x: PW * (.08 + Math.random() * .84), y: PH * .66, vy: -(1.5 + Math.random() * .8), ty: PH * (.1 + Math.random() * .3), c: FW_COL[(Math.random() * FW_COL.length) | 0] });
+    }
+    fw.rk = fw.rk.filter(o => {
+      o.y += o.vy * k; pg.fillStyle = '#ffe9b0'; pg.fillRect(Math.round(o.x), Math.round(o.y), 1, 2);
+      pg.fillStyle = 'rgba(255,233,176,.4)'; pg.fillRect(Math.round(o.x), Math.round(o.y) + 2, 1, 3);
+      if (o.y <= o.ty) { burstAt(fw.pt, o.x, o.y, o.c, 52 + ((Math.random() * 28) | 0), Math.random); return false; }
+      return true;
+    });
+    fw.pt = fw.pt.filter(p => {
+      p.vy += .02 * k; p.x += p.vx * k; p.y += p.vy * k; p.vx *= Math.pow(.985, k); p.vy *= Math.pow(.985, k); p.life -= .010 * k;
+      if (p.life <= 0) return false;
+      pg.globalAlpha = Math.min(1, p.life * 1.4); pg.fillStyle = p.c; const z = p.life > .6 ? 2 : 1; pg.fillRect(Math.round(p.x), Math.round(p.y), z, z); return true;
+    });
+    pg.globalAlpha = 1;
+  }
+  function drawStaticFireworks() {
+    const rnd = mulberry(3), pts = [];
+    [[.2, .22, 0], [.52, .14, 1], [.84, .3, 3]].forEach(([fx, fy, ci]) => burstAt(pts, PW * fx, PH * fy, FW_COL[ci], 40, rnd));
+    for (const p of pts) { pg.globalAlpha = .35 + .5 * rnd(); pg.fillStyle = p.c; pg.fillRect(Math.round(p.x + p.vx * 30), Math.round(p.y + p.vy * 30), 1, 1); }
+    pg.globalAlpha = 1;
+  }
+
+  function paint(t) {
+    pg.drawImage(sky, 0, 0);
+    if (!reduce) for (const st of twinkle) {
+      const a = .5 + .5 * Math.sin(t / 700 + st.p);
+      pg.fillStyle = `rgba(${theme.star.tint},${.15 + .75 * a})`; pg.fillRect(st.x, st.y, 1, 1);
+    }
+    if (theme.aurora) drawAurora(reduce ? 0 : t);
+    if (clouds.length) {
+      const co = Math.floor(t * 3.2 / 1000);
+      pg.fillStyle = theme.clouds.color;
+      for (const c of clouds) {
+        const x = (((c.x - co) % PERIOD) + PERIOD) % PERIOD;
+        for (const xx of [x, x - PERIOD]) {
+          if (xx > PW || xx + c.w < 0) continue;
+          pg.fillRect(xx, c.y, c.w, c.h); pg.fillRect(xx + c.b, c.y - 2, c.w - c.b * 2, 2);
+        }
+      }
+    }
+    if (fw) { if (reduce) drawStaticFireworks(); else drawFireworks(t); }
+    if (bats.length) drawBats(reduce ? 0 : t);
+    for (const l of layers) {
+      const off = reduce ? 0 : Math.floor(t * l.speed / 1000) % PERIOD;
+      for (let x = -off; x < PW; x += PERIOD) pg.drawImage(l, x, 0);
+    }
+    if (flakes.length) drawSnow(reduce ? 0 : t);
+  }
+  function frame(t) {
+    if (!visible) { running = false; return; }
+    paint(t); if (!reduce) requestAnimationFrame(frame); else running = false;
+  }
+  function startPano() { if (!running) { running = true; requestAnimationFrame(frame); } }
+  let rb = 0;
+  function rebuild() { cancelAnimationFrame(rb); rb = requestAnimationFrame(() => { buildPano(); paint(performance.now()); running = false; startPano(); }); }
+  new ResizeObserver(rebuild).observe(hero);
+  new IntersectionObserver(e => { visible = e[0].isIntersecting; if (visible) startPano(); }).observe(hero);
+  document.fonts && document.fonts.ready.then(rebuild);
+
+  /* ---------- téma: výber, dátum, tlačidlo ---------- */
+  const mixWhite = (hex, k) => '#' + [1, 3, 5].map(i => Math.round(parseInt(hex.slice(i, i + 2), 16) * (1 - k) + 255 * k).toString(16).padStart(2, '0')).join('');
+  let mode = 'auto';
+  try { const v = localStorage.getItem(THEME_KEY); if (v === 'auto' || THEMES[v]) mode = v; } catch (e) {}
+  const forced = q.get('theme');                                  // ?theme=halloween|zima|novyrok|leto na test
+  if (forced === 'auto' || THEMES[forced]) mode = forced;
+
+  function setSub() {
+    const d = new Date(), yr = d.getFullYear() + (d.getMonth() >= 5 ? 1 : 0);
+    $('#sub').textContent = opened ? 'Vitaj späť na Spacak SMP!'
+      : (themeId === 'novyrok' ? `Šťastný nový rok ${yr}! Session 3: open pokračovanie nášho serveru` : 'Session 3: open pokračovanie nášho serveru');
+  }
+  function applyTheme(animate) {
+    themeId = mode === 'auto' ? autoTheme() : mode; theme = THEMES[themeId];
+    const st = document.documentElement.style;
+    st.setProperty('--accent', theme.accent); st.setProperty('--accent-ink', theme.ink); st.setProperty('--accent-hi', mixWhite(theme.accent, .28));
+    document.documentElement.dataset.theme = themeId;
+    $('#themeTxt').textContent = `Téma: ${theme.label}${mode === 'auto' ? ', auto' : ''}`;
+    setSub();
+    if (animate && !reduce) pano.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, easing: 'ease-out' });
+    rebuild();
+  }
+  $('#themeBtn').addEventListener('click', () => {
+    const order = ['auto', ...THEME_ORDER];
+    mode = order[(order.indexOf(mode) + 1) % order.length];
+    try { localStorage.setItem(THEME_KEY, mode); } catch (e) {}
+    applyTheme(true);
+  });
+
+  /* ---------- odpočet ---------- */
+  try {
+    $('#whenDate').textContent = new Intl.DateTimeFormat('sk-SK', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Bratislava' }).format(TARGET);
+  } catch (e) {}
+  const el = { d: $('#d'), h: $('#h'), m: $('#m'), s: $('#s') }, lb = { d: $('#ld'), h: $('#lh'), m: $('#lm'), s: $('#ls') };
+  function put(k, n) {
+    const v = pad(n);
+    if (el[k].textContent !== v) {
+      const first = el[k].dataset.set !== '1'; el[k].textContent = v; el[k].dataset.set = '1';
+      if (!first && !reduce) el[k].animate([{ transform: 'translateY(.14em)', opacity: .15 }, { transform: 'none', opacity: 1 }], { duration: 260, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    }
+    const l = plural(n, LBL[k]); if (lb[k].textContent !== l) lb[k].textContent = l;
+  }
+  let opened = false, timer = 0;
+
+  function tick() {
+    const diff = q.has('open') ? 0 : target - Date.now();
+    if (diff <= 0) return openServer();
+    const s = Math.floor(diff / 1000);
+    put('d', Math.floor(s / 86400)); put('h', Math.floor(s % 86400 / 3600)); put('m', Math.floor(s % 3600 / 60)); put('s', s % 60);
+    $('#tick').style.width = (100 - (diff % 60000) / 600) + '%';
+    timer = setTimeout(tick, 250);
+  }
+
+  function openServer() {
+    if (opened) return; opened = true; clearTimeout(timer);
+    $('#ipText').textContent = IP;
+    $('#countdown').classList.add('hidden');
+    const rv = $('#reveal'); rv.classList.remove('hidden'); if (!reduce) rv.classList.add('pop');
+    setSub();
+    document.title = 'Spacak SMP – Session 3 – LIVE';
+    if (!reduce) burst();
+    loadStats();
+  }
+
+  /* ---------- kopírovanie IP ---------- */
+  $('#copyBtn').addEventListener('click', async () => {
+    const b = $('#copyBtn');
+    try { await navigator.clipboard.writeText(IP); }
+    catch (e) {
+      const t = document.createElement('textarea'); t.value = IP; document.body.appendChild(t); t.select();
+      try { document.execCommand('copy'); } catch (_) {} t.remove();
+    }
+    b.textContent = 'Skopírované'; setTimeout(() => b.textContent = 'Kopírovať IP', 2000);
+  });
+
+  /* ---------- stav servera (api.mcsrvstat.us) ---------- */
+  async function loadStats() {
+    const ctrl = new AbortController(); const to = setTimeout(() => ctrl.abort(), 9000);
+    try {
+      const r = await fetch(`https://api.mcsrvstat.us/3/${IP}`, { signal: ctrl.signal, cache: 'no-store' });
+      render(await r.json());
+    } catch (e) { render(null); }
+    finally { clearTimeout(to); }
+  }
+  function render(j) {
+    const online = !!(j && j.online);
+    const on = online ? (j.players?.online ?? 0) : 0, max = online ? (j.players?.max ?? 0) : 0;
+    $('#liveMini').classList.toggle('on', online);
+    $('#statDot').classList.toggle('on', online);
+    $('#liveTxt').textContent = online ? `Online, ${hracov(on)}` : (opened ? 'Offline' : 'Čoskoro');
+    ['#pc', '#statTxt'].forEach(s => $(s).classList.remove('skel'));
+
+    $('#statTxt').textContent = online ? 'Online' : (opened ? 'Offline' : 'Čoskoro');
+    $('#ver').textContent = online ? [j.version || '–', j.software].filter(Boolean).join(', ') : '–';
+    const motd = $('#motd'); motd.classList.toggle('bad', !online);
+    motd.textContent = online && j.motd?.clean ? j.motd.clean.map(s => s.trim()).filter(Boolean).join('\n')
+      : (opened ? 'Server je práve offline.' : 'Pred štartom je server offline, to je v poriadku.');
+    $('#icon').src = online && j.icon ? j.icon : window.__grassIcon;
+
+    $('#pc').textContent = on; $('#pm').textContent = max ? `/${max}` : '';
+    $('#pcap').textContent = online ? plural(on, ['hráč je online', 'hráči sú online', 'hráčov je online']) : 'Server je offline';
+    $('#pbar').style.width = (max ? Math.min(100, on / max * 100) : 0) + '%';
+
+    const box = $('#players'); box.textContent = '';
+    const list = online ? (j.players?.list || []) : [];
+    if (list.length) {
+      list.forEach(p => {
+        const d = document.createElement('div'); d.className = 'pl';
+        const img = document.createElement('img'); img.alt = ''; img.width = 34; img.height = 34; loadHead(img, p.name, 68);
+        const sp = document.createElement('span'); sp.textContent = p.name;
+        d.append(img, sp); box.appendChild(d);
+      });
+    } else {
+      const e = document.createElement('span'); e.className = 'empty';
+      e.textContent = !online ? 'Server je offline.' : (on > 0 ? `Online: ${hracov(on)} (zoznam mien server neposiela).` : 'Zatiaľ tu nikto nehrá.');
+      box.appendChild(e);
+    }
+    $('#upd').textContent = 'Aktualizované ' + new Date().toLocaleTimeString('sk-SK') + ', obnova každých 30 s';
+  }
+  loadStats(); setInterval(loadStats, 30000);
+
+  /* ---------- výbuch po otvorení ---------- */
+  function burst() {
+    const c = $('#fx'), x = c.getContext('2d'), dpr = Math.min(devicePixelRatio || 1, 2);
+    c.width = innerWidth * dpr; c.height = innerHeight * dpr;
+    const colors = [theme.accent, mixWhite(theme.accent, .5), '#ffffff', theme.accent];
+    const ps = Array.from({ length: 110 }, () => {
+      const side = Math.random() < .5, ang = .5 + Math.random() * .6, sp = (9 + Math.random() * 14) * dpr;
+      return { x: side ? c.width : 0, y: c.height * .85, vx: Math.cos(ang) * sp * (side ? -1 : 1), vy: -Math.sin(ang) * sp * 1.1,
+        s: Math.round((5 + Math.random() * 5) * dpr / 2) * 2, c: colors[(Math.random() * colors.length) | 0], life: 1 };
+    });
+    (function step() {
+      x.clearRect(0, 0, c.width, c.height); let alive = 0;
+      for (const p of ps) {
+        p.vy += .35 * dpr; p.x += p.vx; p.y += p.vy; p.vx *= .992; p.life -= .005;
+        if (p.life <= 0 || p.y > c.height + 40) continue; alive++;
+        x.globalAlpha = Math.min(1, p.life * 1.6); x.fillStyle = p.c; x.fillRect(Math.round(p.x), Math.round(p.y), p.s, p.s);
+      }
+      if (alive) requestAnimationFrame(step); else x.clearRect(0, 0, c.width, c.height);
+    })();
+  }
+
+  applyTheme(false); tick();
+})();
+</script>
+</body>
+</html>
