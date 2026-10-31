@@ -2,7 +2,7 @@
   "general": {
     "ip": "176.9.21.120:25739",
     "discord": "",
-    "subtitle": "Season 3: open pokračovanie nášho serveru",
+    "subtitle": "Zajtra o 17:00 sa otvorí Spacak SMP 3 z novým Halloween eventom",
     "subtitleOpened": "Vitaj späť na Spacak SMP!",
     "description": "Spacak SMP – Season 3. Open pokračovanie nášho serveru. Štart {den} o {cas}.",
     "mc": "1.21.1",
@@ -35,8 +35,8 @@
     "footerOwners": true
   },
   "banner": {
-    "on": true,
-    "text": "Zajtra o 17:00 sa otvorí Spacak SMP 3 z novým Halloween eventom",
+    "on": false,
+    "text": "",
     "kind": "info"
   },
   "map": {
