@@ -35,8 +35,8 @@
     "footerOwners": true
   },
   "banner": {
-    "on": false,
-    "text": "Dnes o 20:00 prebehne krátka údržba servera.",
+    "on": true,
+    "text": "Zajtra o 17:00 sa otvorí Spacak SMP 3 z novým Halloween eventom",
     "kind": "info"
   },
   "map": {
@@ -251,27 +251,27 @@
         "d": "Duplikovanie itemov a zneužívanie chýb je zakázané. Ak nájdeš bug, nahlás ho."
       },
       {
-        "t": "PvP len so súhlasom",
-        "d": "Hráča môžeš zabiť len vtedy, keď s tým súhlasí. Spawn kill a obťažovanie nováčikov sú zakázané."
+        "t": "PvP povolené len v prírode",
+        "d": "Hráča môžeš zabiť len vtedy, keď s tým súhlasí a ked si na pozemku. V prírode je povolené zabíjat ale prísne zakázane kradnut/blokovať telo. Spawn kill a obťažovanie nováčikov sú zakázané."
       },
       {
         "t": "Rešpektuj základne",
-        "d": "Stavaj aspoň 100 blokov od cudzej základne a nezaberaj pozemky, na ktorých už niekto stavia."
+        "d": "Keď chceš mat base v blízkosti iného hrača (<500 blokov) tak sa spítaj Majitela pozemku či je to vpohode"
       },
       {
         "t": "Nelaguj server",
         "d": "Veľké farmy, redstone hodiny a stovky entít stav tak, aby server nezaťažovali. Helper môže stroj vypnúť."
       },
       {
-        "t": "Slušný chat",
-        "d": "V hernom chate žiadne urážky, spam ani reklama."
+        "t": "Poloslušny chat",
+        "d": "V hernom chate nepiš uplne hlúposti"
+      },
+      {
+        "t": "Waystones",
+        "d": "waystone možeš mať len 1 a na Base nikde inde a može byť publický ked chceš"
       }
     ],
     "dc": [
-      {
-        "t": "Buď slušný",
-        "d": "Žiadne urážky, vyhrážky, rasizmus ani nenávistné prejavy."
-      },
       {
         "t": "Žiadny spam",
         "d": "Nezahlcuj kanály, nepíš všetko veľkými písmenami a bezdôvodne nepinguj ownerov, helperov ani @everyone."
