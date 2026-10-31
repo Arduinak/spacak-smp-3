@@ -32,10 +32,36 @@ canvas,img{image-rendering:pixelated}
     linear-gradient(to bottom,rgba(4,6,16,.5),transparent 22%),
     linear-gradient(to bottom,transparent 68%,var(--bg) 100%)}
 
-.bar{position:absolute;top:0;left:0;right:0}
-.bar-in{max-width:1240px;margin:0 auto;padding:22px 28px;display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:12px;font:600 18px/1 var(--display);letter-spacing:-.01em}
-.brand img{width:30px;height:30px;border-radius:7px}
+[hidden]{display:none!important}
+
+/* ---------- navbar (vždy hore) ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:40;border-bottom:1px solid var(--line);
+  background:linear-gradient(to bottom,rgba(6,9,20,.82),rgba(6,9,20,.6));backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4)}
+.nav-in{max-width:1240px;margin:0 auto;padding:12px 28px;display:flex;align-items:center;gap:20px}
+.brand{display:flex;align-items:center;gap:12px;font:600 18px/1 var(--display);letter-spacing:-.01em;color:inherit;text-decoration:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+.blk{position:relative;width:30px;height:30px;border-radius:7px;overflow:hidden;flex:none;transition:transform .28s cubic-bezier(.3,1.6,.5,1),opacity .2s}
+.blk img,.blk canvas{position:absolute;inset:0;width:100%;height:100%}
+.blk.gone{transform:scale(0);opacity:0;transition:none}
+.tabs{display:flex;gap:4px;margin-left:10px}
+.tab{position:relative;display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 12px;border-radius:10px;font-size:15px;font-weight:500;color:var(--dim);white-space:nowrap;text-decoration:none;transition:color .2s,background .2s}
+.tab:hover{color:var(--ink);background:rgba(255,255,255,.06)}
+.tab[aria-current=page]{color:var(--ink);background:rgba(255,255,255,.08)}
+.tab[aria-current=page]::after{content:'';position:absolute;left:14px;right:14px;bottom:-12px;height:2px;background:var(--accent)}
+.lk{width:.62em;height:.78em;flex:none;fill:currentColor;opacity:.8}
+.navr{margin-left:auto;display:flex;align-items:center;gap:10px}
+.cd{display:inline-flex;align-items:center;gap:9px;height:38px;padding:0 14px;border-radius:10px;font:500 14px var(--sans);color:var(--ink);cursor:pointer;white-space:nowrap;font-variant-numeric:tabular-nums;
+  background:color-mix(in srgb,var(--accent) 14%,transparent);border:1px solid color-mix(in srgb,var(--accent) 38%,transparent);transition:background .2s}
+.cd:hover{background:color-mix(in srgb,var(--accent) 24%,transparent)}
+.cd i{width:8px;height:8px;background:var(--accent);flex:none}
+.cd .lbl{color:var(--dim)}
+.cd b{font-weight:600}
+.dc{display:inline-flex;align-items:center;gap:9px;height:38px;padding:0 14px 0 12px;font:600 14px var(--sans);color:#fff;text-decoration:none;white-space:nowrap;cursor:pointer;
+  background:#5865f2;box-shadow:inset 3px 3px 0 rgba(255,255,255,.3),inset -3px -3px 0 rgba(0,0,0,.3);transition:background .15s,transform .1s;
+  clip-path:polygon(0 4px,4px 4px,4px 0,calc(100% - 4px) 0,calc(100% - 4px) 4px,100% 4px,100% calc(100% - 4px),calc(100% - 4px) calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,4px calc(100% - 4px),0 calc(100% - 4px))}
+.dc:hover{background:#6e79ff}
+.dc:active{transform:translateY(2px);box-shadow:inset -3px -3px 0 rgba(255,255,255,.2),inset 3px 3px 0 rgba(0,0,0,.35)}
+.dc:hover canvas{animation:wiggle .5s steps(4)}
+@keyframes wiggle{25%{transform:translateY(-2px) rotate(-6deg)}75%{transform:translateY(1px) rotate(6deg)}}
 .pill{display:inline-flex;align-items:center;gap:10px;padding:8px 16px 8px 14px;font-size:15px;font-weight:500;border-radius:99px;
   background:rgba(9,12,24,.5);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--bad);flex:none}
@@ -123,20 +149,367 @@ footer{border-top:1px solid var(--line)}
 .theme:hover{color:var(--ink);border-color:var(--accent)}
 .theme i{width:10px;height:10px;background:var(--accent);flex:none}
 
+/* ---------- podstránky ---------- */
+.hero-in.hero-sm{min-height:50svh;grid-template-columns:1fr;padding-bottom:52px}
+h1.h1s{font-size:clamp(56px,9vw,128px)}
+
+/* toasty (ako Minecraft pokroky) */
+#toasts{position:fixed;top:78px;right:20px;z-index:60;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.toast{display:flex;align-items:center;gap:12px;width:min(340px,calc(100vw - 40px));padding:10px 16px 10px 10px;background:#1c1c20;color:#fff;
+  box-shadow:0 0 0 2px #000,inset 0 0 0 2px #55555f,0 14px 30px rgba(0,0,0,.5);animation:toastIn .45s var(--ease)}
+.toast.out{opacity:0;transform:translateX(30px);transition:opacity .35s,transform .35s}
+@keyframes toastIn{from{opacity:0;transform:translateX(60px)}}
+.toast img{width:38px;height:38px;flex:none;padding:3px;background:#8b8b8b;box-shadow:inset 2px 2px 0 #373737,inset -2px -2px 0 #fff}
+.toast b{display:block;font-size:14px;font-weight:600;line-height:1.25;color:#ffe45e}
+.toast span{display:block;font-size:15px;line-height:1.3}
+.toast small{display:block;font-size:13px;color:#b4b4bd}
+.toast:not(.adv) b{color:#fff}
+
+/* modpack */
+.mp{display:grid;grid-template-columns:minmax(300px,.95fr) 1.05fr;gap:72px;align-items:center}
+.mp-art{position:relative;display:flex;flex-direction:column;align-items:center;padding:60px 24px 44px;border-radius:22px;border:1px solid var(--line);overflow:hidden;
+  background:radial-gradient(70% 60% at 50% 38%,color-mix(in srgb,var(--accent) 13%,transparent),transparent 72%),rgba(255,255,255,.025)}
+.mp-art::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:32px 32px;
+  -webkit-mask:radial-gradient(circle at 50% 42%,#000,transparent 68%);mask:radial-gradient(circle at 50% 42%,#000,transparent 68%)}
+.folder{position:relative;width:min(260px,66%)}
+.folder>canvas{display:block;width:100%;height:auto;filter:drop-shadow(0 12px 0 rgba(0,0,0,.28))}
+.folder.locked>canvas{filter:saturate(.72) brightness(.9) drop-shadow(0 12px 0 rgba(0,0,0,.28))}
+.lock{position:absolute;right:-8%;bottom:-14%;width:30%;padding:0;border:0;background:none;cursor:pointer;transform-origin:50% 8%;filter:drop-shadow(0 6px 0 rgba(0,0,0,.35))}
+.lock canvas{display:block;width:100%;height:auto}
+.lock.shake{animation:rattle .55s}
+@keyframes rattle{0%,100%{transform:rotate(0)}15%{transform:rotate(-14deg)}35%{transform:rotate(11deg)}55%{transform:rotate(-8deg)}75%{transform:rotate(5deg)}}
+.fname{margin-top:50px;text-align:center;position:relative}
+.fname b{display:block;font:600 22px/1.2 var(--display);letter-spacing:-.01em}
+.fname span{display:block;margin-top:4px;color:var(--dim);font-variant-numeric:tabular-nums}
+.badge{display:inline-flex;align-items:center;gap:9px;margin-top:18px;padding:7px 14px;border-radius:99px;font-size:14px;font-weight:500;
+  color:#ffd27a;background:rgba(255,190,80,.1);border:1px solid rgba(255,190,80,.32)}
+.badge.ok{color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);border-color:color-mix(in srgb,var(--accent) 38%,transparent)}
+.mp-info h2{margin-bottom:16px}
+.lead{color:rgba(255,255,255,.8);max-width:40ch;margin-bottom:32px}
+.mp-info .spec{margin-bottom:32px}
+.mp-info .spec div{grid-template-columns:130px 1fr}
+.dl{display:inline-flex;align-items:center;gap:10px;text-decoration:none}
+.dl[aria-disabled=true]{background:rgba(255,255,255,.08);color:var(--dim);cursor:not-allowed}
+.dl[aria-disabled=true]:hover{background:rgba(255,255,255,.08)}
+
+/* eventy */
+.events{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;align-items:stretch}
+.ev{position:relative;overflow:hidden;isolation:isolate;display:flex;flex-direction:column;border-radius:22px;border:1px solid var(--eb);background:var(--ebg)}
+.ev canvas{image-rendering:pixelated}
+.ev-art{position:relative;height:224px;flex:none}
+.ev-art .scene{position:absolute;inset:0;width:100%;height:100%}
+.ev-body{position:relative;display:flex;flex-direction:column;gap:14px;flex:1;padding:26px 28px 28px}
+.ev-when{display:flex;align-items:center;gap:10px;color:var(--ea);font-weight:500}
+.ev h3{margin:0;font:700 clamp(28px,3vw,38px)/1.05 var(--display);letter-spacing:-.03em}
+.ev-txt{color:rgba(255,255,255,.78);max-width:46ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px 20px;list-style:none;color:var(--dim);font-size:15px}
+.chips li{display:flex;align-items:center;gap:8px}
+.chips li::before{content:'';width:6px;height:6px;background:var(--ea);flex:none}
+.ev-foot{margin-top:auto;padding-top:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  border-top:2px dashed color-mix(in srgb,var(--ea) 28%,transparent)}
+.ev-cd{font:600 20px var(--display);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.ev-st{display:inline-flex;align-items:center;gap:8px;padding:6px 13px;border-radius:99px;font-size:14px;font-weight:500;color:var(--ea);
+  background:color-mix(in srgb,var(--ea) 14%,transparent);border:1px solid color-mix(in srgb,var(--ea) 36%,transparent)}
+.ev-st.live{color:#8cf27a;background:rgba(140,242,122,.12);border-color:rgba(140,242,122,.4)}
+.ev-st.past{color:var(--dim);background:rgba(255,255,255,.05);border-color:var(--line)}
+
+.ev-hw{--ea:#ff8a1f;--eb:rgba(255,138,31,.4);--ebg:linear-gradient(180deg,#1b0b28 0,#0e0617 100%);
+  box-shadow:0 30px 60px -30px rgba(0,0,0,.8),0 0 70px -24px rgba(255,120,20,.4)}
+.ev-hw .ev-art::after{content:'';position:absolute;left:0;right:0;bottom:0;height:60px;background:linear-gradient(to bottom,transparent,#0e0617 92%)}
+.web{position:absolute;top:0;right:0;z-index:2;width:104px;height:104px;opacity:.9}
+.spider{position:absolute;top:0;left:11%;z-index:3;width:27px;display:flex;flex-direction:column;align-items:center;transform-origin:50% 0;animation:swing 4.4s ease-in-out infinite}
+.spider::before{content:'';width:1px;height:58px;background:rgba(225,215,255,.55);animation:dangle 6.5s ease-in-out infinite}
+@keyframes swing{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+@keyframes dangle{50%{height:92px}}
+
+.ev-wi{--ea:#8fd3ff;--eb:rgba(143,211,255,.45);--ebg:linear-gradient(180deg,#0d2144 0,#0a1631 100%);
+  box-shadow:0 30px 60px -30px rgba(0,0,0,.8),0 0 70px -26px rgba(120,190,255,.45)}
+.ev-wi::after{content:'';position:absolute;inset:0;z-index:5;pointer-events:none;border-radius:inherit;
+  box-shadow:inset 0 0 70px rgba(150,210,255,.16),inset 0 2px 0 rgba(255,255,255,.35)}
+.ev-wi .ev-body{background:linear-gradient(180deg,rgba(143,211,255,.07),transparent 70%)}
+.ev-wi .ev-art::after{content:'';position:absolute;left:0;right:0;bottom:0;height:40px;background:linear-gradient(to bottom,transparent,rgba(13,33,68,.7))}
+.ice{position:absolute;top:0;left:0;z-index:4;width:100%;height:64px;pointer-events:none}
+.snowfx{position:absolute;inset:0;z-index:4;width:100%;height:100%;pointer-events:none}
+
+/* pravidlá */
+.rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;align-items:start}
+.rl{--rc:var(--accent);position:relative;overflow:hidden;padding:30px 28px 10px;border-radius:22px;background:rgba(255,255,255,.03);border:1px solid color-mix(in srgb,var(--rc) 30%,transparent)}
+.rl::before{content:'';position:absolute;left:0;right:0;top:0;height:4px;background:repeating-linear-gradient(90deg,var(--rc) 0 12px,transparent 12px 16px)}
+.rl-dc{--rc:#7c88ff}
+.rl-hd{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.rl-ic{display:grid;place-items:center;width:46px;height:46px;border-radius:11px;flex:none;background:color-mix(in srgb,var(--rc) 16%,transparent)}
+.rl-ic img{width:30px;height:30px;border-radius:5px}
+.rl h3{margin:0;font:700 25px/1.1 var(--display);letter-spacing:-.02em}
+.rl-hd small{margin-left:auto;color:var(--dim);font-size:14px;white-space:nowrap}
+.rl ol{list-style:none}
+.rl li{display:flex;gap:16px;padding:18px 0;border-top:1px solid var(--line);transition:transform .25s var(--ease)}
+.rl li:hover{transform:translateX(6px)}
+.no{flex:none;display:grid;place-items:center;width:30px;height:30px;font:700 14px var(--display);font-variant-numeric:tabular-nums;color:var(--rc);
+  background:color-mix(in srgb,var(--rc) 14%,transparent);box-shadow:inset 2px 2px 0 color-mix(in srgb,var(--rc) 30%,transparent),inset -2px -2px 0 rgba(0,0,0,.3);transition:background .2s,color .2s}
+.rl li:hover .no{background:var(--rc);color:#07101a}
+.rl li b{display:block;font:600 17px/1.3 var(--display);letter-spacing:-.01em}
+.rl li p{margin-top:3px;color:var(--dim);font-size:15.5px;line-height:1.5}
+.rl-end{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:32px;padding:22px 26px;border-radius:18px;border:2px dashed var(--line)}
+.rl-end p{max-width:56ch;color:rgba(255,255,255,.8)}
+
+/* členovia */
+.grp{display:flex;align-items:baseline;gap:12px;margin:52px 0 18px;font:600 22px/1.2 var(--display);letter-spacing:-.015em}
+.grp:first-child{margin-top:0}
+.grp small{font:400 15px var(--sans);color:var(--dim)}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.mgrid.vip{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.mem{--rc:#aab6cf;position:relative;overflow:hidden;display:flex;align-items:center;gap:16px;width:100%;padding:16px 18px;border-radius:16px;text-align:left;cursor:pointer;
+  color:inherit;font:inherit;appearance:none;-webkit-appearance:none;border:1px solid color-mix(in srgb,var(--rc) 28%,transparent);
+  background:linear-gradient(135deg,color-mix(in srgb,var(--rc) 9%,rgba(255,255,255,.03)),rgba(255,255,255,.02));
+  transform:perspective(700px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+  transition:transform .15s ease-out,border-color .2s,box-shadow .25s;animation:memIn .55s var(--ease) backwards;animation-delay:calc(var(--i,0)*70ms)}
+@keyframes memIn{from{opacity:0;transform:translateY(16px)}}
+.mem::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .25s;
+  background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),color-mix(in srgb,var(--rc) 24%,transparent),transparent 62%)}
+.mem:hover::before{opacity:1}
+.mem:hover{border-color:color-mix(in srgb,var(--rc) 70%,transparent);box-shadow:0 18px 40px -18px color-mix(in srgb,var(--rc) 65%,transparent)}
+.mem.big{padding:24px 26px;gap:22px;box-shadow:0 0 44px -20px color-mix(in srgb,var(--rc) 75%,transparent);border-color:color-mix(in srgb,var(--rc) 45%,transparent)}
+.mem-head,.mem-txt{position:relative;min-width:0}
+.mem-head img{display:block;border-radius:10px;box-shadow:0 0 0 2px rgba(0,0,0,.45),0 0 0 4px color-mix(in srgb,var(--rc) 55%,transparent);
+  transform:translate(calc(var(--px,0)*4px),calc(var(--py,0)*4px));transition:transform .15s ease-out}
+.mem b{display:block;font:600 17px/1.2 var(--display);letter-spacing:-.01em;overflow-wrap:anywhere}
+.mem.big b{font-size:28px;letter-spacing:-.025em}
+.rank{display:inline-flex;align-items:center;gap:9px;margin-top:7px;font-size:14px;font-weight:600;color:var(--rc)}
+.rank canvas{flex:none}
+.mem.big .rank canvas{animation:bob 1.6s steps(2) infinite}
+@keyframes bob{50%{transform:translateY(-3px)}}
+.sp{position:absolute;bottom:-4px;left:var(--l);width:4px;height:4px;background:var(--rc);opacity:0;pointer-events:none;animation:rise var(--t) linear var(--d) infinite}
+@keyframes rise{0%{transform:translateY(0);opacity:0}15%{opacity:.9}100%{transform:translateY(-100px);opacity:0}}
+.shine{position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.17) 50%,transparent 58%);transform:translateX(-120%);animation:sweep 5.5s ease-in-out infinite}
+@keyframes sweep{0%,55%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+
+/* mapa */
+.mapbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.mstat{display:inline-flex;align-items:center;gap:10px;font-weight:500}
+.mstat.on .dot{background:var(--accent);animation:ping 2.4s var(--ease) infinite}
+.mstat.wait .dot{background:#ffd27a}
+.mbtns{display:flex;gap:8px;flex-wrap:wrap}
+.mbtn{display:inline-flex;align-items:center;height:38px;padding:0 15px;border-radius:10px;font:500 14px var(--sans);color:var(--ink);text-decoration:none;cursor:pointer;
+  background:rgba(255,255,255,.06);border:1px solid var(--line);transition:background .2s,border-color .2s}
+.mbtn:hover{background:rgba(255,255,255,.11);border-color:color-mix(in srgb,var(--accent) 60%,transparent)}
+.mbtn[disabled]{opacity:.4;cursor:not-allowed}
+.mapframe{position:relative;overflow:hidden;aspect-ratio:16/9;min-height:440px;border-radius:18px;border:1px solid var(--line);background:#0d1117;
+  box-shadow:0 40px 80px -40px rgba(0,0,0,.8)}
+.mapframe:fullscreen{border-radius:0;border:0;aspect-ratio:auto}
+#mapArt{position:absolute;inset:0;width:100%;height:100%;filter:saturate(.75) brightness(.55)}
+.mapframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#0d1117}
+.mapmsg{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;
+  background:radial-gradient(60% 70% at 50% 50%,rgba(6,9,20,.7),rgba(6,9,20,.25))}
+.mapmsg-in{max-width:440px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.mapmsg canvas{margin-bottom:6px;filter:drop-shadow(0 6px 0 rgba(0,0,0,.4));animation:hop 1.8s steps(3) infinite}
+@keyframes hop{50%{transform:translateY(-6px)}}
+.mapmsg b{font:700 clamp(24px,3vw,32px)/1.1 var(--display);letter-spacing:-.025em}
+.mapmsg p{color:rgba(255,255,255,.8)}
+.mapmsg .btn{margin-top:10px;text-decoration:none;display:inline-flex}
+.maphint{margin-top:16px;color:var(--dim);font-size:15px;max-width:70ch}
+
+/* návod */
+.guide-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:56px;align-items:start}
+.guide{list-style:none}
+.guide li{display:flex;gap:18px;padding:22px 0;border-top:1px solid var(--line)}
+.guide li:last-child{border-bottom:1px solid var(--line)}
+.guide .no{--rc:var(--accent);width:34px;height:34px;font-size:16px}
+.guide b{display:block;font:600 19px/1.3 var(--display);letter-spacing:-.01em}
+.guide p{margin-top:4px;color:var(--dim)}
+.guide a{color:var(--accent);text-underline-offset:3px}
+.ipcard{position:sticky;top:96px;padding:26px;border-radius:20px;background:rgba(255,255,255,.04);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);
+  box-shadow:0 30px 60px -36px color-mix(in srgb,var(--accent) 50%,transparent)}
+.ipcard h3{margin:0 0 14px;font:600 18px/1.2 var(--display)}
+.ipcard .ipbox code{font-size:clamp(18px,2vw,23px)}
+.ipcard small{display:block;margin-top:14px;color:var(--dim);font-size:14px}
+.ipcard .btn[disabled]{background:rgba(255,255,255,.1);color:var(--dim);cursor:not-allowed}
+.ipcard dl{margin-top:18px;border-top:1px solid var(--line)}
+.ipcard dl div{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
+.ipcard dt{color:var(--dim)}
+.sech{margin:72px 0 22px}
+.cmds{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.cmd{display:flex;align-items:center;gap:16px;width:100%;padding:14px 18px;border-radius:14px;text-align:left;color:inherit;font:inherit;cursor:pointer;
+  background:rgba(255,255,255,.035);border:1px solid var(--line);transition:border-color .2s,background .2s,transform .2s var(--ease)}
+.cmd:hover{border-color:color-mix(in srgb,var(--accent) 60%,transparent);background:color-mix(in srgb,var(--accent) 7%,rgba(255,255,255,.03));transform:translateX(4px)}
+.cmd code{flex:none;min-width:150px;padding:5px 10px;font:600 15px/1.3 ui-monospace,'Cascadia Mono',Consolas,monospace;color:var(--accent);
+  background:rgba(0,0,0,.35);box-shadow:inset 2px 2px 0 rgba(0,0,0,.35),inset -2px -2px 0 rgba(255,255,255,.07)}
+.cmd span{color:rgba(255,255,255,.8);font-size:15.5px;line-height:1.4}
+.faq{display:grid;gap:10px;max-width:860px}
+.faq details{border-radius:14px;background:rgba(255,255,255,.035);border:1px solid var(--line);transition:border-color .2s}
+.faq details[open]{border-color:color-mix(in srgb,var(--accent) 45%,transparent)}
+.faq summary{position:relative;display:block;padding:18px 54px 18px 20px;font:600 17px/1.35 var(--display);cursor:pointer;list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before,.faq summary::after{content:'';position:absolute;right:22px;top:50%;width:12px;height:4px;margin-top:-2px;background:var(--accent);transition:transform .25s var(--ease)}
+.faq summary::after{transform:rotate(90deg)}
+.faq details[open] summary::after{transform:rotate(0)}
+.faq p{padding:0 54px 20px 20px;color:var(--dim)}
+.modchips{display:flex;flex-wrap:wrap;gap:10px;list-style:none}
+.modchips li{display:flex;align-items:center;gap:9px;padding:8px 14px;border-radius:10px;font-size:15px;font-weight:500;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.modchips li::before{content:'';width:8px;height:8px;background:var(--c,var(--accent));flex:none}
+.modnote{margin-top:16px;color:var(--dim)}
+
+/* questy (štýl FTB Quests) */
+.hero-in.hero-sm.hero-xs{min-height:36svh}
+.ic{display:block;flex:none;width:var(--s,32px);height:var(--s,32px);image-rendering:pixelated;background:url(quest-icons.png) no-repeat;
+  background-position:calc(var(--x,0)*var(--s,32px)*-1) calc(var(--y,0)*var(--s,32px)*-1);background-size:calc(var(--cols,32)*var(--s,32px)) auto}
+.fq{--cols:32;--fqbg:#0d1017;position:relative;display:grid;grid-template-columns:268px minmax(0,1fr);height:min(82svh,800px);min-height:560px;overflow:hidden;
+  border-radius:18px;border:1px solid var(--line);background:var(--fqbg);box-shadow:0 40px 80px -40px rgba(0,0,0,.85)}
+.fq-side{display:flex;flex-direction:column;min-height:0;background:#0a0c12;border-right:1px solid var(--line)}
+.fq-book{display:flex;align-items:center;gap:10px;padding:16px 16px 12px;font:600 16px/1.2 var(--display);letter-spacing:-.01em}
+.fq-book .ic{--s:28px}
+.fq-search{display:block;padding:0 14px 12px}
+.fq-search input{width:100%;height:36px;padding:0 12px;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);font:400 14.5px var(--sans);
+  box-shadow:inset 2px 2px 0 rgba(0,0,0,.35)}
+.fq-search input::placeholder{color:var(--dim)}
+.fq-search input:focus{outline:0;border-color:var(--accent)}
+.fq-list{flex:1;min-height:0;overflow-y:auto;padding-bottom:12px;scrollbar-width:thin;scrollbar-color:#2a3042 transparent}
+.fq-grp{display:flex;align-items:center;gap:8px;width:100%;padding:10px 14px 6px;border:0;background:none;color:var(--dim);font:600 13px var(--sans);text-align:left;cursor:pointer;letter-spacing:.01em}
+.fq-grp::before{content:'';width:6px;height:6px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform .2s}
+.fq-grp.open::before{transform:rotate(45deg)}
+.fq-grp:hover{color:var(--ink)}
+.fq-ch{display:flex;align-items:center;gap:10px;width:100%;padding:7px 14px 7px 16px;border:0;border-left:3px solid transparent;background:none;color:#b8c1d9;font:500 14.5px/1.25 var(--sans);text-align:left;cursor:pointer}
+.fq-ch:hover{background:rgba(255,255,255,.05);color:var(--ink)}
+.fq-ch.on{background:color-mix(in srgb,var(--accent) 13%,transparent);color:var(--ink);border-left-color:var(--accent)}
+.fq-ch .ic{--s:26px}
+.fq-ch .fq-nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fq-ch small{font-size:12px;color:var(--dim);font-variant-numeric:tabular-nums}
+.fq-ch.full small{color:#6ef078}
+.fq-res .fq-nm small{display:block;font-size:12px;color:var(--dim)}
+.fq-empty{padding:14px 16px;color:var(--dim);font-size:14.5px}
+.fq-main{position:relative;display:flex;flex-direction:column;min-width:0;min-height:0}
+.fq-top{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line);background:#121622}
+.fq-top .ic{--s:32px}
+.fq-title{flex:1;min-width:0}
+.fq-title b{display:block;font:700 19px/1.15 var(--display);letter-spacing:-.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fq-title small{display:block;margin-top:2px;color:var(--dim);font-size:13px}
+.fq-btn{height:34px;min-width:34px;padding:0 12px;border:0;color:var(--ink);font:600 14px var(--sans);cursor:pointer;background:#2c3142;
+  box-shadow:inset 2px 2px 0 rgba(255,255,255,.14),inset -2px -2px 0 rgba(0,0,0,.4);transition:background .15s}
+.fq-btn:hover{background:#3a4158}
+.fq-btn:active{box-shadow:inset 2px 2px 0 rgba(0,0,0,.4),inset -2px -2px 0 rgba(255,255,255,.1)}
+.fq-zoom{display:flex;gap:4px}
+.fq-menu{display:none}
+.fq-track{display:flex;align-items:center;gap:9px;color:var(--dim);font-size:14px;cursor:pointer;white-space:nowrap;user-select:none}
+.fq-track input{position:absolute;opacity:0;pointer-events:none}
+.fq-sw{position:relative;width:34px;height:18px;background:#262b3a;box-shadow:inset 2px 2px 0 rgba(0,0,0,.45);transition:background .2s}
+.fq-sw::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;background:#9aa3bd;transition:transform .2s var(--ease),background .2s}
+.fq-track input:checked+.fq-sw{background:color-mix(in srgb,var(--accent) 45%,#262b3a)}
+.fq-track input:checked+.fq-sw::after{transform:translateX(16px);background:var(--accent)}
+.fq-track input:focus-visible+.fq-sw{outline:2px solid #fff;outline-offset:2px}
+.fq-view{position:relative;flex:1;min-height:0;overflow:hidden;cursor:grab;touch-action:none;outline:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,.10) 1.2px,transparent 1.6px);background-size:52px 52px}
+.fq-view.drag{cursor:grabbing}
+.fq-world{position:absolute;left:0;top:0;width:0;height:0;transform-origin:0 0}
+.fq-lines{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;pointer-events:none}
+.fq-lines line{stroke:rgba(190,205,240,.3);stroke-width:3;stroke-linecap:round}
+.fq-lines line.ok{stroke:rgba(110,240,120,.65)}
+.fq-lines line.hl{stroke:#fff}
+.fq-lines polygon{fill:rgba(190,205,240,.55)}
+.fq-lines polygon.ok{fill:rgba(110,240,120,.9)}
+.fq-lines polygon.hl{fill:#fff}
+.qn{--qc:#aeb8d3;position:absolute;display:block;padding:0;border:0;background:none;cursor:pointer;transform:translate(-50%,-50%);-webkit-tap-highlight-color:transparent}
+.qn-b,.qn-f{position:absolute;inset:0;transition:background .15s}
+.qn-b{background:var(--qc)}
+.qn-f{inset:3px;background:#101420}
+.qn .ic{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+.qn:hover{z-index:3;filter:drop-shadow(0 0 7px color-mix(in srgb,var(--accent) 80%,transparent))}
+.qn:hover .qn-b{background:#fff}
+.qn:focus-visible{outline:2px solid #fff;outline-offset:4px}
+.qn.sel .qn-b{background:var(--accent)}
+.qn.done{--qc:#58d96a}
+.qn.opt{--qc:#a98bff}
+.qn.lock{--qc:#3a4152;opacity:.55;filter:grayscale(.55)}
+.qn.lock:hover{filter:none;opacity:.9}
+.qn .chk{position:absolute;right:-7px;top:-7px;--s:20px;z-index:2;filter:drop-shadow(0 1px 0 rgba(0,0,0,.6))}
+.sh-circle .qn-b,.sh-circle .qn-f{border-radius:50%}
+.sh-rsquare .qn-b,.sh-rsquare .qn-f{border-radius:24%}
+.sh-diamond .qn-b,.sh-diamond .qn-f{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.sh-hexagon .qn-b,.sh-hexagon .qn-f{clip-path:polygon(25% 4%,75% 4%,100% 50%,75% 96%,25% 96%,0 50%)}
+.sh-octagon .qn-b,.sh-octagon .qn-f{clip-path:polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%)}
+.sh-pentagon .qn-b,.sh-pentagon .qn-f{clip-path:polygon(50% 0,100% 38%,82% 100%,18% 100%,0 38%)}
+.sh-gear .qn-b,.sh-gear .qn-f{clip-path:polygon(40% 0,60% 0,64% 12%,76% 7%,90% 20%,86% 33%,98% 38%,100% 60%,88% 66%,90% 80%,76% 93%,64% 88%,60% 100%,40% 100%,36% 88%,24% 93%,10% 80%,12% 66%,0 60%,2 40%,14% 34%,10% 20%,24% 7%,36% 12%)}
+.sh-none .qn-b,.sh-none .qn-f{display:none}
+.fq-tip{position:absolute;z-index:5;max-width:260px;padding:8px 12px;pointer-events:none;background:#14111f;color:#fff;font-size:14px;line-height:1.35;
+  box-shadow:0 0 0 2px #2a1a4a,inset 0 0 0 2px #41286f,0 10px 24px rgba(0,0,0,.5)}
+.fq-tip b{display:block;font-weight:600}
+.fq-tip small{display:block;color:#b8b4d0;font-size:12.5px}
+.fq-hint{position:absolute;left:14px;bottom:10px;color:rgba(255,255,255,.35);font-size:13px;pointer-events:none;transition:opacity .4s}
+.fq-hint.off{opacity:0}
+.fq-detail{position:absolute;z-index:6;left:50%;top:76px;bottom:14px;width:min(560px,calc(100% - 28px));transform:translateX(-50%);display:flex;flex-direction:column;
+  background:#161a26;box-shadow:0 0 0 2px #000,inset 0 0 0 2px #3a4158,0 30px 60px rgba(0,0,0,.6);animation:qpop .22s var(--ease)}
+@keyframes qpop{from{opacity:0;transform:translateX(-50%) translateY(10px) scale(.98)}}
+.qd-head{display:flex;align-items:center;gap:14px;padding:18px 20px 14px;border-bottom:2px solid #0b0d14}
+.qd-head h3{margin:0;font:700 22px/1.15 var(--display);letter-spacing:-.02em}
+.qd-head h3.done{color:#6ef078}
+.qd-head small{display:block;margin-top:3px;color:var(--dim);font-size:14px}
+.qd-x{margin-left:auto;align-self:flex-start}
+.qd-body{flex:1;min-height:0;overflow-y:auto;padding:16px 20px 8px;scrollbar-width:thin;scrollbar-color:#2a3042 transparent}
+.qd-desc p{margin:0 0 .7em;color:rgba(255,255,255,.86);font-size:15.5px;line-height:1.55}
+.qd-desc p.gap{height:.4em;margin:0}
+.qd-sec{margin:18px 0 8px;color:var(--dim);font:600 13px var(--sans);letter-spacing:.02em}
+.qd-row{display:flex;align-items:center;gap:12px;padding:5px 0}
+.qd-row span{font-size:15.5px;line-height:1.3}
+.qd-row small{display:block;color:var(--dim);font-size:13px}
+.qd-row.go{cursor:pointer;padding:5px 8px;margin:0 -8px}
+.qd-row.go:hover{background:rgba(255,255,255,.06)}
+.slot{position:relative;display:grid;place-items:center;width:40px;height:40px;flex:none;background:#8b8b8b;box-shadow:inset 2px 2px 0 #373737,inset -2px -2px 0 #fff}
+.slot .ic{--s:32px}
+.slot em{position:absolute;right:2px;bottom:0;font:700 13px/1 var(--sans);font-style:normal;color:#fff;text-shadow:1px 1px 0 #3f3f3f}
+.qd-tbl{display:flex;flex-wrap:wrap;gap:3px;margin:6px 0 4px 52px}
+.qd-tbl .slot{width:34px;height:34px}
+.qd-tbl .slot .ic{--s:26px}
+.qd-tbl .more{align-self:center;margin-left:6px;color:var(--dim);font-size:13px}
+.qd-foot{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 20px 16px;border-top:2px solid #0b0d14}
+.qd-tag{padding:3px 9px;font-size:12.5px;font-weight:600;color:#c9b6ff;background:rgba(169,139,255,.14);box-shadow:inset 0 0 0 1px rgba(169,139,255,.4)}
+.fq-btn.done{background:#2f7a3b}
+.fq-btn.done:hover{background:#3a9448}
+.fq-scrim{display:none}
+@media (max-width:900px){
+  .fq{grid-template-columns:1fr;height:min(86svh,820px)}
+  .fq-side{position:absolute;z-index:8;left:0;top:0;bottom:0;width:min(300px,86%);transform:translateX(-102%);transition:transform .25s var(--ease)}
+  .fq.menu .fq-side{transform:none}
+  .fq.menu .fq-scrim{display:block;position:absolute;inset:0;z-index:7;background:rgba(0,0,0,.55)}
+  .fq-menu{display:inline-block}
+  .fq-top{flex-wrap:wrap}
+  .fq-trk-t{display:none}
+  .fq-detail{left:8px;right:8px;top:auto;bottom:8px;width:auto;max-height:78%;transform:none;animation:none}
+}
+
 @media (max-width:960px){
   .hero-in{grid-template-columns:1fr;gap:36px;padding-top:104px}
   .sub{margin-top:20px}
   .cols{grid-template-columns:1fr;gap:48px}
+  .mp{grid-template-columns:1fr;gap:40px}
+  .events{grid-template-columns:1fr}
 }
+@media (max-width:1600px){.navr .pill{display:none}}
+@media (max-width:1320px){.dc span{display:none}.dc{padding:0 12px}}
+@media (max-width:1150px){
+  .nav-in{flex-wrap:wrap;gap:10px 12px;padding:10px 16px}
+  .navr{order:2}
+  .dc span{display:inline}.dc{padding:0 14px 0 12px}
+  .tabs{order:3;width:100%;margin:0;gap:0;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:1 0 auto;justify-content:center;padding:0 12px;font-size:14px}
+  .tab[aria-current=page]::after{bottom:0;left:10px;right:10px}
+  .hero-in{padding-top:140px}
+  #toasts{top:112px}
+}
+@media (max-width:1000px){
+  .rules,.guide-grid,.cmds{grid-template-columns:1fr}
+}
+@media (max-width:700px){.mgrid.vip{grid-template-columns:1fr}}
+@media (max-width:520px){.cd .lbl,.dc span{display:none}.dc{padding:0 12px}}
 @media (max-width:560px){
-  .bar-in{padding:16px 18px}
   .hero-in,.wrap,.foot,.legal{padding-left:18px;padding-right:18px}
+  .mp-art{padding:48px 16px 36px}
+  .mp-info .spec div{grid-template-columns:100px 1fr}
+  .ev-body{padding:22px 20px 24px}
   .panel{padding:20px 18px 22px}
   .ipbox{flex-direction:column;align-items:stretch;padding:14px}
   .ipbox .btn{padding:13px}
   .spec div{grid-template-columns:110px 1fr}
   .host{text-align:left}
-  .brand span{display:none}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
@@ -148,16 +521,32 @@ footer{border-top:1px solid var(--line)}
 
 <canvas id="fx" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50"></canvas>
 
+<div id="toasts" role="status" aria-live="polite"></div>
+
+<nav class="nav" aria-label="Hlavná navigácia"><div class="nav-in">
+  <a class="brand" id="brand" href="#domov" aria-label="Spacak SMP, domov"><span class="blk" id="blk"><img id="brandIcon" alt="" width="30" height="30"><canvas id="crack" width="16" height="16" aria-hidden="true"></canvas></span><span class="bn">Spacak SMP</span></a>
+  <div class="tabs">
+    <a class="tab" data-tab="home" href="#domov">Domov</a>
+    <a class="tab" data-tab="mapa" href="#mapa">Mapa</a>
+    <a class="tab" data-tab="navod" href="#navod">Návod</a>
+    <a class="tab" data-tab="questy" href="#questy">Questy</a>
+    <a class="tab" data-tab="modpack" href="#modpack">Modpack<svg class="lk" viewBox="0 0 8 10" shape-rendering="crispEdges" aria-hidden="true"><path fill-rule="evenodd" d="M2 0h4v1H2zM1 1h1v3H1zM6 1h1v3H6zM0 4h8v6H0zM3 6h2v3H3z"/></svg></a>
+    <a class="tab" data-tab="eventy" href="#eventy">Eventy</a>
+    <a class="tab" data-tab="pravidla" href="#pravidla">Pravidlá</a>
+    <a class="tab" data-tab="clenovia" href="#clenovia">Členovia</a>
+  </div>
+  <div class="navr">
+    <a class="dc" id="dcBtn" href="#" target="_blank" rel="noopener" aria-label="Discord"><canvas id="dcIco" aria-hidden="true"></canvas><span>Discord</span></a>
+    <button class="cd" id="navCd" type="button" title="Odpočet do štartu servera"><i></i><span class="lbl" id="navLbl">Štart za</span><b id="navCdTxt">…</b></button>
+    <div class="pill" id="liveMini"><i class="dot"></i><span id="liveTxt">Načítavam…</span></div>
+  </div>
+</div></nav>
+
 <header class="hero" id="hero">
   <canvas id="pano" aria-hidden="true"></canvas>
   <div class="shade" aria-hidden="true"></div>
 
-  <div class="bar"><div class="bar-in">
-    <div class="brand"><img id="brandIcon" alt="" width="30" height="30"><span>Spacak SMP</span></div>
-    <div class="pill" id="liveMini"><i class="dot"></i><span id="liveTxt">Načítavam…</span></div>
-  </div></div>
-
-  <div class="hero-in">
+  <div class="hero-in" data-p="home">
     <div>
       <h1>Spacak<br>SMP</h1>
       <p class="sub" id="sub">Session 3: open pokračovanie nášho serveru</p>
@@ -188,10 +577,59 @@ footer{border-top:1px solid var(--line)}
       </section>
     </div>
   </div>
+
+  <div class="hero-in hero-sm" data-p="mapa" hidden>
+    <div>
+      <h1 class="h1s">Mapa</h1>
+      <p class="sub">Celý svet Spacak SMP na jednom mieste.</p>
+    </div>
+  </div>
+
+  <div class="hero-in hero-sm" data-p="navod" hidden>
+    <div>
+      <h1 class="h1s">Návod</h1>
+      <p class="sub">Pripojenie, príkazy a odpovede na bežné otázky.</p>
+    </div>
+  </div>
+
+  <div class="hero-in hero-sm hero-xs" data-p="questy" hidden>
+    <div>
+      <h1 class="h1s">Questy</h1>
+      <p class="sub">Celá questová kniha servera. Klikni na quest a uvidíš úlohy aj odmeny.</p>
+    </div>
+  </div>
+
+  <div class="hero-in hero-sm" data-p="modpack" hidden>
+    <div>
+      <h1 class="h1s">Modpack</h1>
+      <p class="sub">Balík módov pre Session 3.</p>
+    </div>
+  </div>
+
+  <div class="hero-in hero-sm" data-p="eventy" hidden>
+    <div>
+      <h1 class="h1s">Eventy</h1>
+      <p class="sub">Čo sa na Spacak SMP chystá.</p>
+    </div>
+  </div>
+
+  <div class="hero-in hero-sm" data-p="pravidla" hidden>
+    <div>
+      <h1 class="h1s">Pravidlá</h1>
+      <p class="sub">Aby sa tu všetci dobre bavili.</p>
+    </div>
+  </div>
+
+  <div class="hero-in hero-sm" data-p="clenovia" hidden>
+    <div>
+      <h1 class="h1s">Členovia</h1>
+      <p class="sub">Tím a hráči Spacak SMP.</p>
+    </div>
+  </div>
 </header>
 
 <main>
-  <section class="wrap" aria-labelledby="h-stav">
+  <section class="wrap" data-p="home" aria-labelledby="h-stav">
     <div class="head"><h2 id="h-stav">Stav servera</h2><span class="upd" id="upd"></span></div>
 
     <div class="cols">
@@ -212,6 +650,167 @@ footer{border-top:1px solid var(--line)}
     <div class="players" id="players"><span class="empty skel">Načítavam…</span></div>
   </section>
 
+  <section class="wrap" data-p="mapa" aria-labelledby="h-map" hidden>
+    <div class="head"><h2 id="h-map">Mapa sveta</h2><span class="upd">Živá mapa cez BlueMap</span></div>
+    <div class="mapbar">
+      <span class="mstat wait" id="mapStat"><i class="dot"></i><span id="mapStatTxt">Kontrolujem mapu…</span></span>
+      <span class="mbtns">
+        <button class="mbtn" id="mapRetry" type="button">Skúsiť znova</button>
+        <button class="mbtn" id="mapFs" type="button" disabled>Celá obrazovka</button>
+        <a class="mbtn" id="mapOpen" target="_blank" rel="noopener">Otvoriť v novom okne</a>
+      </span>
+    </div>
+    <div class="mapframe" id="mapFrame">
+      <canvas id="mapArt" aria-hidden="true"></canvas>
+      <div class="mapmsg" id="mapMsg"><div class="mapmsg-in">
+        <canvas id="mapPin" aria-hidden="true"></canvas>
+        <b id="mapMsgT">Kontrolujem mapu…</b>
+        <p id="mapMsgP">Chvíľku strpenia.</p>
+        <a class="btn" id="mapMsgBtn" target="_blank" rel="noopener" hidden>Otvoriť mapu</a>
+      </div></div>
+    </div>
+    <p class="maphint">Mapu môžeš otáčať, priblížiť a prepínať medzi 3D a 2D pohľadom. Vidíš na nej stavby, terén aj hráčov online.</p>
+  </section>
+
+  <section class="wrap" data-p="navod" aria-labelledby="h-nv" hidden>
+    <div class="head"><h2 id="h-nv">Ako sa pripojiť</h2><span class="upd">Zaberie to pár minút</span></div>
+    <div class="guide-grid">
+      <ol class="guide">
+        <li><span class="no">1</span><div><b>Nainštaluj Minecraft 1.21.1 s NeoForge</b><p>Server beží na Minecraft Java Edition 1.21.1 a NeoForge 21.1. Potrebuješ originálny Minecraft účet.</p></div></li>
+        <li><span class="no">2</span><div><b>Stiahni modpack</b><p>Balík módov nájdeš v záložke <a href="#modpack">Modpack</a>. Pridaj ho do svojho launchera a hre pridel aspoň 6 GB RAM.</p></div></li>
+        <li><span class="no">3</span><div><b>Pridaj server</b><p>V hre otvor Multiplayer, klikni na Add Server a do poľa Server Address vlož adresu.</p></div></li>
+        <li><span class="no">4</span><div><b>Pripoj sa a hraj</b><p id="guideWhen">Server sa otvára 1. novembra o 17:00. Pred tým sa k nemu pripojiť nedá.</p></div></li>
+      </ol>
+      <aside class="ipcard" aria-label="Adresa servera">
+        <h3>Adresa servera</h3>
+        <div class="ipbox"><code id="guideIp">Odhalí sa pri štarte</code><button class="btn" id="guideCopy" type="button" disabled>Kopírovať</button></div>
+        <dl>
+          <div><dt>Verzia</dt><dd>1.21.1</dd></div>
+          <div><dt>Loader</dt><dd>NeoForge</dd></div>
+          <div><dt>Hráčov</dt><dd>až 20</dd></div>
+        </dl>
+        <small>Whitelist nemáme, stačí adresa a modpack.</small>
+      </aside>
+    </div>
+
+    <h2 class="sech" id="h-cmd">Príkazy</h2>
+    <div class="cmds" id="cmds"></div>
+
+    <h2 class="sech" id="h-faq">Časté otázky</h2>
+    <div class="faq" id="faq"></div>
+  </section>
+
+  <section class="wrap" data-p="questy" aria-label="Questová kniha" hidden>
+    <div class="fq" id="fq">
+      <aside class="fq-side" id="fqSide">
+        <div class="fq-book"><i class="ic" id="fqBookIc"></i><b id="fqBook">Quest Book</b></div>
+        <label class="fq-search"><input id="fqSearch" type="search" placeholder="Hľadať quest…" autocomplete="off" aria-label="Hľadať quest"></label>
+        <div class="fq-list" id="fqList"></div>
+      </aside>
+      <div class="fq-main">
+        <header class="fq-top">
+          <button class="fq-btn fq-menu" id="fqMenu" type="button" aria-label="Zoznam kapitol">Kapitoly</button>
+          <i class="ic" id="fqChIc"></i>
+          <div class="fq-title"><b id="fqChName">–</b><small id="fqChSub"></small></div>
+          <label class="fq-track" title="Zapamätá si splnené questy v tomto prehliadači"><input type="checkbox" id="fqTrack"><span class="fq-sw"></span><span class="fq-trk-t">Sledovať postup</span></label>
+          <span class="fq-zoom"><button class="fq-btn" id="fqZm" type="button" aria-label="Oddialiť">−</button><button class="fq-btn" id="fqFit" type="button">Celé</button><button class="fq-btn" id="fqZp" type="button" aria-label="Priblížiť">+</button></span>
+        </header>
+        <div class="fq-view" id="fqView" tabindex="0" aria-label="Mapa questov">
+          <div class="fq-world" id="fqWorld"><svg class="fq-lines" id="fqLines" aria-hidden="true"></svg></div>
+          <div class="fq-tip" id="fqTip" hidden></div>
+          <div class="fq-hint" id="fqHint">Ťahaj myšou · koleso priblíži</div>
+        </div>
+        <div class="fq-detail" id="fqDetail" hidden></div>
+      </div>
+      <div class="fq-scrim" id="fqScrim"></div>
+    </div>
+    <noscript>Questy potrebujú JavaScript.</noscript>
+  </section>
+
+  <section class="wrap" data-p="modpack" aria-labelledby="h-mp" hidden>
+    <div class="mp">
+      <div class="mp-art">
+        <div class="folder locked" id="mpFolder">
+          <canvas id="folderCv" aria-hidden="true"></canvas>
+          <button class="lock" id="lockBtn" type="button" aria-label="Modpack je zamknutý"><canvas id="lockCv" aria-hidden="true"></canvas></button>
+        </div>
+        <p class="fname"><b>Spacak Modpack</b><span id="mpVer">verzia –</span></p>
+        <span class="badge" id="mpStatus"><svg class="lk" viewBox="0 0 8 10" shape-rendering="crispEdges" aria-hidden="true"><path fill-rule="evenodd" d="M2 0h4v1H2zM1 1h1v3H1zM6 1h1v3H6zM0 4h8v6H0zM3 6h2v3H3z"/></svg><span id="mpStatusTxt">Zatiaľ nedostupné</span></span>
+      </div>
+      <div class="mp-info">
+        <h2 id="h-mp">Spacak SMP Modpack</h2>
+        <p class="lead">Hotový balík módov pre Session 3. Keď bude pripravený, stiahneš ho priamo tu.</p>
+        <dl class="spec">
+          <div><dt>Verzia</dt><dd id="mpVerRow">–</dd></div>
+          <div><dt>Minecraft</dt><dd>1.21.1</dd></div>
+          <div><dt>Loader</dt><dd>NeoForge</dd></div>
+        </dl>
+        <a class="btn dl" id="mpDl" role="button" aria-disabled="true" tabindex="-1"><svg class="lk" viewBox="0 0 8 10" shape-rendering="crispEdges" aria-hidden="true"><path fill-rule="evenodd" d="M2 0h4v1H2zM1 1h1v3H1zM6 1h1v3H6zM0 4h8v6H0zM3 6h2v3H3z"/></svg><span>Stiahnuť modpack</span></a>
+      </div>
+    </div>
+    <h2 class="sech">Čo v ňom nájdeš</h2>
+    <ul class="modchips" id="modChips"></ul>
+    <p class="modnote">A ďalšie desiatky módov. Zoznam sa môže pred štartom ešte zmeniť.</p>
+  </section>
+
+  <section class="wrap" data-p="eventy" aria-labelledby="h-ev" hidden>
+    <div class="head"><h2 id="h-ev">Najbližšie eventy</h2><span class="upd">Dátumy sa ešte môžu zmeniť</span></div>
+    <div class="events">
+
+      <article class="ev ev-hw" data-date="2027-10-30T18:00:00+02:00" aria-labelledby="t-hw">
+        <div class="ev-art">
+          <canvas class="scene" data-scene="halloween" aria-hidden="true"></canvas>
+          <canvas class="web" id="webCv" aria-hidden="true"></canvas>
+          <div class="spider" aria-hidden="true"><canvas id="spiderCv"></canvas></div>
+        </div>
+        <div class="ev-body">
+          <p class="ev-when"><canvas id="ghostCv" aria-hidden="true"></canvas><span data-f="date"></span></p>
+          <h3 id="t-hw">Halloween Night</h3>
+          <p class="ev-txt">Strašidelná noc na Spacak SMP. Spawn sa zmení na prekliate mestečko, po mape sa schovávajú tekvice a kto prežije do rána, dostane odmenu.</p>
+          <ul class="chips"><li>Strašidelný spawn</li><li>Tekvicový hon</li><li>Kostýmy</li></ul>
+          <div class="ev-foot"><span class="ev-cd" data-f="cd"></span><span class="ev-st" data-f="st"></span></div>
+        </div>
+      </article>
+
+      <article class="ev ev-wi" data-date="2026-12-19T18:00:00+01:00" aria-labelledby="t-wi">
+        <canvas class="snowfx" aria-hidden="true"></canvas>
+        <canvas class="ice" aria-hidden="true"></canvas>
+        <div class="ev-art"><canvas class="scene" data-scene="winter" aria-hidden="true"></canvas></div>
+        <div class="ev-body">
+          <p class="ev-when"><canvas id="flakeCv" aria-hidden="true"></canvas><span data-f="date"></span></p>
+          <h3 id="t-wi">Zimný festival</h3>
+          <p class="ev-txt">Sneh na spawne, ľadové stavby a súťaž o najkrajšiu vianočnú dedinku. Zahrej sa pri ohni a ukáž, čo vieš postaviť.</p>
+          <ul class="chips"><li>Ľadová aréna</li><li>Snehové bitky</li><li>Vianočná dedinka</li></ul>
+          <div class="ev-foot"><span class="ev-cd" data-f="cd"></span><span class="ev-st" data-f="st"></span></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="wrap" data-p="pravidla" aria-labelledby="h-rl" hidden>
+    <div class="head"><h2 id="h-rl">Pravidlá servera</h2><span class="upd">Platia pre každého, bez výnimiek</span></div>
+    <div class="rules">
+      <section class="rl rl-mc" aria-labelledby="t-rmc">
+        <div class="rl-hd"><span class="rl-ic"><img id="rlGrass" alt="" width="30" height="30"></span><h3 id="t-rmc">Minecraft server</h3><small id="rlc-mc"></small></div>
+        <ol id="rl-mc"></ol>
+      </section>
+      <section class="rl rl-dc" aria-labelledby="t-rdc">
+        <div class="rl-hd"><span class="rl-ic"><canvas id="dcIco2" aria-hidden="true"></canvas></span><h3 id="t-rdc">Discord</h3><small id="rlc-dc"></small></div>
+        <ol id="rl-dc"></ol>
+      </section>
+    </div>
+    <div class="rl-end">
+      <p>Za porušenie pravidiel hrozí varovanie, mute alebo ban, podľa závažnosti. Rozhodnutia ownerov a helperov sú konečné.</p>
+      <button class="btn" id="rlOk" type="button">Prečítal som si pravidlá</button>
+    </div>
+  </section>
+
+  <section class="wrap" data-p="clenovia" aria-labelledby="h-cl" hidden>
+    <div class="head"><h2 id="h-cl">Tím Spacak SMP</h2><span class="upd">Klikni na meno a skopíruješ nick</span></div>
+    <div id="team"></div>
+  </section>
+
   <footer>
     <div class="foot">
       <div class="owners">
@@ -224,6 +823,7 @@ footer{border-top:1px solid var(--line)}
   </footer>
 </main>
 
+<script src="quests-data.js"></script>
 <script>
 (() => {
   'use strict';
@@ -507,19 +1107,22 @@ footer{border-top:1px solid var(--line)}
       return cv;
     });
   }
+  function paintSky(g, w, h, stops, B) {
+    for (let y = 0; y < h; y += B) {
+      g.fillStyle = skyColor(y / h, stops); g.fillRect(0, y, w, B);
+      g.fillStyle = skyColor((y + B) / h, stops);
+      for (let x = 0; x < w; x += 2) g.fillRect(x, y + B - 1, 1, 1);
+      for (let x = 0; x < w; x += 4) g.fillRect(x + (y / B % 2 ? 2 : 0), y + B - 2, 1, 1);
+    }
+  }
   function buildPano() {
     const ps = Math.max(3, Math.round(innerHeight / 190));
     PW = Math.ceil(hero.clientWidth / ps); PH = Math.ceil(hero.clientHeight / ps);
     pano.width = PW; pano.height = PH;
     const r = mulberry(5), th = theme;
 
-    sky = mk(PW, PH); const s = sky.getContext('2d'), B = 4;
-    for (let y = 0; y < PH; y += B) {
-      s.fillStyle = skyColor(y / PH, th.sky); s.fillRect(0, y, PW, B);
-      s.fillStyle = skyColor((y + B) / PH, th.sky);
-      for (let x = 0; x < PW; x += 2) s.fillRect(x, y + B - 1, 1, 1);
-      for (let x = 0; x < PW; x += 4) s.fillRect(x + (y / B % 2 ? 2 : 0), y + B - 2, 1, 1);
-    }
+    sky = mk(PW, PH); const s = sky.getContext('2d');
+    paintSky(s, PW, PH, th.sky, 4);
     twinkle = [];
     for (let i = 0; i < Math.round(PW * PH / th.star.per); i++) {
       const x = (r() * PW) | 0, y = (r() * PH * .5) | 0, bright = r() < .3;
@@ -564,14 +1167,15 @@ footer{border-top:1px solid var(--line)}
       pg.fillStyle = `rgba(255,255,255,${f.a})`; pg.fillRect(Math.round(x), Math.round(y), f.s, f.s);
     }
   }
-  function drawAurora(t) {
-    for (let x = 0; x < PW; x += 2) {
-      const y1 = PH * .3 + Math.sin(x / 90 + t / 4000) * PH * .05 + (Math.sin(x / 42 + t / 2600) + Math.sin(x / 17 - t / 1700) * .5) * 2;
-      const h = PH * (.16 + .07 * Math.sin(x / 55 + t / 3100 + 1)), k = Math.sin(x / 120 + t / 6000) > .55 ? 1 : (Math.sin(x / 90 - t / 5000) < -.7 ? 2 : 0);
-      pg.globalAlpha = .4 + .3 * Math.sin(x / 70 + t / 2000);
-      pg.drawImage(strips[k], 0, 0, 2, 64, x, Math.round(y1 - h), 2, Math.round(h));
+  function drawAurora(g, W, H, t) {
+    if (!strips) strips = makeStrips();
+    for (let x = 0; x < W; x += 2) {
+      const y1 = H * .3 + Math.sin(x / 90 + t / 4000) * H * .05 + (Math.sin(x / 42 + t / 2600) + Math.sin(x / 17 - t / 1700) * .5) * 2;
+      const h = H * (.16 + .07 * Math.sin(x / 55 + t / 3100 + 1)), k = Math.sin(x / 120 + t / 6000) > .55 ? 1 : (Math.sin(x / 90 - t / 5000) < -.7 ? 2 : 0);
+      g.globalAlpha = .4 + .3 * Math.sin(x / 70 + t / 2000);
+      g.drawImage(strips[k], 0, 0, 2, 64, x, Math.round(y1 - h), 2, Math.round(h));
     }
-    pg.globalAlpha = 1;
+    g.globalAlpha = 1;
   }
   const FW_COL = ['#ffd166', '#ff7aa8', '#7be0ff', '#ffffff', '#b4ff7a'];
   function burstAt(list, x, y, col, n, rnd) {
@@ -612,7 +1216,7 @@ footer{border-top:1px solid var(--line)}
       const a = .5 + .5 * Math.sin(t / 700 + st.p);
       pg.fillStyle = `rgba(${theme.star.tint},${.15 + .75 * a})`; pg.fillRect(st.x, st.y, 1, 1);
     }
-    if (theme.aurora) drawAurora(reduce ? 0 : t);
+    if (theme.aurora) drawAurora(pg, PW, PH, reduce ? 0 : t);
     if (clouds.length) {
       const co = Math.floor(t * 3.2 / 1000);
       pg.fillStyle = theme.clouds.color;
@@ -693,6 +1297,8 @@ footer{border-top:1px solid var(--line)}
     const s = Math.floor(diff / 1000);
     put('d', Math.floor(s / 86400)); put('h', Math.floor(s % 86400 / 3600)); put('m', Math.floor(s % 3600 / 60)); put('s', s % 60);
     $('#tick').style.width = (100 - (diff % 60000) / 600) + '%';
+    const dd = Math.floor(s / 86400);
+    $('#navCdTxt').textContent = `${dd ? dd + ' d ' : ''}${pad(Math.floor(s % 86400 / 3600))}:${pad(Math.floor(s % 3600 / 60))}:${pad(s % 60)}`;
     timer = setTimeout(tick, 250);
   }
 
@@ -701,21 +1307,31 @@ footer{border-top:1px solid var(--line)}
     $('#ipText').textContent = IP;
     $('#countdown').classList.add('hidden');
     const rv = $('#reveal'); rv.classList.remove('hidden'); if (!reduce) rv.classList.add('pop');
-    setSub();
-    document.title = 'Spacak SMP – Session 3 – LIVE';
+    $('#navLbl').textContent = 'IP'; $('#navCdTxt').textContent = IP; $('#navCd').title = 'Kopírovať IP adresu';
+    $('#guideIp').textContent = IP; $('#guideCopy').disabled = false; $('#guideWhen').textContent = 'Server je otvorený, môžeš sa pripojiť.';
+    setSub(); setTitle();
     if (!reduce) burst();
     loadStats();
   }
 
   /* ---------- kopírovanie IP ---------- */
-  $('#copyBtn').addEventListener('click', async () => {
-    const b = $('#copyBtn');
-    try { await navigator.clipboard.writeText(IP); }
+  async function copyText(s) {
+    try { await navigator.clipboard.writeText(s); }
     catch (e) {
-      const t = document.createElement('textarea'); t.value = IP; document.body.appendChild(t); t.select();
+      const t = document.createElement('textarea'); t.value = s; document.body.appendChild(t); t.select();
       try { document.execCommand('copy'); } catch (_) {} t.remove();
     }
+  }
+  const copyIP = () => copyText(IP);
+  $('#copyBtn').addEventListener('click', async () => {
+    const b = $('#copyBtn'); await copyIP();
     b.textContent = 'Skopírované'; setTimeout(() => b.textContent = 'Kopírovať IP', 2000);
+  });
+  $('#navCd').addEventListener('click', async () => {
+    if (!opened) { go('home'); return; }
+    await copyIP();
+    const l = $('#navLbl'), t = $('#navCdTxt'); l.textContent = 'Skopírované'; t.textContent = '';
+    setTimeout(() => { l.textContent = 'IP'; t.textContent = IP; }, 1800);
   });
 
   /* ---------- stav servera (api.mcsrvstat.us) ---------- */
@@ -765,26 +1381,757 @@ footer{border-top:1px solid var(--line)}
   loadStats(); setInterval(loadStats, 30000);
 
   /* ---------- výbuch po otvorení ---------- */
+  const fxc = $('#fx'), fxx = fxc.getContext('2d');
+  let fxp = [], fxRun = false;
+  const dprNow = () => Math.min(devicePixelRatio || 1, 2);
+  function fxAdd(list) {
+    const d = dprNow(), w = Math.round(innerWidth * d), h = Math.round(innerHeight * d);
+    if (fxc.width !== w || fxc.height !== h) { fxc.width = w; fxc.height = h; }
+    fxp.push(...list);
+    if (!fxRun) { fxRun = true; requestAnimationFrame(fxStep); }
+  }
+  function fxStep() {
+    fxx.clearRect(0, 0, fxc.width, fxc.height);
+    for (const p of fxp) {
+      p.vy += p.g; p.x += p.vx; p.y += p.vy; p.vx *= .992; p.life -= p.d;
+      if (p.life <= 0 || p.y > fxc.height + 40) continue;
+      fxx.globalAlpha = Math.min(1, p.life * 1.6); fxx.fillStyle = p.c; fxx.fillRect(Math.round(p.x), Math.round(p.y), p.s, p.s);
+    }
+    fxp = fxp.filter(p => p.life > 0 && p.y <= fxc.height + 40);
+    if (fxp.length) requestAnimationFrame(fxStep); else { fxx.clearRect(0, 0, fxc.width, fxc.height); fxRun = false; }
+  }
   function burst() {
-    const c = $('#fx'), x = c.getContext('2d'), dpr = Math.min(devicePixelRatio || 1, 2);
-    c.width = innerWidth * dpr; c.height = innerHeight * dpr;
-    const colors = [theme.accent, mixWhite(theme.accent, .5), '#ffffff', theme.accent];
-    const ps = Array.from({ length: 110 }, () => {
-      const side = Math.random() < .5, ang = .5 + Math.random() * .6, sp = (9 + Math.random() * 14) * dpr;
-      return { x: side ? c.width : 0, y: c.height * .85, vx: Math.cos(ang) * sp * (side ? -1 : 1), vy: -Math.sin(ang) * sp * 1.1,
-        s: Math.round((5 + Math.random() * 5) * dpr / 2) * 2, c: colors[(Math.random() * colors.length) | 0], life: 1 };
-    });
-    (function step() {
-      x.clearRect(0, 0, c.width, c.height); let alive = 0;
-      for (const p of ps) {
-        p.vy += .35 * dpr; p.x += p.vx; p.y += p.vy; p.vx *= .992; p.life -= .005;
-        if (p.life <= 0 || p.y > c.height + 40) continue; alive++;
-        x.globalAlpha = Math.min(1, p.life * 1.6); x.fillStyle = p.c; x.fillRect(Math.round(p.x), Math.round(p.y), p.s, p.s);
-      }
-      if (alive) requestAnimationFrame(step); else x.clearRect(0, 0, c.width, c.height);
-    })();
+    const d = dprNow(), W = innerWidth * d, H = innerHeight * d, colors = [theme.accent, mixWhite(theme.accent, .5), '#ffffff', theme.accent];
+    fxAdd(Array.from({ length: 110 }, () => {
+      const side = Math.random() < .5, ang = .5 + Math.random() * .6, sp = (9 + Math.random() * 14) * d;
+      return { x: side ? W : 0, y: H * .85, vx: Math.cos(ang) * sp * (side ? -1 : 1), vy: -Math.sin(ang) * sp * 1.1,
+        s: Math.round((5 + Math.random() * 5) * d / 2) * 2, c: colors[(Math.random() * colors.length) | 0], life: 1, g: .35 * d, d: .005 };
+    }));
   }
 
+  /* ---------- toasty (ako Minecraft pokroky) ---------- */
+  function toast({ adv, title, text, sub, icon }) {
+    const t = document.createElement('div'); t.className = 'toast' + (adv ? ' adv' : '');
+    const im = document.createElement('img'); im.alt = ''; im.src = icon || window.__grassIcon;
+    const d = document.createElement('div');
+    [['b', title], ['span', text], ['small', sub]].forEach(([tag, s]) => { if (!s) return; const e = document.createElement(tag); e.textContent = s; d.appendChild(e); });
+    t.append(im, d); $('#toasts').appendChild(t);
+    setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 400); }, 4200);
+  }
+
+  /* ---------- navigácia: záložky ---------- */
+  const PAGES = { domov: 'home', mapa: 'mapa', navod: 'navod', modpack: 'modpack', eventy: 'eventy', pravidla: 'pravidla', clenovia: 'clenovia', questy: 'questy' };
+  const HASH = { home: 'domov', mapa: 'mapa', navod: 'navod', questy: 'questy', modpack: 'modpack', eventy: 'eventy', pravidla: 'pravidla', clenovia: 'clenovia' };
+  const TITLES = { home: 'Spacak SMP – Session 3', mapa: 'Mapa – Spacak SMP', navod: 'Návod – Spacak SMP', questy: 'Questy – Spacak SMP', modpack: 'Modpack – Spacak SMP', eventy: 'Eventy – Spacak SMP', pravidla: 'Pravidlá – Spacak SMP', clenovia: 'Členovia – Spacak SMP' };
+  let page = '';
+  function setTitle() { document.title = page === 'home' && opened ? 'Spacak SMP – Session 3 – LIVE' : TITLES[page || 'home']; }
+  function go(p) { if (page === p) scrollTo({ top: 0, behavior: 'smooth' }); else location.hash = '#' + HASH[p]; }
+  function route() {
+    const p = PAGES[location.hash.replace(/^#\/?/, '').split('/')[0]] || 'home', first = !page;
+    if (p === page) return;
+    page = p;
+    document.querySelectorAll('[data-p]').forEach(e => { e.hidden = e.dataset.p !== p; });
+    document.querySelectorAll('.tab').forEach(a => { if (a.dataset.tab === p) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    document.documentElement.dataset.page = p; setTitle();
+    const cur = document.querySelector('.tab[aria-current]'), tabs = $('.tabs');
+    if (cur && tabs.scrollWidth > tabs.clientWidth) tabs.scrollTo({ left: cur.offsetLeft - (tabs.clientWidth - cur.offsetWidth) / 2, behavior: first || reduce ? 'auto' : 'smooth' });
+    if (p === 'mapa' && typeof probeMap === 'function') probeMap();
+    if (p === 'questy' && window.fqShow) window.fqShow();
+    if (!first) {
+      scrollTo({ top: 0, behavior: 'instant' });
+      if (!reduce) document.querySelectorAll('[data-p]:not([hidden])').forEach(e =>
+        e.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 380, easing: 'cubic-bezier(.2,.8,.2,1)' }));
+    }
+  }
+  addEventListener('hashchange', route);
+
+  /* ---------- easter egg: vykopni logo (8 úderov) ---------- */
+  const HITS = 8, blk = $('#blk'), cg = $('#crack').getContext('2d');
+  const cr = mulberry(11), walks = Array.from({ length: 5 }, (_, k) => {
+    let x = 8, y = 8, a = k * 1.256 + cr();
+    return Array.from({ length: 9 }, () => { a += (cr() - .5) * 1.2; x += Math.cos(a) * 1.15; y += Math.sin(a) * 1.15; return [Math.round(x), Math.round(y)]; });
+  });
+  function drawCrack(n) {
+    cg.clearRect(0, 0, 16, 16); cg.fillStyle = 'rgba(0,0,0,.62)';
+    for (const w of walks) for (let i = 0, c = Math.ceil(w.length * n / HITS); i < c; i++) cg.fillRect(w[i][0], w[i][1], 1, 1);
+  }
+  function chips() {
+    const r = blk.getBoundingClientRect(), d = dprNow(), cols = ['#5aa83a', '#4c8a2e', '#69ad42', '#866043', '#6b4a30', '#7d5a3e'];
+    fxAdd(Array.from({ length: 36 }, () => {
+      const a = -Math.PI * (.12 + Math.random() * .76), sp = (3 + Math.random() * 6) * d;
+      return { x: (r.left + r.width / 2) * d, y: (r.top + r.height / 2) * d, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
+        s: Math.round((3 + Math.random() * 3) * d), c: cols[(Math.random() * cols.length) | 0], life: 1, g: .28 * d, d: .012 };
+    }));
+  }
+  let hits = 0, hitTimer = 0, mined = 0;
+  try { mined = +localStorage.getItem('spacak-blocks') || 0; } catch (e) {}
+  function breakBlock() {
+    blk.classList.add('gone'); chips(); mined++;
+    try { localStorage.setItem('spacak-blocks', mined); } catch (e) {}
+    if (mined === 1) toast({ adv: true, title: 'Pokrok splnený!', text: 'Prvý blok', sub: 'Vykopal si Spacak blok' });
+    else toast({ title: 'Spacak blok', text: `Vykopaných blokov: ${mined}` });
+    setTimeout(() => blk.classList.remove('gone'), 1500);
+  }
+  $('#brand').addEventListener('click', e => {
+    e.preventDefault(); go('home');
+    if (blk.classList.contains('gone')) return;
+    clearTimeout(hitTimer);
+    if (++hits >= HITS) { hits = 0; cg.clearRect(0, 0, 16, 16); breakBlock(); return; }
+    if (!reduce) blk.animate([{ transform: 'none' }, { transform: 'translate(-2px,1px)' }, { transform: 'translate(2px,-1px)' }, { transform: 'none' }], { duration: 140 });
+    drawCrack(hits); hitTimer = setTimeout(() => { hits = 0; cg.clearRect(0, 0, 16, 16); }, 1800);
+  });
+
+  /* ---------- pixel art: pomocníci ---------- */
+  function sprite(cv, rows, pal, k) {
+    cv.width = rows[0].length; cv.height = rows.length; cv.style.width = cv.width * k + 'px'; cv.style.height = cv.height * k + 'px';
+    const g = cv.getContext('2d');
+    rows.forEach((row, j) => { for (let i = 0; i < row.length; i++) if (pal[row[i]]) { g.fillStyle = pal[row[i]]; g.fillRect(i, j, 1, 1); } });
+  }
+  const R = (g, x, y, w, h, c) => { g.fillStyle = c; g.fillRect(x, y, w, h); };
+  const disc = (g, cx, cy, rad, col) => {
+    g.fillStyle = col;
+    for (let dy = -rad; dy <= rad; dy++) { const hw = Math.round(Math.sqrt(rad * rad - dy * dy + rad * .3)); g.fillRect(cx - hw, cy + dy, hw * 2, 1); }
+  };
+
+  /* ---------- modpack: priečinok a zámok ---------- */
+  const MODPACK = { version: '1.0.0', url: '' };     // vlož odkaz na stiahnutie a modpack sa odomkne
+  (function folder() {
+    const cv = $('#folderCv'), g = cv.getContext('2d'); cv.width = 40; cv.height = 32;
+    const O = '#2a1a0b';
+    R(g, 1, 1, 17, 6, O); R(g, 1, 5, 38, 26, O);                               // zadná strana + ouško (obrys)
+    R(g, 2, 6, 36, 24, '#b57424'); R(g, 2, 2, 15, 5, '#b57424'); R(g, 2, 2, 15, 1, '#d79a40');
+    R(g, 20, 3, 16, 14, O); R(g, 21, 4, 14, 13, '#efe8d2');                    // papier
+    [[6, 10], [8, 8], [10, 10], [12, 6]].forEach(([y, w]) => R(g, 23, y, w, 1, '#b9ae8c'));
+    R(g, 1, 13, 38, 18, O); R(g, 2, 14, 36, 16, '#e6a73b');                    // predná strana
+    R(g, 2, 14, 36, 1, '#ffd57e'); R(g, 2, 15, 36, 1, '#f4bd55');
+    R(g, 2, 28, 36, 2, '#c58a2a'); R(g, 37, 16, 1, 12, '#c58a2a');
+    [[1, 13], [38, 13], [1, 30], [38, 30]].forEach(([x, y]) => g.clearRect(x, y, 1, 1));
+    R(g, 15, 17, 10, 10, O); R(g, 16, 18, 8, 8, '#866043');                    // minihráčsky blok na štítku
+    R(g, 16, 18, 8, 2, '#5aa83a'); R(g, 16, 20, 1, 1, '#5aa83a'); R(g, 19, 20, 1, 1, '#5aa83a'); R(g, 22, 20, 2, 1, '#5aa83a');
+    [[18, 22], [21, 24], [17, 24], [23, 22]].forEach(([x, y]) => R(g, x, y, 1, 1, '#6b4a30'));
+    R(g, 19, 19, 1, 1, '#3f7a26'); R(g, 22, 19, 1, 1, '#3f7a26');
+  })();
+  (function lock() {
+    const cv = $('#lockCv'), g = cv.getContext('2d'); cv.width = 12; cv.height = 16;
+    const O = '#1b1f2a';
+    R(g, 2, 0, 8, 9, O); R(g, 3, 1, 6, 8, '#b9c1d1'); R(g, 4, 2, 4, 7, O); g.clearRect(5, 3, 2, 6);
+    R(g, 0, 7, 12, 9, O); R(g, 1, 8, 10, 7, '#8791a6'); R(g, 1, 8, 10, 1, '#b4bccd'); R(g, 1, 14, 10, 1, '#667088');
+    R(g, 4, 10, 4, 2, O); R(g, 5, 12, 2, 2, O);
+    window.__lockIcon = cv.toDataURL();
+  })();
+  function applyModpack() {
+    const ok = !!MODPACK.url;
+    $('#mpVer').textContent = 'verzia ' + MODPACK.version; $('#mpVerRow').textContent = MODPACK.version;
+    $('#mpFolder').classList.toggle('locked', !ok); $('#lockBtn').hidden = ok;
+    $('#mpStatus').classList.toggle('ok', ok); $('#mpStatus .lk').hidden = ok;
+    $('#mpStatusTxt').textContent = ok ? 'Dostupné na stiahnutie' : 'Zatiaľ nedostupné';
+    const dl = $('#mpDl'); dl.querySelector('.lk').hidden = ok;
+    if (ok) { dl.href = MODPACK.url; dl.setAttribute('download', ''); dl.removeAttribute('aria-disabled'); dl.removeAttribute('tabindex'); }
+  }
+  $('#lockBtn').addEventListener('click', () => {
+    const b = $('#lockBtn'); b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake');
+    toast({ title: 'Zamknuté', text: 'Modpack ešte nie je hotový.', icon: window.__lockIcon });
+  });
+  applyModpack();
+
+  /* ---------- eventy ---------- */
+  sprite($('#spiderCv'), ['#.......#', '.#.....#.', '..#####..', '###E#E###', '..#####..', '.#.###.#.', '#.......#'], { '#': '#b6a3d4', E: '#ff4a3d' }, 3);
+  sprite($('#ghostCv'), ['..WWWWW..', '.WWWWWWW.', 'WWWWWWWWW', 'WWkWWWkWW', 'WWkWWWkWW', 'WWWWkWWWW', 'WWWWWWWWW', 'WWWWWWWWW', 'WW.WWW.WW', 'W...W...W'], { W: '#f0e6ff', k: '#2a1838' }, 2);
+  (function flake() {
+    const cv = $('#flakeCv'), g = cv.getContext('2d'); cv.width = cv.height = 11; cv.style.width = cv.style.height = '22px';
+    for (let k = -5; k <= 5; k++) {
+      const tip = Math.abs(k) === 5;
+      R(g, 5 + k, 5, 1, 1, tip ? '#ffffff' : '#bfe5ff'); R(g, 5, 5 + k, 1, 1, tip ? '#ffffff' : '#bfe5ff');
+      if (Math.abs(k) <= 3) { R(g, 5 + k, 5 + k, 1, 1, '#8fd3ff'); R(g, 5 + k, 5 - k, 1, 1, '#8fd3ff'); }
+    }
+    R(g, 5, 5, 1, 1, '#ffffff');
+  })();
+  (function web() {
+    const cv = $('#webCv'), N = 26, g = cv.getContext('2d'); cv.width = cv.height = N; g.fillStyle = 'rgba(235,225,255,.55)';
+    const ox = N - 1, oy = 0, pt = (x, y) => g.fillRect(Math.round(x), Math.round(y), 1, 1);
+    const line = (x0, y0, x1, y1) => { const n = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)); for (let i = 0; i <= n; i++) pt(x0 + (x1 - x0) * i / n, y0 + (y1 - y0) * i / n); };
+    const angs = [90, 112, 135, 158, 180].map(a => a * Math.PI / 180);
+    angs.forEach(a => line(ox, oy, ox + Math.cos(a) * (N - 1), oy + Math.sin(a) * (N - 1)));
+    [7, 13, 19, 25].forEach(rad => {
+      const p = angs.map(a => [ox + Math.cos(a) * rad, oy + Math.sin(a) * rad]);
+      for (let i = 0; i < p.length - 1; i++) {
+        const mx = (p[i][0] + p[i + 1][0]) / 2 * .86 + ox * .14, my = (p[i][1] + p[i + 1][1]) / 2 * .86 + oy * .14;
+        line(p[i][0], p[i][1], mx, my); line(mx, my, p[i + 1][0], p[i + 1][1]);
+      }
+    });
+  })();
+
+  const SCENE_H = 56;
+  function ground(g, W, H, base, amp, seed, body, rim, rim2) {
+    const r = mulberry(seed), p1 = r() * 6.28, p2 = r() * 6.28, hs = new Int16Array(W);
+    for (let x = 0; x < W; x++) {
+      const y = Math.round(base + Math.sin(x / 19 + p1) * amp + Math.sin(x / 7.5 + p2) * amp * .35);
+      hs[x] = y; R(g, x, y, 1, H - y, body); R(g, x, y, 1, 1, rim); if (rim2) R(g, x, y + 1, 1, 1, rim2);
+    }
+    return hs;
+  }
+  const putAt = (g, x, y, k, fn) => { g.save(); g.translate(Math.round(x), Math.round(y)); g.scale(k, k); fn(g); g.restore(); };
+  const SCENES = {
+    halloween(cv) {
+      const W = Math.ceil(cv.clientWidth / 4), H = SCENE_H; cv.width = W; cv.height = H;
+      const g = cv.getContext('2d'), r = mulberry(404), at = f => Math.min(W - 1, Math.round(W * f));
+      paintSky(g, W, H, [[0, [14, 5, 34]], [.5, [58, 16, 70]], [.8, [148, 48, 62]], [1, [218, 104, 50]]], 4);
+      for (let i = 0; i < W * H / 110; i++) R(g, (r() * W) | 0, (r() * H * .45) | 0, 1, 1, `rgba(255,230,210,${(.3 + r() * .4).toFixed(2)})`);
+      const mx = at(.66), my = 15;
+      disc(g, mx, my, 17, 'rgba(255,150,50,.07)'); disc(g, mx, my, 13, 'rgba(255,150,50,.10)'); disc(g, mx, my, 10, '#ffb84d');
+      [[-4, -4, 3, 2], [2, -2, 2, 3], [-3, 3, 3, 2], [4, 4, 2, 2]].forEach(([a, b, w, h]) => R(g, mx + a, my + b, w, h, '#e0892a'));
+      [[mx - 6, my - 9, 0, 1], [mx + 6, my + 2, 1, 1], [mx - 17, my + 9, 1, 2]].forEach(([x, y, f, s]) =>
+        BAT[f].forEach((row, j) => { for (let i = 0; i < 7; i++) if (row[i] === '#') R(g, x + i * s, y + j * s, s, s, '#12041a'); }));
+      const far = ground(g, W, H, H * .7, 3, 11, '#2a0f3c', '#4a2058');
+      putAt(g, at(.25), far[at(.25)] + 1, 1, PROPS.haunted);
+      const hs = ground(g, W, H, H * .85, 1.6, 12, '#170a21', '#4b5d22', '#33411a');
+      putAt(g, at(.07), hs[at(.07)] + 1, 1, c => deadTree(c, { s: 2, trunk: '#07030a' }, r));
+      putAt(g, at(.45), hs[at(.45)] + 1, 1, PROPS.tomb); putAt(g, at(.51), hs[at(.51)] + 1, 1, PROPS.tomb);
+      putAt(g, at(.61), hs[at(.61)] + 1, 1, PROPS.pumpkin);
+      putAt(g, at(.82), hs[at(.82)] + 2, 3, PROPS.pumpkin);
+    },
+    winter(cv) {
+      const W = Math.ceil(cv.clientWidth / 4), H = SCENE_H; cv.width = W; cv.height = H;
+      const g = cv.getContext('2d'), r = mulberry(808), at = f => Math.min(W - 1, Math.round(W * f));
+      paintSky(g, W, H, [[0, [7, 14, 42]], [.45, [20, 46, 96]], [.8, [62, 112, 168]], [1, [150, 196, 230]]], 4);
+      for (let i = 0; i < W * H / 100; i++) R(g, (r() * W) | 0, (r() * H * .5) | 0, 1, 1, `rgba(215,230,255,${(.3 + r() * .5).toFixed(2)})`);
+      drawAurora(g, W, H, 0);
+      disc(g, at(.82), 9, 8, 'rgba(170,210,255,.12)'); disc(g, at(.82), 9, 5, '#eef6ff');
+      const hs = ground(g, W, H, H * .68, 3, 21, '#27406b', '#d4e4f8', '#6f90bd');
+      putAt(g, at(.72), hs[at(.72)] + 1, 1, PROPS.cabin);
+      [[.06, 3], [.15, 2], [.3, 3], [.4, 2], [.54, 4], [.9, 3], [.96, 2]].forEach(([f, s]) =>
+        putAt(g, at(f), hs[at(f)] + 1, 1, c => spruce(c, { s, snow: '#eaf3fc', col: '#14503f', col2: '#1b6149', lights: true }, r)));
+      ground(g, W, H, H * .88, 1.4, 22, '#3c5784', '#eaf3fc', '#a8c0de');
+      for (let i = 0; i < W / 3; i++) R(g, (r() * W) | 0, (H * .9 + r() * H * .1) | 0, 1, 1, 'rgba(255,255,255,.75)');
+    }
+  };
+  function drawIce(cv) {
+    const W = Math.ceil(cv.clientWidth / 4) || 1, H = 16; cv.width = W; cv.height = H;
+    const g = cv.getContext('2d'), r = mulberry(55), cap = new Uint8Array(W);
+    for (let x = 0; x < W; x++) { cap[x] = 2 + (r() < .3 ? 1 : 0); R(g, x, 0, 1, cap[x], '#f4f9ff'); R(g, x, cap[x], 1, 1, '#c6dcf2'); }
+    for (let x = 1; x < W - 3;) {
+      const w = 2 + ((r() * 2) | 0), L = 3 + ((r() * r() * 10) | 0), y0 = cap[x] + 1;
+      for (let j = 0; j < L; j++) {
+        const ww = j < L * .55 ? w : Math.max(1, w - 1), x0 = x + (w - ww >> 1);
+        R(g, x0, y0 + j, ww, 1, '#79b6e3'); R(g, x0, y0 + j, 1, 1, '#f0faff'); if (ww > 2) R(g, x0 + 1, y0 + j, 1, 1, '#b4dcf7');
+      }
+      if (r() < .4) R(g, x, y0 + 1, 1, 1, '#ffffff');
+      x += w + 1 + ((r() * 4) | 0);
+    }
+  }
+  function snowCard(card) {
+    const cv = card.querySelector('.snowfx'), c = cv.getContext('2d'); let W = 0, H = 0, fl = [], run = false, vis = false;
+    const size = () => {
+      W = Math.ceil(card.clientWidth / 3); H = Math.ceil(card.clientHeight / 3); cv.width = W; cv.height = H;
+      fl = Array.from({ length: Math.round(W * H / 380) }, () => ({ x: Math.random() * W, y: Math.random() * H, v: 6 + Math.random() * 10, s: Math.random() < .2 ? 2 : 1, p: Math.random() * 6.28, a: .4 + Math.random() * .5 }));
+    };
+    const draw = t => {
+      c.clearRect(0, 0, W, H);
+      for (const f of fl) {
+        const x = (((f.x + Math.sin(t / 1500 + f.p) * 3) % W) + W) % W, y = (f.y + t * f.v / 1000) % H;
+        c.fillStyle = `rgba(255,255,255,${f.a})`; c.fillRect(Math.round(x), Math.round(y), f.s, f.s);
+      }
+    };
+    const loop = t => { if (!vis) { run = false; return; } draw(t); if (!reduce) requestAnimationFrame(loop); else run = false; };
+    new ResizeObserver(() => { if (card.clientWidth) { size(); draw(reduce ? 0 : performance.now()); } }).observe(card);
+    new IntersectionObserver(e => { vis = e[0].isIntersecting; if (vis && !run) { run = true; requestAnimationFrame(loop); } }).observe(card);
+  }
+
+  const evCards = [...document.querySelectorAll('.ev')].sort((a, b) => Date.parse(a.dataset.date) - Date.parse(b.dataset.date));
+  const fmtD = new Intl.DateTimeFormat('sk-SK', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Bratislava' });
+  const fmtT = new Intl.DateTimeFormat('sk-SK', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Bratislava' });
+  function evUpdate() {
+    const now = Date.now();
+    evCards.forEach((card, i) => {
+      const ts = Date.parse(card.dataset.date), diff = ts - now; card.style.order = i;
+      card.querySelector('[data-f=date]').textContent = `${fmtD.format(ts)}, o ${fmtT.format(ts)}`;
+      let cd, st, cls = '';
+      if (diff > 0) {
+        const s = Math.floor(diff / 1000), d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60);
+        cd = d ? `Za ${d} ${plural(d, LBL.d)} ${h} h` : `Za ${h} h ${pad(m)} min`; st = 'Čoskoro';
+      } else if (-diff < 3 * 3600e3) { cd = 'Práve prebieha'; st = 'Prebieha'; cls = 'live'; }
+      else { cd = 'Skončilo'; st = 'Skončilo'; cls = 'past'; }
+      card.querySelector('[data-f=cd]').textContent = cd;
+      const e = card.querySelector('[data-f=st]'); e.textContent = st; e.className = 'ev-st ' + cls;
+    });
+  }
+  evUpdate(); setInterval(evUpdate, 20000);
+  const evRO = new ResizeObserver(es => es.forEach(({ target: card }) => {
+    const w = card.clientWidth; if (!w || card._w === w) return; card._w = w;
+    const sc = card.querySelector('.scene'); SCENES[sc.dataset.scene](sc);
+    const ice = card.querySelector('.ice'); if (ice) drawIce(ice);
+  }));
+  evCards.forEach(c => { evRO.observe(c); if (c.classList.contains('ev-wi')) snowCard(c); });
+
+  /* ---------- mapa (BlueMap v iframe) ---------- */
+  const MAP_URL = q.get('map') || 'http://176.9.21.120:25901';     // ?map=http://localhost:8100 na test
+  const mapEl = $('#mapFrame');
+  let mapState = '', mapTimer = 0;
+  $('#mapOpen').href = MAP_URL; $('#mapMsgBtn').href = MAP_URL;
+  sprite($('#mapPin'), ['..ddd..', '.dmmmd.', 'dmmwmmd', 'dmwwwmd', 'dmmwmmd', '.dmmmd.', '.dmmmd.', '..dmd..', '..dmd..', '...d...'], { d: '#7a1f2e', m: '#ff4d6d', w: '#ffe1e8' }, 5);
+  if (!document.fullscreenEnabled) $('#mapFs').hidden = true;
+  function showMap(state) {
+    mapState = state;
+    const [t, p, s, cls] = {
+      checking: ['Kontrolujem mapu…', 'Chvíľku strpenia.', 'Kontrolujem mapu…', 'wait'],
+      offline: ['Mapa je zatiaľ offline', 'Server ešte nespustil BlueMap. Skús to znova, keď sa server otvorí.', 'Mapa je offline', ''],
+      mixed: ['Mapu otvor v novom okne', 'Táto stránka beží cez https a prehliadač z nej nepustí mapu z http adresy. V novom okne ti funguje bez problémov.', 'Mapa sa otvára v novom okne', 'wait'],
+      online: ['', '', 'Mapa beží', 'on']
+    }[state];
+    $('#mapMsgT').textContent = t; $('#mapMsgP').textContent = p; $('#mapStatTxt').textContent = s;
+    $('#mapStat').className = 'mstat ' + cls;
+    $('#mapMsg').hidden = state === 'online'; $('#mapMsgBtn').hidden = state !== 'mixed';
+    $('#mapRetry').hidden = state === 'mixed'; $('#mapFs').disabled = state !== 'online';
+    let fr = mapEl.querySelector('iframe');
+    if (state === 'online') {
+      if (!fr) { fr = document.createElement('iframe'); fr.src = MAP_URL; fr.title = 'Mapa sveta Spacak SMP'; fr.allow = 'fullscreen'; fr.referrerPolicy = 'no-referrer'; mapEl.appendChild(fr); }
+    } else if (fr) fr.remove();
+  }
+  async function probeMap() {
+    clearTimeout(mapTimer);
+    if (mapState === 'online') return;
+    if (location.protocol === 'https:' && MAP_URL.startsWith('http:')) return showMap('mixed');
+    showMap('checking');
+    const c = new AbortController(), to = setTimeout(() => c.abort(), 6000);
+    try { await fetch(MAP_URL, { mode: 'no-cors', cache: 'no-store', signal: c.signal }); showMap('online'); }
+    catch (e) { showMap('offline'); mapTimer = setTimeout(() => { if (page === 'mapa') probeMap(); }, 20000); }
+    finally { clearTimeout(to); }
+  }
+  $('#mapRetry').addEventListener('click', probeMap);
+  $('#mapFs').addEventListener('click', () => { if (mapEl.requestFullscreen) mapEl.requestFullscreen(); });
+
+  /* náhľad mapy: pohľad zhora na procedurálny svet */
+  const hash2 = (x, y, s) => { let h = Math.imul(x, 374761393) + Math.imul(y, 668265263) + Math.imul(s, 1274126177); h = Math.imul(h ^ h >>> 13, 1274126177); return ((h ^ h >>> 16) >>> 0) / 4294967296; };
+  const vnoise = (x, y, s) => {
+    const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi, u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+    const a = hash2(xi, yi, s), b = hash2(xi + 1, yi, s), c = hash2(xi, yi + 1, s), d = hash2(xi + 1, yi + 1, s);
+    return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+  };
+  const terrain = (x, y) => { let h = 0, a = .5, f = 1 / 30; for (let o = 0; o < 4; o++) { h += a * vnoise(x * f, y * f, o + 3); a /= 2; f *= 2; } return h / .9375; };
+  function drawMapArt() {
+    const W = Math.ceil(mapEl.clientWidth / 4), H = Math.ceil(mapEl.clientHeight / 4); if (!W || !H) return;
+    const cv = $('#mapArt'); cv.width = W; cv.height = H;
+    const g = cv.getContext('2d'), img = g.createImageData(W, H), hm = new Float32Array((W + 1) * (H + 1));
+    for (let y = 0; y <= H; y++) for (let x = 0; x <= W; x++) hm[y * (W + 1) + x] = terrain(x + 40, y + 20);
+    const hex = c => [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16));
+    const DEEP = hex('#27508f'), WATER = hex('#3470b8'), SHAL = hex('#4a8fd0'), SAND = hex('#d9c88a'), G1 = hex('#5aa83a'), G2 = hex('#4c8a2e'), FOR = hex('#2f6b2a'), STO = hex('#7b8088'), SNO = hex('#eaf3fc');
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      const h = hm[y * (W + 1) + x]; let c, lit = 1;
+      if (h < .36) c = DEEP; else if (h < .43) c = WATER; else if (h < .465) c = SHAL;
+      else {
+        lit = 1 + (h - hm[(y + 1) * (W + 1) + x + 1]) * 9; lit = Math.max(.7, Math.min(1.3, lit));
+        c = h < .49 ? SAND : h < .63 ? (vnoise(x / 5, y / 5, 9) < .5 ? G1 : G2) : h < .72 ? FOR : h < .8 ? STO : SNO;
+      }
+      const i = (y * W + x) * 4; img.data[i] = Math.min(255, c[0] * lit); img.data[i + 1] = Math.min(255, c[1] * lit); img.data[i + 2] = Math.min(255, c[2] * lit); img.data[i + 3] = 255;
+    }
+    g.putImageData(img, 0, 0);
+    g.fillStyle = 'rgba(0,0,0,.18)';                                  // mriežka chunkov
+    for (let x = 0; x < W; x += 16) g.fillRect(x, 0, 1, H);
+    for (let y = 0; y < H; y += 16) g.fillRect(0, y, W, 1);
+  }
+  new ResizeObserver(drawMapArt).observe(mapEl);
+
+  /* ---------- návod: príkazy, otázky, módy ---------- */
+  $('#guideCopy').addEventListener('click', async () => { await copyIP(); toast({ title: 'Skopírované', text: IP }); });
+  const CMDS = [
+    ['/sethome', 'Uloží tvoje aktuálne miesto ako domov.'], ['/home', 'Teleportuje ťa domov.'],
+    ['/delhome', 'Zmaže uložený domov.'], ['/back', 'Vráti ťa na predošlé miesto.'],
+    ['/tpa <hráč>', 'Požiada hráča o teleport k nemu.'], ['/tpaccept', 'Prijme žiadosť o teleport.'],
+    ['/tpdeny', 'Odmietne žiadosť o teleport.'], ['/warp <meno>', 'Teleportuje ťa na verejné miesto servera.']
+  ];
+  CMDS.forEach(([c, d]) => {
+    const b = document.createElement('button'), code = document.createElement('code'), s = document.createElement('span');
+    b.type = 'button'; b.className = 'cmd'; code.textContent = c; s.textContent = d; b.append(code, s);
+    b.addEventListener('click', async () => { const base = c.replace(/\s*<.*>/, ''); await copyText(base); toast({ title: 'Príkaz skopírovaný', text: base }); });
+    $('#cmds').appendChild(b);
+  });
+  const FAQ = [
+    ['Prečo sa nemôžem pripojiť?', 'Skontroluj, či hráš na Minecrafte 1.21.1 s NeoForge 21.1 a máš nainštalovaný modpack. Pripojiť sa dá až od štartu servera 1. novembra o 17:00.'],
+    ['Môžem hrať na cracknutom klientovi?', 'Nie. Server vyžaduje originálny Minecraft účet.'],
+    ['Čo sa stane, keď zomriem?', 'Tvoje veci ostanú v hrobe na mieste smrti. Zapamätaj si súradnice a vráť sa pre ne čo najskôr.'],
+    ['Ako sa rýchlo presúvam po svete?', 'Postav si waystone a odomkni cestovanie medzi nimi. Na ďalšie presuny použi /home a /tpa.'],
+    ['Môžem používať shadery a minimapu?', 'Áno, kozmetické úpravy sú v poriadku. Cheaty ako X-ray alebo fly sú zakázané, pozri záložku Pravidlá.'],
+    ['Koľko hráčov sa zmestí na server?', 'Naraz až 20.'],
+    ['Čo mám robiť, keď nájdem bug?', 'Nezneužívaj ho a napíš helperovi alebo na Discord. Opravíme ho čo najskôr.'],
+    ['Kde nájdem mapu sveta?', 'V záložke Mapa. Beží cez BlueMap a ukazuje stavby aj hráčov.']
+  ];
+  FAQ.forEach(([qs, a]) => {
+    const d = document.createElement('details'), s = document.createElement('summary'), p = document.createElement('p');
+    s.textContent = qs; p.textContent = a; d.append(s, p); $('#faq').appendChild(d);
+  });
+  ['Create', 'Create: Aeronautics', 'Ars Nouveau', 'Aether', 'Twilight Forest', 'Biomes O\' Plenty', 'Regions Unexplored', 'Refined Storage', 'Sophisticated Backpacks',
+    'Sophisticated Storage', 'Waystones', 'Farmer\'s Delight', 'Alex\'s Mobs', 'Quark', 'Supplementaries', 'Powah', 'Steam \'n\' Rails', 'FTB Quests', 'Artifacts', 'Relics'
+  ].forEach((m, i) => {
+    const li = document.createElement('li'); li.textContent = m; li.style.setProperty('--c', ['#ffc233', '#5ee7ff', '#35dc84', '#ff6b8b', '#a98bff', '#ff9a3d'][i % 6]); $('#modChips').appendChild(li);
+  });
+
+  /* ---------- questy (štýl FTB Quests) ---------- */
+  (function quests() {
+    const D = window.FTBQ, root = $('#fq');
+    if (!D) { root.textContent = 'Questy sa nepodarilo načítať.'; root.style.padding = '24px'; return; }
+    const U = 52, COLS = D.cols, qs = D.quests, chs = D.chapters;
+    const view = $('#fqView'), world = $('#fqWorld'), lines = $('#fqLines'), tip = $('#fqTip'), detail = $('#fqDetail'), list = $('#fqList');
+    const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+    const ic = (idx, px, cls) => { const i = el('i', 'ic' + (cls ? ' ' + cls : '')); i.style.cssText = `--s:${px}px;--x:${idx % COLS};--y:${(idx / COLS) | 0}`; return i; };
+    const chOf = new Map(); chs.forEach((c, ci) => c.q.forEach(q => chOf.set(q, ci)));
+    const dependents = qs.map(() => []); qs.forEach((q, i) => (q.d || []).forEach(d => dependents[d].push(i)));
+
+    /* postup (len v tomto prehliadači) */
+    let done = new Set(), track = false;
+    try { done = new Set(JSON.parse(localStorage.getItem('spacak-quests-done') || '[]')); track = localStorage.getItem('spacak-quests-track') === '1'; } catch (e) {}
+    const save = () => { try { localStorage.setItem('spacak-quests-done', JSON.stringify([...done])); localStorage.setItem('spacak-quests-track', track ? '1' : '0'); } catch (e) {} };
+    function depsMet(q) {
+      if (!q.d) return true;
+      const one = q.dr && q.dr.startsWith('one'), base = one ? q.d : q.d.filter(d => !qs[d].o);
+      if (!base.length) return true;
+      return one ? base.some(d => done.has(d)) : base.every(d => done.has(d));
+    }
+    const stateOf = i => !track ? '' : done.has(i) ? 'done' : depsMet(qs[i]) ? '' : 'lock';
+    const visibleQ = i => !qs[i].iv;
+
+    /* farebné kódy z descriptions (&9 …) */
+    const MC = { 0: '#7a7a8c', 1: '#5b6bff', 2: '#3fd34f', 3: '#3fd1d1', 4: '#ff5b5b', 5: '#c26bff', 6: '#ffb02e', 7: '#c4c8d4', 8: '#8a8fa0', 9: '#7b8bff', a: '#6ef078', b: '#6ef0ff', c: '#ff7b7b', d: '#ff7bff', e: '#fff06e', f: '#ffffff' };
+    function richLine(text) {
+      const p = el('p'); let col = null, buf = '';
+      const flush = () => { if (!buf) return; const s = el('span', null, buf); if (col) s.style.color = col; p.appendChild(s); buf = ''; };
+      for (let i = 0; i < text.length; i++) {
+        if (text[i] === '&' && /[0-9a-fk-or]/i.test(text[i + 1] || '')) { flush(); const c = text[++i].toLowerCase(); col = MC[c] || null; if (c === 'r') col = null; }
+        else buf += text[i];
+      }
+      flush(); return p;
+    }
+
+    /* ----- ľavý panel: kapitoly ----- */
+    let cur = -1, openGroups = new Set(), query = '';
+    const prog = ci => { const ids = chs[ci].q.filter(visibleQ); return [ids.filter(i => done.has(i)).length, ids.length]; };
+    function renderList() {
+      list.textContent = '';
+      if (query.length >= 2) {
+        const q = query.toLowerCase(), hits = [];
+        qs.forEach((x, i) => { if (visibleQ(i) && x.ti.toLowerCase().includes(q)) hits.push(i); });
+        if (!hits.length) list.appendChild(el('div', 'fq-empty', 'Nič sa nenašlo.'));
+        hits.slice(0, 40).forEach(i => {
+          const b = el('button', 'fq-ch fq-res'); b.type = 'button'; b.append(ic(qs[i].ic, 26));
+          const n = el('span', 'fq-nm', qs[i].ti); n.append(el('small', null, chs[chOf.get(i)].n)); b.appendChild(n);
+          b.addEventListener('click', () => { $('#fqSearch').value = ''; query = ''; goQuest(i); }); list.appendChild(b);
+        });
+        return;
+      }
+      D.groups.forEach(g => {
+        const cl = chs.map((c, ci) => ci).filter(ci => chs[ci].g === g.id);
+        if (!cl.length) return;
+        let box = list;
+        if (g.id) {
+          const open = openGroups.has(g.id), h = el('button', 'fq-grp' + (open ? ' open' : ''), g.n); h.type = 'button'; h.setAttribute('aria-expanded', open);
+          h.addEventListener('click', () => { open ? openGroups.delete(g.id) : openGroups.add(g.id); renderList(); }); list.appendChild(h);
+          if (!open) return;
+        }
+        cl.forEach(ci => {
+          const [d, n] = prog(ci), b = el('button', 'fq-ch' + (ci === cur ? ' on' : '') + (track && d === n && n ? ' full' : '')); b.type = 'button';
+          b.append(ic(chs[ci].ic, 26), el('span', 'fq-nm', chs[ci].n), el('small', null, track ? `${d}/${n}` : n));
+          b.addEventListener('click', () => { showChapter(ci, true); root.classList.remove('menu'); }); list.appendChild(b);
+        });
+      });
+    }
+    $('#fqSearch').addEventListener('input', e => { query = e.target.value.trim(); renderList(); });
+    $('#fqBook').textContent = D.book; $('#fqBookIc').replaceWith(Object.assign(ic(D.bookIc, 28), { id: 'fqBookIc' }));
+
+    /* ----- mapa ----- */
+    let vx = 0, vy = 0, vz = 1, nodes = new Map(), lineMap = new Map(), sel = -1, sized = false, fitPending = true;
+    function apply() {
+      world.style.transform = `translate(${vx}px,${vy}px) scale(${vz})`;
+      view.style.backgroundPosition = `${vx}px ${vy}px`; view.style.backgroundSize = `${U * vz}px ${U * vz}px`;
+    }
+    function bounds() {
+      let a = 1e9, b = 1e9, c = -1e9, d = -1e9;
+      nodes.forEach((n, i) => { const q = qs[i], h = (q.z || 1) * U / 2; a = Math.min(a, q.x * U - h); b = Math.min(b, q.y * U - h); c = Math.max(c, q.x * U + h); d = Math.max(d, q.y * U + h); });
+      return nodes.size ? [a, b, c, d] : [0, 0, 1, 1];
+    }
+    function fit() {
+      const W = view.clientWidth, H = view.clientHeight; if (!W || !H) { fitPending = true; return; }
+      fitPending = false;
+      const [a, b, c, d] = bounds(), w = c - a, h = d - b, pad = 56;
+      vz = Math.max(.18, Math.min((W - pad * 2) / w, (H - pad * 2) / h, 1.1));
+      vx = W / 2 - (a + w / 2) * vz; vy = H / 2 - (b + h / 2) * vz; apply();
+    }
+    function zoomAt(cx, cy, f) {
+      const r = view.getBoundingClientRect(), px = cx - r.left, py = cy - r.top, nz = Math.max(.15, Math.min(2.6, vz * f));
+      vx = px - (px - vx) * nz / vz; vy = py - (py - vy) * nz / vz; vz = nz; apply();
+    }
+    function centerOn(i) {
+      const q = qs[i], W = view.clientWidth, H = view.clientHeight; vz = Math.max(vz, .8); vx = W / 2 - q.x * U * vz; vy = H / 2 - q.y * U * vz; apply();
+    }
+    new ResizeObserver(() => { if (view.clientWidth && fitPending) fit(); }).observe(view);
+    $('#fqZm').addEventListener('click', () => zoomAt(view.getBoundingClientRect().left + view.clientWidth / 2, view.getBoundingClientRect().top + view.clientHeight / 2, .8));
+    $('#fqZp').addEventListener('click', () => zoomAt(view.getBoundingClientRect().left + view.clientWidth / 2, view.getBoundingClientRect().top + view.clientHeight / 2, 1.25));
+    $('#fqFit').addEventListener('click', fit);
+    view.addEventListener('wheel', e => { e.preventDefault(); zoomAt(e.clientX, e.clientY, Math.exp(-e.deltaY * .0016)); $('#fqHint').classList.add('off'); }, { passive: false });
+    /* ťahanie + pinch */
+    const ptrs = new Map(); let pd = null, pinch = 0, justDragged = false;
+    view.addEventListener('pointerdown', e => {
+      ptrs.set(e.pointerId, [e.clientX, e.clientY]);
+      if (ptrs.size === 1) pd = { x: e.clientX, y: e.clientY, vx, vy, moved: false, node: e.target.closest('.qn') };
+      else { pd && (pd.moved = true); const [a, b] = [...ptrs.values()]; pinch = Math.hypot(a[0] - b[0], a[1] - b[1]); }
+    });
+    view.addEventListener('pointermove', e => {
+      if (!ptrs.has(e.pointerId)) return;
+      ptrs.set(e.pointerId, [e.clientX, e.clientY]);
+      if (ptrs.size === 2) {
+        const [a, b] = [...ptrs.values()], dist = Math.hypot(a[0] - b[0], a[1] - b[1]);
+        if (pinch) zoomAt((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, dist / pinch); pinch = dist; return;
+      }
+      if (!pd) return;
+      const dx = e.clientX - pd.x, dy = e.clientY - pd.y;
+      if (!pd.moved && Math.hypot(dx, dy) > 5) { pd.moved = true; view.classList.add('drag'); try { view.setPointerCapture(e.pointerId); } catch (_) {} tip.hidden = true; $('#fqHint').classList.add('off'); }
+      if (pd.moved) { vx = pd.vx + dx; vy = pd.vy + dy; apply(); }
+    });
+    const endPtr = e => {
+      if (!ptrs.has(e.pointerId)) return; ptrs.delete(e.pointerId);
+      if (pd && pd.moved) { justDragged = true; setTimeout(() => { justDragged = false; }, 0); }
+      if (pd && !pd.moved && e.type === 'pointerup' && pd.node) openQuest(+pd.node.dataset.q);
+      if (!ptrs.size) { pd = null; pinch = 0; view.classList.remove('drag'); }
+    };
+    view.addEventListener('pointerup', endPtr); view.addEventListener('pointercancel', endPtr);
+    view.addEventListener('pointerleave', () => { tip.hidden = true; });
+    view.addEventListener('pointermove', e => { if (!tip.hidden) { const r = view.getBoundingClientRect(); tip.style.left = Math.min(e.clientX - r.left + 16, r.width - tip.offsetWidth - 8) + 'px'; tip.style.top = Math.min(e.clientY - r.top + 16, r.height - tip.offsetHeight - 8) + 'px'; } });
+
+    function showTip(i, e) {
+      if (e.pointerType === 'touch' || pd && pd.moved) return;
+      const q = qs[i]; tip.textContent = ''; tip.append(el('b', null, q.ti));
+      if (q.su) tip.append(el('small', null, q.su));
+      tip.hidden = false;
+      const r = view.getBoundingClientRect(); tip.style.left = Math.min(e.clientX - r.left + 16, r.width - tip.offsetWidth - 8) + 'px'; tip.style.top = Math.min(e.clientY - r.top + 16, r.height - tip.offsetHeight - 8) + 'px';
+    }
+
+    /* ----- vykreslenie kapitoly ----- */
+    const SVGNS = 'http://www.w3.org/2000/svg';
+    function showChapter(ci, fresh) {
+      cur = ci; const ch = chs[ci];
+      if (ch.g) openGroups.add(ch.g);
+      closeQuest(); tip.hidden = true; sel = -1;
+      world.querySelectorAll('.qn').forEach(n => n.remove()); lines.textContent = ''; lines._r = []; nodes = new Map(); lineMap = new Map();
+      const inCh = new Set(ch.q);
+      ch.q.forEach(i => {
+        if (!visibleQ(i)) return; const q = qs[i], px = Math.round(U * (q.z || 1));
+        const n = el('button', `qn sh-${q.sh || ch.sh || 'circle'}${q.o ? ' opt' : ''}`); n.type = 'button'; n.dataset.q = i;
+        n.style.cssText = `left:${q.x * U}px;top:${q.y * U}px;width:${px}px;height:${px}px`;
+        n.setAttribute('aria-label', q.ti); n.append(el('i', 'qn-b'), el('i', 'qn-f'), ic(q.ic, Math.round(px * .58)));
+        n.addEventListener('pointerenter', e => { showTip(i, e); (lineMap.get(i) || []).forEach(l => l.classList.add('hl')); });
+        n.addEventListener('pointerleave', () => { tip.hidden = true; (lineMap.get(i) || []).forEach(l => l.classList.remove('hl')); });
+        n.addEventListener('click', e => { if (e.detail === 0) openQuest(i); });
+        world.appendChild(n); nodes.set(i, n);
+      });
+      if (!ch.hd) ch.q.forEach(i => {
+        const q = qs[i]; if (!nodes.has(i) || q.hd || !q.d) return;
+        q.d.forEach(d => {
+          if (!nodes.has(d)) return; const a = qs[d], x1 = a.x * U, y1 = a.y * U, x2 = q.x * U, y2 = q.y * U, dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy) || 1;
+          const ln = document.createElementNS(SVGNS, 'line'); ln.setAttribute('x1', x1); ln.setAttribute('y1', y1); ln.setAttribute('x2', x2); ln.setAttribute('y2', y2);
+          const mx = x1 + dx * .62, my = y1 + dy * .62, ux = dx / len, uy = dy / len, s = 7, ar = document.createElementNS(SVGNS, 'polygon');
+          ar.setAttribute('points', `${mx + ux * s},${my + uy * s} ${mx - ux * s - uy * s * .8},${my - uy * s + ux * s * .8} ${mx - ux * s + uy * s * .8},${my - uy * s - ux * s * .8}`);
+          lines.append(ln, ar); const rec = { ln, ar, d, i }; (lineMap.get(i) || lineMap.set(i, []).get(i)).push(ln, ar); (lineMap.get(d) || lineMap.set(d, []).get(d)).push(ln, ar);
+          lines._r.push(rec);
+        });
+      });
+      applyStates(); renderHead(); renderList();
+      if (!reduce && fresh) world.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300 });
+      fitPending = true; fit();
+    }
+    function applyStates() {
+      nodes.forEach((n, i) => {
+        const s = stateOf(i), q = qs[i];
+        n.classList.toggle('done', s === 'done'); n.classList.toggle('lock', s === 'lock'); n.classList.toggle('sel', i === sel);
+        n.hidden = !!(track && q.hu && s === 'lock');
+        const has = n.querySelector('.chk');
+        if (s === 'done' && !has) n.append(ic(D.checkIdx, 20, 'chk')); else if (s !== 'done' && has) has.remove();
+      });
+      (lines._r || []).forEach(({ ln, ar, d, i }) => {
+        const ok = track && done.has(d); ln.classList.toggle('ok', ok); ar.classList.toggle('ok', ok);
+        const hide = track && qs[i].hu && stateOf(i) === 'lock'; ln.style.display = ar.style.display = hide ? 'none' : '';
+      });
+    }
+    function renderHead() {
+      const ch = chs[cur], [d, n] = prog(cur);
+      $('#fqChIc').replaceWith(Object.assign(ic(ch.ic, 32), { id: 'fqChIc' }));
+      $('#fqChName').textContent = ch.n;
+      $('#fqChSub').textContent = track ? `${d} z ${n} ${plural(n, ['questu', 'questov', 'questov'])} splnených` : `${n} ${plural(n, ['quest', 'questy', 'questov'])}`;
+    }
+
+    /* ----- detail questu ----- */
+    function slot(idx, count, name) {
+      const s = el('span', 'slot'); s.title = name || ''; s.append(ic(idx, 32)); if (count > 1) s.append(el('em', null, count > 999 ? '999+' : count)); return s;
+    }
+    function closeQuest() { detail.hidden = true; if (sel >= 0 && nodes.get(sel)) nodes.get(sel).classList.remove('sel'); sel = -1; }
+    function goQuest(i) {
+      const ci = chOf.get(i); if (ci !== cur) showChapter(ci, true);
+      root.classList.remove('menu'); requestAnimationFrame(() => { centerOn(i); openQuest(i); });
+    }
+    function openQuest(i) {
+      const q = qs[i]; if (sel >= 0 && nodes.get(sel)) nodes.get(sel).classList.remove('sel');
+      sel = i; nodes.get(i) && nodes.get(i).classList.add('sel');
+      detail.textContent = '';
+      const st = stateOf(i), head = el('div', 'qd-head'), ttl = el('div'), h = el('h3', st === 'done' ? 'done' : '', q.ti);
+      ttl.append(h); if (q.su) ttl.append(el('small', null, q.su));
+      const x = el('button', 'fq-btn qd-x', '✕'); x.type = 'button'; x.setAttribute('aria-label', 'Zavrieť'); x.addEventListener('click', closeQuest);
+      head.append(slot(q.ic, 0, q.ti), ttl, x);
+      const body = el('div', 'qd-body');
+      if (q.ds && q.ds.length) { const d = el('div', 'qd-desc'); q.ds.forEach(l => d.appendChild(l.trim() ? richLine(l) : el('p', 'gap'))); body.appendChild(d); }
+      body.append(el('div', 'qd-sec', 'Úlohy'));
+      q.tk.forEach(t => {
+        const r = el('div', 'qd-row'), s = el('span', null, t.n); r.append(slot(t.ic, t.k === 'item' ? t.c : 0, t.n), s);
+        if (t.k === 'kill' && t.c > 1) s.append(el('small', null, `${t.c}×`));
+        body.appendChild(r);
+      });
+      if (q.rw) {
+        body.append(el('div', 'qd-sec', 'Odmeny'));
+        q.rw.forEach(r => {
+          const row = el('div', 'qd-row'), s = el('span', null, r.n);
+          if (r.k === 'item') row.append(slot(r.ic, r.c, r.n), s);
+          else if (r.k === 'xp' || r.k === 'lvl') { const sl = el('span', 'slot'); sl.append(ic(D.xpIdx, 32)); row.append(sl, s); }
+          else { const sl = el('span', 'slot'); sl.append(ic(D.chestIdx, 32)); row.append(sl, s); }
+          body.appendChild(row);
+          const tb = r.tb && D.tables[r.tb];
+          if (tb) {
+            const sub = { rand: `Náhodne získaš ${tb.ls > 1 ? tb.ls + '× ' : ''}jednu z:`, choice: 'Vyberieš si jednu z:', all: 'Dostaneš všetko z:', loot: 'Možnosti:' }[r.m] || 'Možnosti:';
+            s.append(el('small', null, sub));
+            const t = el('div', 'qd-tbl'); tb.r.slice(0, 18).forEach(([ix, c, nm]) => t.append(slot(ix, c, nm)));
+            if (tb.r.length > 18) t.append(el('span', 'more', `+${tb.r.length - 18} ďalších`)); body.appendChild(t);
+          }
+        });
+      }
+      const rel = (title, ids) => {
+        const v = ids.filter(visibleQ); if (!v.length) return; body.append(el('div', 'qd-sec', title));
+        v.slice(0, 10).forEach(d => { const r = el('div', 'qd-row go'); r.tabIndex = 0; r.append(slot(qs[d].ic, 0, qs[d].ti), el('span', null, qs[d].ti));
+          const open = () => goQuest(d); r.addEventListener('click', open); r.addEventListener('keydown', e => { if (e.key === 'Enter') open(); }); body.appendChild(r); });
+      };
+      rel('Vyžaduje', q.d || []); rel('Odomyká', dependents[i]);
+      const foot = el('div', 'qd-foot');
+      if (q.o) foot.append(el('span', 'qd-tag', 'Voliteľný'));
+      if (track) {
+        const b = el('button', 'fq-btn' + (done.has(i) ? ' done' : ''), done.has(i) ? 'Splnené ✓' : 'Označiť ako splnené'); b.type = 'button';
+        b.addEventListener('click', () => {
+          if (done.has(i)) done.delete(i); else { done.add(i); if (!reduce) burst(); toast({ adv: true, title: 'Quest splnený!', text: q.ti, icon: iconURL(q.ic) }); }
+          save(); applyStates(); renderHead(); renderList(); openQuest(i);
+        });
+        foot.append(b);
+      }
+      detail.append(head, body, foot); detail.hidden = false; body.scrollTop = 0;
+    }
+    const atlas = new Image(); atlas.src = 'quest-icons.png';
+    const urlCache = new Map();
+    function iconURL(idx) {
+      if (urlCache.has(idx)) return urlCache.get(idx);
+      const c = mk(D.sz, D.sz); try { c.getContext('2d').drawImage(atlas, (idx % COLS) * D.sz, ((idx / COLS) | 0) * D.sz, D.sz, D.sz, 0, 0, D.sz, D.sz); const u = c.toDataURL(); urlCache.set(idx, u); return u; } catch (e) { return undefined; }
+    }
+    addEventListener('keydown', e => { if (e.key === 'Escape' && !detail.hidden) closeQuest(); });
+    view.addEventListener('click', e => { if ((e.target === view || e.target === world) && !justDragged) closeQuest(); });
+    $('#fqTrack').checked = track;
+    $('#fqTrack').addEventListener('change', e => { track = e.target.checked; save(); applyStates(); renderHead(); renderList(); if (sel >= 0) openQuest(sel); });
+    $('#fqMenu').addEventListener('click', () => root.classList.toggle('menu'));
+    $('#fqScrim').addEventListener('click', () => root.classList.remove('menu'));
+
+    window.fqShow = () => { if (cur < 0) showChapter(0, false); else if (fitPending) requestAnimationFrame(fit); };
+  })();
+
+  /* ---------- discord ---------- */
+  const DISCORD_URL = '';                            // vlož pozvánku, napr. 'https://discord.gg/xxxxxx'
+  const DISCORD = ['..####....####..', '.##############.', '################', '###...####...###', '###...####...###', '###...####...###', '################', '.##############.', '..####....####..', '...##......##...'];
+  sprite($('#dcIco'), DISCORD, { '#': '#ffffff' }, 2); sprite($('#dcIco2'), DISCORD, { '#': '#ffffff' }, 2);
+  $('#dcBtn').href = DISCORD_URL || '#';
+  $('#dcBtn').addEventListener('click', e => {
+    if (DISCORD_URL) return;
+    e.preventDefault(); toast({ title: 'Discord', text: 'Odkaz na pozvánku ešte nie je nastavený.' });
+  });
+
+  /* ---------- pravidlá ---------- */
+  const RULES = {
+    mc: [
+      ['Žiadny griefing', 'Nič nelámeš, nekradneš ani nevypaľuješ z cudzích stavieb a truhlíc. Čo nie je tvoje, nechaj na pokoji.'],
+      ['Žiadne cheaty', 'X-ray, fly, kill aura a podobné hacknuté klienty sú zakázané. Ak si nie si istý s modom, spýtaj sa helpera.'],
+      ['Žiadne dupe a zneužívanie bugov', 'Duplikovanie itemov a zneužívanie chýb je zakázané. Ak nájdeš bug, nahlás ho.'],
+      ['PvP len so súhlasom', 'Hráča môžeš zabiť len vtedy, keď s tým súhlasí. Spawn kill a obťažovanie nováčikov sú zakázané.'],
+      ['Rešpektuj základne', 'Stavaj aspoň 100 blokov od cudzej základne a nezaberaj pozemky, na ktorých už niekto stavia.'],
+      ['Nelaguj server', 'Veľké farmy, redstone hodiny a stovky entít stav tak, aby server nezaťažovali. Helper môže stroj vypnúť.'],
+      ['Slušný chat', 'V hernom chate žiadne urážky, spam ani reklama.']
+    ],
+    dc: [
+      ['Buď slušný', 'Žiadne urážky, vyhrážky, rasizmus ani nenávistné prejavy.'],
+      ['Žiadny spam', 'Nezahlcuj kanály, nepíš všetko veľkými písmenami a bezdôvodne nepinguj ownerov, helperov ani @everyone.'],
+      ['Správny kanál', 'Píš do kanála, ktorý patrí k tvojej téme.'],
+      ['Žiadna reklama', 'Bez pozvánok na iné servery, odkazov na cudzie projekty a predaja.'],
+      ['Žiadny nevhodný obsah', 'NSFW, násilie a šokujúce obrázky sú zakázané.'],
+      ['Súkromie', 'Nezverejňuj cudzie osobné údaje, fotky ani súkromné správy bez súhlasu.'],
+      ['Poslúchaj tím', 'Pokyny ownerov a helperov platia. Nesúhlasíš? Napíš im súkromne, nie do chatu.']
+    ]
+  };
+  $('#rlGrass').src = window.__grassIcon;
+  for (const k of ['mc', 'dc']) {
+    const ol = $('#rl-' + k);
+    RULES[k].forEach(([t, x], i) => {
+      const li = document.createElement('li'), n = document.createElement('span'), d = document.createElement('div'), b = document.createElement('b'), p = document.createElement('p');
+      n.className = 'no'; n.textContent = i + 1; b.textContent = t; p.textContent = x; d.append(b, p); li.append(n, d); ol.appendChild(li);
+    });
+    $('#rlc-' + k).textContent = `${RULES[k].length} ${plural(RULES[k].length, ['pravidlo', 'pravidlá', 'pravidiel'])}`;
+  }
+  $('#rlOk').addEventListener('click', () => {
+    let seen = false; try { seen = !!localStorage.getItem('spacak-rules'); localStorage.setItem('spacak-rules', '1'); } catch (e) {}
+    if (!reduce) burst();
+    toast(seen ? { title: 'Pravidlá', text: 'Už ich poznáš, vitaj späť.' } : { adv: true, title: 'Pokrok splnený!', text: 'Čitateľ pravidiel', sub: 'Prečítal si pravidlá Spacak SMP' });
+  });
+
+  /* ---------- členovia ---------- */
+  const CROWN = ['h.....h.....h', 'hm...hmh...mh', 'hmm.hmmmh.mmh', 'hmmmmmmmmmmmh', 'hmmgmmgmmgmmh', 'ddddddddddddd'];
+  const SHIELD = ['ddddddddd', 'dhhhhmmmd', 'dhmmgmmmd', 'dhmgggmmd', 'dhmmgmmmd', 'dhmmgmmmd', '.dmmmmmd.', '.dmmmmmd.', '..dmmmd..', '...ddd...'];
+  const SWORD = ['.........h', '........hm', '.......hm.', '......hm..', '.....hm...', '....hm....', '..dddd....', '...b......', '..b.......', '.b........'];
+  const RANKS = {
+    owner:  { label: 'Owner',   rc: '#ffc233', rows: CROWN,  pal: { h: '#fff0a6', m: '#ffc233', d: '#b8800f', g: '#ff4d6d' } },
+    owner2: { label: 'Owner 2', rc: '#5ee7ff', rows: CROWN,  pal: { h: '#e6fdff', m: '#5ee7ff', d: '#1c8ea6', g: '#ffffff' } },
+    helper: { label: 'Helper',  rc: '#35dc84', rows: SHIELD, pal: { h: '#b9ffd0', m: '#2fd37a', d: '#0f6b3b', g: '#ffffff' } },
+    clen:   { label: 'Člen',    rc: '#aab6cf', rows: SWORD,  pal: { h: '#f2f6ff', m: '#aab6cf', d: '#5d667d', b: '#8a5a32' } }
+  };
+  const TEAM = [
+    ['Ferenzhy', 'owner'], ['Spacesov_MC', 'owner2'], ['People1Mc', 'helper'],
+    ['Between', 'clen'], ['MatuskoPlays', 'clen'], ['twowetsocks', 'clen'], ['Athummer', 'clen'], ['LeuskoR', 'clen'], ['Vietnamska_pivnica', 'clen'], ['hellcat_driver', 'clen']
+  ];
+  const GROUPS = [['Vedenie', ['owner', 'owner2']], ['Helper', ['helper']], ['Hráči', ['clen']]];
+  function sparkle(el, col) {
+    const r = el.getBoundingClientRect(), d = dprNow();
+    fxAdd(Array.from({ length: 14 }, () => ({ x: (r.left + Math.random() * r.width) * d, y: (r.top + r.height * (.25 + Math.random() * .6)) * d,
+      vx: (Math.random() - .5) * 2 * d, vy: -(1.2 + Math.random() * 2.4) * d, s: Math.round((2 + Math.random() * 3) * d), c: Math.random() < .35 ? '#ffffff' : col, life: 1, g: .03 * d, d: .018 })));
+  }
+  function memberCard(name, rank, i, big) {
+    const R = RANKS[rank], b = document.createElement('button');
+    b.type = 'button'; b.className = 'mem' + (big ? ' big' : ''); b.style.setProperty('--rc', R.rc); b.style.setProperty('--i', i);
+    b.setAttribute('aria-label', `${name}, ${R.label}. Skopírovať nick`);
+    const hd = document.createElement('span'), img = document.createElement('img'), tx = document.createElement('span'), nm = document.createElement('b'), rk = document.createElement('span'), cv = document.createElement('canvas');
+    hd.className = 'mem-head'; img.alt = ''; img.width = img.height = big ? 84 : 56; loadHead(img, name, big ? 168 : 112); hd.appendChild(img);
+    tx.className = 'mem-txt'; nm.textContent = name; rk.className = 'rank'; sprite(cv, R.rows, R.pal, big ? 3 : 2); rk.append(cv, R.label); tx.append(nm, rk);
+    b.append(hd, tx);
+    if (big) {
+      for (let k = 0; k < 8; k++) { const s = document.createElement('i'); s.className = 'sp'; s.style.cssText = `--l:${(6 + Math.random() * 88).toFixed(0)}%;--d:${(Math.random() * 3).toFixed(2)}s;--t:${(2.4 + Math.random() * 2).toFixed(2)}s`; b.appendChild(s); }
+      const sh = document.createElement('i'); sh.className = 'shine'; b.appendChild(sh);
+    }
+    b.addEventListener('pointermove', e => {
+      const r = b.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      b.style.setProperty('--mx', (x * 100).toFixed(1) + '%'); b.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+      if (!reduce) { b.style.setProperty('--rx', ((.5 - y) * 8).toFixed(2) + 'deg'); b.style.setProperty('--ry', ((x - .5) * 10).toFixed(2) + 'deg'); b.style.setProperty('--px', ((x - .5) * 2).toFixed(2)); b.style.setProperty('--py', ((y - .5) * 2).toFixed(2)); }
+    });
+    b.addEventListener('pointerleave', () => ['--rx', '--ry', '--px', '--py'].forEach(p => b.style.removeProperty(p)));
+    b.addEventListener('pointerenter', e => { if (!reduce && e.pointerType !== 'touch') sparkle(b, R.rc); });
+    b.addEventListener('click', async () => { await copyText(name); toast({ title: 'Nick skopírovaný', text: name, icon: img.currentSrc || img.src }); });
+    return b;
+  }
+  (function renderTeam() {
+    const box = $('#team'); let i = 0;
+    GROUPS.forEach(([title, ranks]) => {
+      const list = TEAM.filter(([, r]) => ranks.includes(r)); if (!list.length) return;
+      const h = document.createElement('h3'), c = document.createElement('small'), grid = document.createElement('div'), lead = ranks.includes('owner');
+      h.className = 'grp'; h.append(title, c); c.textContent = list.length; grid.className = 'mgrid' + (lead ? ' vip' : '');
+      list.forEach(([n, r]) => grid.appendChild(memberCard(n, r, i++, lead)));
+      box.append(h, grid);
+    });
+  })();
+
+  route();
   applyTheme(false); tick();
 })();
 </script>

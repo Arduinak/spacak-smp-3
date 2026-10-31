@@ -1,3 +1,5 @@
 *
 !.gitignore
 !index.html
+!quests-data.js
+!quest-icons.png
