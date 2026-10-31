@@ -193,7 +193,7 @@
         "2 Chapter Event",
         "Do 4.2.2027"
       ],
-      "color": "#1c9cf2"
+      "color": "#6bc4ff"
     },
     {
       "id": "event-mvwdxu0o",
@@ -207,7 +207,7 @@
         "Krátky Event",
         "Do 1.1.2027"
       ],
-      "color": "#371c5e"
+      "color": "#8f4fe8"
     },
     {
       "id": "event-mvwe5u2p",
@@ -222,7 +222,7 @@
         "2 Chapter Event",
         "Do 4.2.2027"
       ],
-      "color": "#033382"
+      "color": "#558fec"
     },
     {
       "id": "event-mvwe9f9j",
@@ -234,7 +234,7 @@
       "chips": [
         "Do 1.3.2027"
       ],
-      "color": "#080c40"
+      "color": "#000000"
     }
   ],
   "rules": {
