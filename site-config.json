@@ -49,7 +49,7 @@
     "steps": [
       {
         "t": "Nainštaluj Minecraft {mc} s NeoForge",
-        "d": "Server beží na Minecraft Java Edition {mc} a NeoForge 21.1. Potrebuješ originálny Minecraft účet."
+        "d": "Server beží na Minecraft Java Edition {mc} a NeoForge verziu 21.1.250"
       },
       {
         "t": "Stiahni modpack",
@@ -61,7 +61,7 @@
       },
       {
         "t": "Pripoj sa a hraj",
-        "d": "Server sa otvára {den} o {cas}. Pred tým sa k nemu pripojiť nedá."
+        "d": "Maj zábavu"
       }
     ],
     "openedText": "Server je otvorený, môžeš sa pripojiť.",
