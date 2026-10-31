@@ -2,5 +2,11 @@
   "user": "ferenzhy",
   "salt": "1f499f1acf399b6c4a23f6bda0f4b09d",
   "iter": 210000,
-  "hash": "2ecdd78fa3990a7da154872442eb2ab2b63c6400c3f2d4f88a0e0ec9038896cd"
+  "hash": "2ecdd78fa3990a7da154872442eb2ab2b63c6400c3f2d4f88a0e0ec9038896cd",
+  "repo": "arduinak/spacak-smp-3",
+  "branch": "main",
+  "tok": {
+    "iv": "c0RvMHqBsrpBvivC",
+    "data": "YKJGWt9P/BZnQuE0/A1vY/YFOae3Z5Ds0hRwZ/Nswb4eN0YnKVEirRSztegeiqtoGWq2fU6zQnF84qH52oyqFVzpNU8qwQ2u3VOpffEC3V7IK+CJ1vPZfZlmv512aoi77gMM+2xIdCxS4n/I8g=="
+  }
 }
