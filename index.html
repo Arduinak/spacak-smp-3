@@ -193,6 +193,14 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
 .dl[aria-disabled=true]{background:rgba(255,255,255,.08);color:var(--dim);cursor:not-allowed}
 .dl[aria-disabled=true]:hover{background:rgba(255,255,255,.08)}
 
+/* oznam hore */
+.banner{max-width:1184px;margin:20px auto 0;padding:14px 20px;border-radius:12px;font-weight:500;border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.banner.warn{border-color:rgba(255,194,51,.5);background:rgba(255,194,51,.12)}
+.banner.bad{border-color:rgba(255,125,125,.5);background:rgba(255,125,125,.12)}
+@media (max-width:1240px){.banner{margin:20px 16px 0}}
+.off{display:none!important}
+.evempty{color:var(--dim)}
+
 /* eventy */
 .events{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;align-items:stretch}
 .ev{position:relative;overflow:hidden;isolation:isolate;display:flex;flex-direction:column;border-radius:22px;border:1px solid var(--eb);background:var(--ebg)}
@@ -229,6 +237,9 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
   box-shadow:inset 0 0 70px rgba(150,210,255,.16),inset 0 2px 0 rgba(255,255,255,.35)}
 .ev-wi .ev-body{background:linear-gradient(180deg,rgba(143,211,255,.07),transparent 70%)}
 .ev-wi .ev-art::after{content:'';position:absolute;left:0;right:0;bottom:0;height:40px;background:linear-gradient(to bottom,transparent,rgba(13,33,68,.7))}
+.ev-pl{--ea:#7be06b;--eb:color-mix(in srgb,var(--ea) 42%,transparent);--ebg:linear-gradient(180deg,#101a36 0,#0a1024 100%);
+  box-shadow:0 30px 60px -30px rgba(0,0,0,.8),0 0 70px -26px color-mix(in srgb,var(--ea) 45%,transparent)}
+.ev-pl .ev-art::after{content:'';position:absolute;left:0;right:0;bottom:0;height:50px;background:linear-gradient(to bottom,transparent,#0a1024 92%)}
 .ice{position:absolute;top:0;left:0;z-index:4;width:100%;height:64px;pointer-events:none}
 .snowfx{position:absolute;inset:0;z-index:4;width:100%;height:100%;pointer-events:none}
 
@@ -526,14 +537,14 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
 <nav class="nav" aria-label="Hlavná navigácia"><div class="nav-in">
   <a class="brand" id="brand" href="#domov" aria-label="Spacak SMP, domov"><span class="blk" id="blk"><img id="brandIcon" alt="" width="30" height="30"><canvas id="crack" width="16" height="16" aria-hidden="true"></canvas></span><span class="bn">Spacak SMP</span></a>
   <div class="tabs">
-    <a class="tab" data-tab="home" href="#domov">Domov</a>
-    <a class="tab" data-tab="mapa" href="#mapa">Mapa</a>
-    <a class="tab" data-tab="navod" href="#navod">Návod</a>
-    <a class="tab" data-tab="questy" href="#questy">Questy</a>
-    <a class="tab" data-tab="modpack" href="#modpack">Modpack<svg class="lk" viewBox="0 0 8 10" shape-rendering="crispEdges" aria-hidden="true"><path fill-rule="evenodd" d="M2 0h4v1H2zM1 1h1v3H1zM6 1h1v3H6zM0 4h8v6H0zM3 6h2v3H3z"/></svg></a>
-    <a class="tab" data-tab="eventy" href="#eventy">Eventy</a>
-    <a class="tab" data-tab="pravidla" href="#pravidla">Pravidlá</a>
-    <a class="tab" data-tab="clenovia" href="#clenovia">Členovia</a>
+    <a class="tab" data-tab="home" href="#domov"><span data-t="tab_home">Domov</span></a>
+    <a class="tab" data-tab="mapa" href="#mapa"><span data-t="tab_mapa">Mapa</span></a>
+    <a class="tab" data-tab="navod" href="#navod"><span data-t="tab_navod">Návod</span></a>
+    <a class="tab" data-tab="questy" href="#questy"><span data-t="tab_questy">Questy</span></a>
+    <a class="tab" data-tab="modpack" href="#modpack"><span data-t="tab_modpack">Modpack</span><svg class="lk" viewBox="0 0 8 10" shape-rendering="crispEdges" aria-hidden="true"><path fill-rule="evenodd" d="M2 0h4v1H2zM1 1h1v3H1zM6 1h1v3H6zM0 4h8v6H0zM3 6h2v3H3z"/></svg></a>
+    <a class="tab" data-tab="eventy" href="#eventy"><span data-t="tab_eventy">Eventy</span></a>
+    <a class="tab" data-tab="pravidla" href="#pravidla"><span data-t="tab_pravidla">Pravidlá</span></a>
+    <a class="tab" data-tab="clenovia" href="#clenovia"><span data-t="tab_clenovia">Členovia</span></a>
   </div>
   <div class="navr">
     <a class="dc" id="dcBtn" href="#" target="_blank" rel="noopener" aria-label="Discord"><canvas id="dcIco" aria-hidden="true"></canvas><span>Discord</span></a>
@@ -554,19 +565,19 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
 
     <div id="stage">
       <section class="panel" id="countdown" aria-label="Odpočet do štartu">
-        <p class="ptitle">Server sa otvára o</p>
+        <p class="ptitle" data-t="cd_title">Server sa otvára o</p>
         <div class="units" role="timer" aria-live="off">
           <div class="unit"><span class="n" id="d">00</span><small id="ld">dní</small></div>
           <div class="unit"><span class="n" id="h">00</span><small id="lh">hodín</small></div>
           <div class="unit"><span class="n" id="m">00</span><small id="lm">minút</small></div>
           <div class="unit"><span class="n" id="s">00</span><small id="ls">sekúnd</small></div>
         </div>
-        <p class="when"><b id="whenDate">nedeľa 1. novembra 2026</b>, o <b>17:00</b> SEČ</p>
+        <p class="when"><b id="whenDate"></b>, o <b id="whenTime"></b> <span id="whenTz">SEČ</span></p>
         <div class="tick" aria-hidden="true"><i id="tick"></i></div>
       </section>
 
       <section class="panel hidden" id="reveal" aria-label="Pripojenie na server">
-        <p class="ptitle ok"><i class="dot on"></i>Server je otvorený</p>
+        <p class="ptitle ok"><i class="dot on"></i><span data-t="open_title">Server je otvorený</span></p>
         <div class="ipbox">
           <code id="ipText">…</code>
           <button class="btn" id="copyBtn" type="button">Kopírovať IP</button>
@@ -580,57 +591,59 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
 
   <div class="hero-in hero-sm" data-p="mapa" hidden>
     <div>
-      <h1 class="h1s">Mapa</h1>
-      <p class="sub">Celý svet Spacak SMP na jednom mieste.</p>
+      <h1 class="h1s" data-t="tab_mapa">Mapa</h1>
+      <p class="sub" data-t="sub_mapa">Celý svet Spacak SMP na jednom mieste.</p>
     </div>
   </div>
 
   <div class="hero-in hero-sm" data-p="navod" hidden>
     <div>
-      <h1 class="h1s">Návod</h1>
-      <p class="sub">Pripojenie, príkazy a odpovede na bežné otázky.</p>
+      <h1 class="h1s" data-t="tab_navod">Návod</h1>
+      <p class="sub" data-t="sub_navod">Pripojenie, príkazy a odpovede na bežné otázky.</p>
     </div>
   </div>
 
   <div class="hero-in hero-sm hero-xs" data-p="questy" hidden>
     <div>
-      <h1 class="h1s">Questy</h1>
-      <p class="sub">Celá questová kniha servera. Klikni na quest a uvidíš úlohy aj odmeny.</p>
+      <h1 class="h1s" data-t="tab_questy">Questy</h1>
+      <p class="sub" data-t="sub_questy">Celá questová kniha servera. Klikni na quest a uvidíš úlohy aj odmeny.</p>
     </div>
   </div>
 
   <div class="hero-in hero-sm" data-p="modpack" hidden>
     <div>
-      <h1 class="h1s">Modpack</h1>
-      <p class="sub">Balík módov pre Session 3.</p>
+      <h1 class="h1s" data-t="tab_modpack">Modpack</h1>
+      <p class="sub" data-t="sub_modpack">Balík módov pre Session 3.</p>
     </div>
   </div>
 
   <div class="hero-in hero-sm" data-p="eventy" hidden>
     <div>
-      <h1 class="h1s">Eventy</h1>
-      <p class="sub">Čo sa na Spacak SMP chystá.</p>
+      <h1 class="h1s" data-t="tab_eventy">Eventy</h1>
+      <p class="sub" data-t="sub_eventy">Čo sa na Spacak SMP chystá.</p>
     </div>
   </div>
 
   <div class="hero-in hero-sm" data-p="pravidla" hidden>
     <div>
-      <h1 class="h1s">Pravidlá</h1>
-      <p class="sub">Aby sa tu všetci dobre bavili.</p>
+      <h1 class="h1s" data-t="tab_pravidla">Pravidlá</h1>
+      <p class="sub" data-t="sub_pravidla">Aby sa tu všetci dobre bavili.</p>
     </div>
   </div>
 
   <div class="hero-in hero-sm" data-p="clenovia" hidden>
     <div>
-      <h1 class="h1s">Členovia</h1>
-      <p class="sub">Tím a hráči Spacak SMP.</p>
+      <h1 class="h1s" data-t="tab_clenovia">Členovia</h1>
+      <p class="sub" data-t="sub_clenovia">Tím a hráči Spacak SMP.</p>
     </div>
   </div>
 </header>
 
 <main>
-  <section class="wrap" data-p="home" aria-labelledby="h-stav">
-    <div class="head"><h2 id="h-stav">Stav servera</h2><span class="upd" id="upd"></span></div>
+  <div class="banner" id="banner" hidden role="status"></div>
+
+  <section class="wrap" id="statusSec" data-p="home" aria-labelledby="h-stav">
+    <div class="head"><h2 id="h-stav" data-t="st_title">Stav servera</h2><span class="upd" id="upd"></span></div>
 
     <div class="cols">
       <div>
@@ -646,12 +659,12 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
       </dl>
     </div>
 
-    <h3>Kto práve hrá</h3>
+    <h3 id="playersH" data-t="st_players">Kto práve hrá</h3>
     <div class="players" id="players"><span class="empty skel">Načítavam…</span></div>
   </section>
 
   <section class="wrap" data-p="mapa" aria-labelledby="h-map" hidden>
-    <div class="head"><h2 id="h-map">Mapa sveta</h2><span class="upd">Živá mapa cez BlueMap</span></div>
+    <div class="head"><h2 id="h-map" data-t="map_h">Mapa sveta</h2><span class="upd" data-t="map_upd">Živá mapa cez BlueMap</span></div>
     <div class="mapbar">
       <span class="mstat wait" id="mapStat"><i class="dot"></i><span id="mapStatTxt">Kontrolujem mapu…</span></span>
       <span class="mbtns">
@@ -669,34 +682,29 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
         <a class="btn" id="mapMsgBtn" target="_blank" rel="noopener" hidden>Otvoriť mapu</a>
       </div></div>
     </div>
-    <p class="maphint">Mapu môžeš otáčať, priblížiť a prepínať medzi 3D a 2D pohľadom. Vidíš na nej stavby, terén aj hráčov online.</p>
+    <p class="maphint" data-t="map_hint">Mapu môžeš otáčať, priblížiť a prepínať medzi 3D a 2D pohľadom. Vidíš na nej stavby, terén aj hráčov online.</p>
   </section>
 
   <section class="wrap" data-p="navod" aria-labelledby="h-nv" hidden>
-    <div class="head"><h2 id="h-nv">Ako sa pripojiť</h2><span class="upd">Zaberie to pár minút</span></div>
+    <div class="head"><h2 id="h-nv" data-t="nv_h">Ako sa pripojiť</h2><span class="upd" data-t="nv_upd">Zaberie to pár minút</span></div>
     <div class="guide-grid">
-      <ol class="guide">
-        <li><span class="no">1</span><div><b>Nainštaluj Minecraft 1.21.1 s NeoForge</b><p>Server beží na Minecraft Java Edition 1.21.1 a NeoForge 21.1. Potrebuješ originálny Minecraft účet.</p></div></li>
-        <li><span class="no">2</span><div><b>Stiahni modpack</b><p>Balík módov nájdeš v záložke <a href="#modpack">Modpack</a>. Pridaj ho do svojho launchera a hre pridel aspoň 6 GB RAM.</p></div></li>
-        <li><span class="no">3</span><div><b>Pridaj server</b><p>V hre otvor Multiplayer, klikni na Add Server a do poľa Server Address vlož adresu.</p></div></li>
-        <li><span class="no">4</span><div><b>Pripoj sa a hraj</b><p id="guideWhen">Server sa otvára 1. novembra o 17:00. Pred tým sa k nemu pripojiť nedá.</p></div></li>
-      </ol>
+      <ol class="guide" id="guideSteps"></ol>
       <aside class="ipcard" aria-label="Adresa servera">
-        <h3>Adresa servera</h3>
-        <div class="ipbox"><code id="guideIp">Odhalí sa pri štarte</code><button class="btn" id="guideCopy" type="button" disabled>Kopírovať</button></div>
+        <h3 data-t="card_h">Adresa servera</h3>
+        <div class="ipbox"><code id="guideIp"></code><button class="btn" id="guideCopy" type="button" disabled>Kopírovať</button></div>
         <dl>
-          <div><dt>Verzia</dt><dd>1.21.1</dd></div>
-          <div><dt>Loader</dt><dd>NeoForge</dd></div>
-          <div><dt>Hráčov</dt><dd>až 20</dd></div>
+          <div><dt>Verzia</dt><dd id="gcMc"></dd></div>
+          <div><dt>Loader</dt><dd id="gcLoader"></dd></div>
+          <div><dt>Hráčov</dt><dd id="gcMax"></dd></div>
         </dl>
-        <small>Whitelist nemáme, stačí adresa a modpack.</small>
+        <small id="gcNote"></small>
       </aside>
     </div>
 
-    <h2 class="sech" id="h-cmd">Príkazy</h2>
+    <h2 class="sech" id="h-cmd" data-t="cmd_h">Príkazy</h2>
     <div class="cmds" id="cmds"></div>
 
-    <h2 class="sech" id="h-faq">Časté otázky</h2>
+    <h2 class="sech" id="h-faq" data-t="faq_h">Časté otázky</h2>
     <div class="faq" id="faq"></div>
   </section>
 
@@ -738,104 +746,90 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
         <span class="badge" id="mpStatus"><svg class="lk" viewBox="0 0 8 10" shape-rendering="crispEdges" aria-hidden="true"><path fill-rule="evenodd" d="M2 0h4v1H2zM1 1h1v3H1zM6 1h1v3H6zM0 4h8v6H0zM3 6h2v3H3z"/></svg><span id="mpStatusTxt">Zatiaľ nedostupné</span></span>
       </div>
       <div class="mp-info">
-        <h2 id="h-mp">Spacak SMP Modpack</h2>
-        <p class="lead">Hotový balík módov pre Session 3. Keď bude pripravený, stiahneš ho priamo tu.</p>
+        <h2 id="h-mp" data-t="mp_h">Spacak SMP Modpack</h2>
+        <p class="lead" data-t="mp_lead">Hotový balík módov pre Session 3. Keď bude pripravený, stiahneš ho priamo tu.</p>
         <dl class="spec">
           <div><dt>Verzia</dt><dd id="mpVerRow">–</dd></div>
-          <div><dt>Minecraft</dt><dd>1.21.1</dd></div>
-          <div><dt>Loader</dt><dd>NeoForge</dd></div>
+          <div><dt>Minecraft</dt><dd id="mpMc"></dd></div>
+          <div><dt>Loader</dt><dd id="mpLoader"></dd></div>
         </dl>
         <a class="btn dl" id="mpDl" role="button" aria-disabled="true" tabindex="-1"><svg class="lk" viewBox="0 0 8 10" shape-rendering="crispEdges" aria-hidden="true"><path fill-rule="evenodd" d="M2 0h4v1H2zM1 1h1v3H1zM6 1h1v3H6zM0 4h8v6H0zM3 6h2v3H3z"/></svg><span>Stiahnuť modpack</span></a>
       </div>
     </div>
-    <h2 class="sech">Čo v ňom nájdeš</h2>
+    <h2 class="sech" data-t="mp_chips_h">Čo v ňom nájdeš</h2>
     <ul class="modchips" id="modChips"></ul>
-    <p class="modnote">A ďalšie desiatky módov. Zoznam sa môže pred štartom ešte zmeniť.</p>
+    <p class="modnote" data-t="mp_note">A ďalšie desiatky módov. Zoznam sa môže pred štartom ešte zmeniť.</p>
   </section>
 
   <section class="wrap" data-p="eventy" aria-labelledby="h-ev" hidden>
-    <div class="head"><h2 id="h-ev">Najbližšie eventy</h2><span class="upd">Dátumy sa ešte môžu zmeniť</span></div>
-    <div class="events">
-
-      <article class="ev ev-hw" data-date="2027-10-30T18:00:00+02:00" aria-labelledby="t-hw">
-        <div class="ev-art">
-          <canvas class="scene" data-scene="halloween" aria-hidden="true"></canvas>
-          <canvas class="web" id="webCv" aria-hidden="true"></canvas>
-          <div class="spider" aria-hidden="true"><canvas id="spiderCv"></canvas></div>
-        </div>
-        <div class="ev-body">
-          <p class="ev-when"><canvas id="ghostCv" aria-hidden="true"></canvas><span data-f="date"></span></p>
-          <h3 id="t-hw">Halloween Night</h3>
-          <p class="ev-txt">Strašidelná noc na Spacak SMP. Spawn sa zmení na prekliate mestečko, po mape sa schovávajú tekvice a kto prežije do rána, dostane odmenu.</p>
-          <ul class="chips"><li>Strašidelný spawn</li><li>Tekvicový hon</li><li>Kostýmy</li></ul>
-          <div class="ev-foot"><span class="ev-cd" data-f="cd"></span><span class="ev-st" data-f="st"></span></div>
-        </div>
-      </article>
-
-      <article class="ev ev-wi" data-date="2026-12-19T18:00:00+01:00" aria-labelledby="t-wi">
-        <canvas class="snowfx" aria-hidden="true"></canvas>
-        <canvas class="ice" aria-hidden="true"></canvas>
-        <div class="ev-art"><canvas class="scene" data-scene="winter" aria-hidden="true"></canvas></div>
-        <div class="ev-body">
-          <p class="ev-when"><canvas id="flakeCv" aria-hidden="true"></canvas><span data-f="date"></span></p>
-          <h3 id="t-wi">Zimný festival</h3>
-          <p class="ev-txt">Sneh na spawne, ľadové stavby a súťaž o najkrajšiu vianočnú dedinku. Zahrej sa pri ohni a ukáž, čo vieš postaviť.</p>
-          <ul class="chips"><li>Ľadová aréna</li><li>Snehové bitky</li><li>Vianočná dedinka</li></ul>
-          <div class="ev-foot"><span class="ev-cd" data-f="cd"></span><span class="ev-st" data-f="st"></span></div>
-        </div>
-      </article>
-
-    </div>
+    <div class="head"><h2 id="h-ev" data-t="ev_h">Najbližšie eventy</h2><span class="upd" data-t="ev_upd">Dátumy sa ešte môžu zmeniť</span></div>
+    <div class="events" id="events"></div>
   </section>
 
   <section class="wrap" data-p="pravidla" aria-labelledby="h-rl" hidden>
-    <div class="head"><h2 id="h-rl">Pravidlá servera</h2><span class="upd">Platia pre každého, bez výnimiek</span></div>
+    <div class="head"><h2 id="h-rl" data-t="rl_h">Pravidlá servera</h2><span class="upd" data-t="rl_upd">Platia pre každého, bez výnimiek</span></div>
     <div class="rules">
       <section class="rl rl-mc" aria-labelledby="t-rmc">
-        <div class="rl-hd"><span class="rl-ic"><img id="rlGrass" alt="" width="30" height="30"></span><h3 id="t-rmc">Minecraft server</h3><small id="rlc-mc"></small></div>
+        <div class="rl-hd"><span class="rl-ic"><img id="rlGrass" alt="" width="30" height="30"></span><h3 id="t-rmc" data-t="rl_mc">Minecraft server</h3><small id="rlc-mc"></small></div>
         <ol id="rl-mc"></ol>
       </section>
       <section class="rl rl-dc" aria-labelledby="t-rdc">
-        <div class="rl-hd"><span class="rl-ic"><canvas id="dcIco2" aria-hidden="true"></canvas></span><h3 id="t-rdc">Discord</h3><small id="rlc-dc"></small></div>
+        <div class="rl-hd"><span class="rl-ic"><canvas id="dcIco2" aria-hidden="true"></canvas></span><h3 id="t-rdc" data-t="rl_dc">Discord</h3><small id="rlc-dc"></small></div>
         <ol id="rl-dc"></ol>
       </section>
     </div>
     <div class="rl-end">
-      <p>Za porušenie pravidiel hrozí varovanie, mute alebo ban, podľa závažnosti. Rozhodnutia ownerov a helperov sú konečné.</p>
-      <button class="btn" id="rlOk" type="button">Prečítal som si pravidlá</button>
+      <p data-t="rl_end">Za porušenie pravidiel hrozí varovanie, mute alebo ban, podľa závažnosti. Rozhodnutia ownerov a helperov sú konečné.</p>
+      <button class="btn" id="rlOk" type="button" data-t="rl_btn">Prečítal som si pravidlá</button>
     </div>
   </section>
 
   <section class="wrap" data-p="clenovia" aria-labelledby="h-cl" hidden>
-    <div class="head"><h2 id="h-cl">Tím Spacak SMP</h2><span class="upd">Klikni na meno a skopíruješ nick</span></div>
+    <div class="head"><h2 id="h-cl" data-t="cl_h">Tím Spacak SMP</h2><span class="upd" data-t="cl_upd">Klikni na meno a skopíruješ nick</span></div>
     <div id="team"></div>
   </section>
 
   <footer>
     <div class="foot">
-      <div class="owners">
-        <div class="person"><img data-head="Ferenzhy" alt="Minecraft hlava Ferenzhy" width="48" height="48"><div><b>Ferenzhy</b><span>Majiteľ</span></div></div>
-        <div class="person"><img data-head="Spacesov_Mc" alt="Minecraft hlava Spacesov_Mc" width="48" height="48"><div><b>Spacesov_Mc</b><span>Majiteľ #2</span></div></div>
-      </div>
-      <div class="host">Hosting zabezpečuje<br><b>Minecraft-Hosting.eu</b></div>
+      <div class="owners" id="owners"></div>
+      <div class="host"><span data-t="foot_host1">Hosting zabezpečuje</span><br><b data-t="foot_host2">Minecraft-Hosting.eu</b></div>
     </div>
-    <div class="legal"><p>Spacak SMP nie je spojený s Mojang ani Microsoft.</p><button class="theme" id="themeBtn" type="button" title="Prepnúť tému pozadia"><i></i><span id="themeTxt">Téma</span></button></div>
+    <div class="legal"><p data-t="foot_legal">Spacak SMP nie je spojený s Mojang ani Microsoft.</p><button class="theme" id="themeBtn" type="button" title="Prepnúť tému pozadia"><i></i><span id="themeTxt">Téma</span></button></div>
   </footer>
 </main>
 
+<script src="site-defaults.js"></script>
 <script src="quests-data.js"></script>
 <script>
-(() => {
+const boot = () => {
   'use strict';
-  const IP = '176.9.21.120:25739';
-  const TARGET = Date.parse('2026-11-01T17:00:00+01:00');   // 1. 11. 2026 17:00 SEČ
-  const q = new URLSearchParams(location.search);          // ?open  alebo  ?countdown=15  na test
+  const q = new URLSearchParams(location.search);          // ?open  alebo  ?countdown=15  na test, ?preview = koncept z adminu
+  if (q.has('preview')) { try { const d = localStorage.getItem('spacak-admin-draft'); if (d) window.SITE_CONFIG = JSON.parse(d); } catch (e) {} }
+  const C = window.siteConfig(), F = C.features, T = k => (C.texts[k] || {}).v || '';   // nastavenia z site-config.js (edituje admin.html)
+  const IP = C.general.ip;
+  const TARGET = Date.parse(C.server.start) || Date.parse(window.SITE_DEFAULTS.server.start);
+  const FORCE_OPEN = q.has('open') || !!C.server.forceOpen;
   const target = q.has('countdown') ? Date.now() + (Number(q.get('countdown')) || 10) * 1000 : TARGET;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const $ = s => document.querySelector(s);
   const pad = n => String(n).padStart(2, '0');
   const plural = (n, [one, few, many]) => n === 1 ? one : (n >= 2 && n <= 4 ? few : many);
   const hracov = n => `${n} ${plural(n, ['hráč', 'hráči', 'hráčov'])}`;
+  const TZ = 'Europe/Bratislava';
+  const fmtDen = new Intl.DateTimeFormat('sk-SK', { day: 'numeric', month: 'long', timeZone: TZ });
+  const fmtFull = new Intl.DateTimeFormat('sk-SK', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: TZ });
+  const fmtCas = new Intl.DateTimeFormat('sk-SK', { hour: '2-digit', minute: '2-digit', timeZone: TZ });
+  const tzOff = ms => Math.round((Date.parse(new Date(ms).toLocaleString('en-US', { timeZone: TZ })) - Date.parse(new Date(ms).toLocaleString('en-US', { timeZone: 'UTC' }))) / 3600e3);
+  const TOK = { den: fmtDen.format(TARGET), datum: fmtFull.format(TARGET), cas: fmtCas.format(TARGET), ip: IP, mc: C.general.mc, loader: C.general.loader, hraci: C.general.maxPlayers };
+  const sub = s => String(s == null ? '' : s).replace(/\{(den|datum|cas|ip|mc|loader|hraci)\}/g, (m, k) => TOK[k]);   // {den} {cas} {datum} {ip} {mc} {loader} {hraci}
+  const LINK = /\[([^\]]+)\]\(((?:#|https?:\/\/)[^)\s]*)\)/;                                             // [text](#záložka) alebo [text](https://…)
+  function rich(el, s) {
+    el.textContent = '';
+    String(s).split(new RegExp(LINK.source, 'g')).forEach((part, i, a) => {
+      if (i % 3 === 0) { if (part) el.appendChild(document.createTextNode(part)); }
+      else if (i % 3 === 1) { const l = document.createElement('a'); l.textContent = part; l.href = a[i + 1]; if (a[i + 1][0] !== '#') { l.target = '_blank'; l.rel = 'noopener'; } el.appendChild(l); }
+    });
+  }
   const LBL = { d: ['deň', 'dni', 'dní'], h: ['hodina', 'hodiny', 'hodín'], m: ['minúta', 'minúty', 'minút'], s: ['sekunda', 'sekundy', 'sekúnd'] };
 
   function mulberry(a) {
@@ -1249,15 +1243,14 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
 
   /* ---------- téma: výber, dátum, tlačidlo ---------- */
   const mixWhite = (hex, k) => '#' + [1, 3, 5].map(i => Math.round(parseInt(hex.slice(i, i + 2), 16) * (1 - k) + 255 * k).toString(16).padStart(2, '0')).join('');
-  let mode = 'auto';
+  let mode = (C.theme === 'auto' || THEMES[C.theme]) ? C.theme : 'auto';
   try { const v = localStorage.getItem(THEME_KEY); if (v === 'auto' || THEMES[v]) mode = v; } catch (e) {}
   const forced = q.get('theme');                                  // ?theme=halloween|zima|novyrok|leto na test
   if (forced === 'auto' || THEMES[forced]) mode = forced;
 
   function setSub() {
-    const d = new Date(), yr = d.getFullYear() + (d.getMonth() >= 5 ? 1 : 0);
-    $('#sub').textContent = opened ? 'Vitaj späť na Spacak SMP!'
-      : (themeId === 'novyrok' ? `Šťastný nový rok ${yr}! Session 3: open pokračovanie nášho serveru` : 'Session 3: open pokračovanie nášho serveru');
+    const d = new Date(), yr = d.getFullYear() + (d.getMonth() >= 5 ? 1 : 0), base = sub(C.general.subtitle);
+    $('#sub').textContent = opened ? sub(C.general.subtitleOpened) : (themeId === 'novyrok' ? `Šťastný nový rok ${yr}! ${base}` : base);
   }
   function applyTheme(animate) {
     themeId = mode === 'auto' ? autoTheme() : mode; theme = THEMES[themeId];
@@ -1277,9 +1270,7 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
   });
 
   /* ---------- odpočet ---------- */
-  try {
-    $('#whenDate').textContent = new Intl.DateTimeFormat('sk-SK', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Bratislava' }).format(TARGET);
-  } catch (e) {}
+  $('#whenDate').textContent = TOK.datum; $('#whenTime').textContent = TOK.cas; $('#whenTz').textContent = tzOff(TARGET) === 2 ? 'SELČ' : 'SEČ';
   const el = { d: $('#d'), h: $('#h'), m: $('#m'), s: $('#s') }, lb = { d: $('#ld'), h: $('#lh'), m: $('#lm'), s: $('#ls') };
   function put(k, n) {
     const v = pad(n);
@@ -1292,7 +1283,7 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
   let opened = false, timer = 0;
 
   function tick() {
-    const diff = q.has('open') ? 0 : target - Date.now();
+    const diff = FORCE_OPEN ? 0 : target - Date.now();
     if (diff <= 0) return openServer();
     const s = Math.floor(diff / 1000);
     put('d', Math.floor(s / 86400)); put('h', Math.floor(s % 86400 / 3600)); put('m', Math.floor(s % 3600 / 60)); put('s', s % 60);
@@ -1308,7 +1299,7 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
     $('#countdown').classList.add('hidden');
     const rv = $('#reveal'); rv.classList.remove('hidden'); if (!reduce) rv.classList.add('pop');
     $('#navLbl').textContent = 'IP'; $('#navCdTxt').textContent = IP; $('#navCd').title = 'Kopírovať IP adresu';
-    $('#guideIp').textContent = IP; $('#guideCopy').disabled = false; $('#guideWhen').textContent = 'Server je otvorený, môžeš sa pripojiť.';
+    $('#guideIp').textContent = IP; $('#guideCopy').disabled = false; $('#guideWhen').textContent = sub(C.guide.openedText);
     setSub(); setTitle();
     if (!reduce) burst();
     loadStats();
@@ -1427,7 +1418,8 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
   function setTitle() { document.title = page === 'home' && opened ? 'Spacak SMP – Session 3 – LIVE' : TITLES[page || 'home']; }
   function go(p) { if (page === p) scrollTo({ top: 0, behavior: 'smooth' }); else location.hash = '#' + HASH[p]; }
   function route() {
-    const p = PAGES[location.hash.replace(/^#\/?/, '').split('/')[0]] || 'home', first = !page;
+    let p = PAGES[location.hash.replace(/^#\/?/, '').split('/')[0]] || 'home'; if (F.tabs[p] === false) p = 'home';
+    const first = !page;
     if (p === page) return;
     page = p;
     document.querySelectorAll('[data-p]').forEach(e => { e.hidden = e.dataset.p !== p; });
@@ -1474,7 +1466,7 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
   }
   $('#brand').addEventListener('click', e => {
     e.preventDefault(); go('home');
-    if (blk.classList.contains('gone')) return;
+    if (F.easterEgg === false || blk.classList.contains('gone')) return;
     clearTimeout(hitTimer);
     if (++hits >= HITS) { hits = 0; cg.clearRect(0, 0, 16, 16); breakBlock(); return; }
     if (!reduce) blk.animate([{ transform: 'none' }, { transform: 'translate(-2px,1px)' }, { transform: 'translate(2px,-1px)' }, { transform: 'none' }], { duration: 140 });
@@ -1494,7 +1486,7 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
   };
 
   /* ---------- modpack: priečinok a zámok ---------- */
-  const MODPACK = { version: '1.0.0', url: '' };     // vlož odkaz na stiahnutie a modpack sa odomkne
+  const MODPACK = C.modpack;                         // odkaz na stiahnutie nastav v admine, modpack sa odomkne
   (function folder() {
     const cv = $('#folderCv'), g = cv.getContext('2d'); cv.width = 40; cv.height = 32;
     const O = '#2a1a0b';
@@ -1520,7 +1512,8 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
     window.__lockIcon = cv.toDataURL();
   })();
   function applyModpack() {
-    const ok = !!MODPACK.url;
+    const ok = !!MODPACK.url && !MODPACK.locked;
+    $('#mpMc').textContent = C.general.mc; $('#mpLoader').textContent = C.general.loader;
     $('#mpVer').textContent = 'verzia ' + MODPACK.version; $('#mpVerRow').textContent = MODPACK.version;
     $('#mpFolder').classList.toggle('locked', !ok); $('#lockBtn').hidden = ok;
     $('#mpStatus').classList.toggle('ok', ok); $('#mpStatus .lk').hidden = ok;
@@ -1535,19 +1528,20 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
   applyModpack();
 
   /* ---------- eventy ---------- */
-  sprite($('#spiderCv'), ['#.......#', '.#.....#.', '..#####..', '###E#E###', '..#####..', '.#.###.#.', '#.......#'], { '#': '#b6a3d4', E: '#ff4a3d' }, 3);
-  sprite($('#ghostCv'), ['..WWWWW..', '.WWWWWWW.', 'WWWWWWWWW', 'WWkWWWkWW', 'WWkWWWkWW', 'WWWWkWWWW', 'WWWWWWWWW', 'WWWWWWWWW', 'WW.WWW.WW', 'W...W...W'], { W: '#f0e6ff', k: '#2a1838' }, 2);
-  (function flake() {
-    const cv = $('#flakeCv'), g = cv.getContext('2d'); cv.width = cv.height = 11; cv.style.width = cv.style.height = '22px';
+  const drawSpider = cv => sprite(cv, ['#.......#', '.#.....#.', '..#####..', '###E#E###', '..#####..', '.#.###.#.', '#.......#'], { '#': '#b6a3d4', E: '#ff4a3d' }, 3);
+  const drawGhost = cv => sprite(cv, ['..WWWWW..', '.WWWWWWW.', 'WWWWWWWWW', 'WWkWWWkWW', 'WWkWWWkWW', 'WWWWkWWWW', 'WWWWWWWWW', 'WWWWWWWWW', 'WW.WWW.WW', 'W...W...W'], { W: '#f0e6ff', k: '#2a1838' }, 2);
+  const drawFlake = cv => {
+    const g = cv.getContext('2d'); cv.width = cv.height = 11; cv.style.width = cv.style.height = '22px';
     for (let k = -5; k <= 5; k++) {
       const tip = Math.abs(k) === 5;
       R(g, 5 + k, 5, 1, 1, tip ? '#ffffff' : '#bfe5ff'); R(g, 5, 5 + k, 1, 1, tip ? '#ffffff' : '#bfe5ff');
       if (Math.abs(k) <= 3) { R(g, 5 + k, 5 + k, 1, 1, '#8fd3ff'); R(g, 5 + k, 5 - k, 1, 1, '#8fd3ff'); }
     }
     R(g, 5, 5, 1, 1, '#ffffff');
-  })();
-  (function web() {
-    const cv = $('#webCv'), N = 26, g = cv.getContext('2d'); cv.width = cv.height = N; g.fillStyle = 'rgba(235,225,255,.55)';
+  };
+  const drawStar = (cv, col) => sprite(cv, ['..#..', '.###.', '#####', '.###.', '..#..'], { '#': col }, 4);
+  function drawWeb(cv) {
+    const N = 26, g = cv.getContext('2d'); cv.width = cv.height = N; g.fillStyle = 'rgba(235,225,255,.55)';
     const ox = N - 1, oy = 0, pt = (x, y) => g.fillRect(Math.round(x), Math.round(y), 1, 1);
     const line = (x0, y0, x1, y1) => { const n = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)); for (let i = 0; i <= n; i++) pt(x0 + (x1 - x0) * i / n, y0 + (y1 - y0) * i / n); };
     const angs = [90, 112, 135, 158, 180].map(a => a * Math.PI / 180);
@@ -1559,7 +1553,7 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
         line(p[i][0], p[i][1], mx, my); line(mx, my, p[i + 1][0], p[i + 1][1]);
       }
     });
-  })();
+  }
 
   const SCENE_H = 56;
   function ground(g, W, H, base, amp, seed, body, rim, rim2) {
@@ -1605,6 +1599,16 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
       for (let i = 0; i < W / 3; i++) R(g, (r() * W) | 0, (H * .9 + r() * H * .1) | 0, 1, 1, 'rgba(255,255,255,.75)');
     }
   };
+  SCENES.plain = function (cv) {
+    const W = Math.ceil(cv.clientWidth / 4), H = SCENE_H; cv.width = W; cv.height = H;
+    const g = cv.getContext('2d'), r = mulberry(606), at = f => Math.min(W - 1, Math.round(W * f));
+    paintSky(g, W, H, [[0, [8, 12, 34]], [.5, [22, 34, 84]], [.85, [52, 70, 128]], [1, [96, 120, 176]]], 4);
+    for (let i = 0; i < W * H / 100; i++) R(g, (r() * W) | 0, (r() * H * .5) | 0, 1, 1, `rgba(215,225,255,${(.3 + r() * .5).toFixed(2)})`);
+    disc(g, at(.78), 10, 9, 'rgba(190,205,255,.10)'); disc(g, at(.78), 10, 6, '#e9edf8');
+    ground(g, W, H, H * .7, 3, 31, '#14224a', '#2b3f78');
+    const hs = ground(g, W, H, H * .86, 1.6, 32, '#3b2a1d', '#4f8d34', '#3f7229');
+    [.08, .2, .37, .6, .74, .93].forEach(f => putAt(g, at(f), hs[at(f)] + 1, 1, c => tree(0, 0, 2 + (r() < .4 ? 1 : 0), '#4a3220', '#1f5224', '#2b6a2c', r)(c)));
+  };
   function drawIce(cv) {
     const W = Math.ceil(cv.clientWidth / 4) || 1, H = 16; cv.width = W; cv.height = H;
     const g = cv.getContext('2d'), r = mulberry(55), cap = new Uint8Array(W);
@@ -1637,7 +1641,28 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
     new IntersectionObserver(e => { vis = e[0].isIntersecting; if (vis && !run) { run = true; requestAnimationFrame(loop); } }).observe(card);
   }
 
-  const evCards = [...document.querySelectorAll('.ev')].sort((a, b) => Date.parse(a.dataset.date) - Date.parse(b.dataset.date));
+  let evCards = [];
+  function evEl(tag, cls) { const e = document.createElement(tag); if (cls) e.className = cls; return e; }
+  function buildEvent(ev, n) {
+    const sc = ev.scene === 'halloween' || ev.scene === 'winter' ? ev.scene : 'plain', cls = { halloween: 'hw', winter: 'wi', plain: 'pl' }[sc];
+    const card = evEl('article', 'ev ev-' + cls), art = evEl('div', 'ev-art'), scene = evEl('canvas', 'scene'), ico = evEl('canvas');
+    card.dataset.date = ev.date; card.setAttribute('aria-labelledby', 't-ev' + n);
+    if (ev.color && /^#[0-9a-f]{6}$/i.test(ev.color)) card.style.setProperty('--ea', ev.color);
+    scene.dataset.scene = sc; scene.setAttribute('aria-hidden', 'true'); ico.setAttribute('aria-hidden', 'true'); art.appendChild(scene);
+    if (sc === 'halloween') {
+      const web = evEl('canvas', 'web'), sp = evEl('div', 'spider'), spc = evEl('canvas');
+      web.setAttribute('aria-hidden', 'true'); sp.setAttribute('aria-hidden', 'true'); drawWeb(web); drawSpider(spc); drawGhost(ico); sp.appendChild(spc); art.append(web, sp);
+    } else if (sc === 'winter') {
+      const snow = evEl('canvas', 'snowfx'), ice = evEl('canvas', 'ice'); snow.setAttribute('aria-hidden', 'true'); ice.setAttribute('aria-hidden', 'true');
+      card.append(snow, ice); drawFlake(ico);
+    } else drawStar(ico, ev.color || '#7be06b');
+    const body = evEl('div', 'ev-body'), when = evEl('p', 'ev-when'), date = evEl('span'), h = evEl('h3'), txt = evEl('p', 'ev-txt'), ul = evEl('ul', 'chips'), foot = evEl('div', 'ev-foot');
+    date.dataset.f = 'date'; when.append(ico, date); h.id = 't-ev' + n; h.textContent = sub(ev.title); txt.textContent = sub(ev.text);
+    (ev.chips || []).forEach(c => { if (String(c).trim()) { const li = evEl('li'); li.textContent = sub(c); ul.appendChild(li); } });
+    const cd = evEl('span', 'ev-cd'), st = evEl('span', 'ev-st'); cd.dataset.f = 'cd'; st.dataset.f = 'st'; foot.append(cd, st);
+    body.append(when, h, txt, ul, foot); card.append(art, body);
+    return card;
+  }
   const fmtD = new Intl.DateTimeFormat('sk-SK', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Bratislava' });
   const fmtT = new Intl.DateTimeFormat('sk-SK', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Bratislava' });
   function evUpdate() {
@@ -1655,16 +1680,21 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
       const e = card.querySelector('[data-f=st]'); e.textContent = st; e.className = 'ev-st ' + cls;
     });
   }
-  evUpdate(); setInterval(evUpdate, 20000);
   const evRO = new ResizeObserver(es => es.forEach(({ target: card }) => {
     const w = card.clientWidth; if (!w || card._w === w) return; card._w = w;
     const sc = card.querySelector('.scene'); SCENES[sc.dataset.scene](sc);
     const ice = card.querySelector('.ice'); if (ice) drawIce(ice);
   }));
-  evCards.forEach(c => { evRO.observe(c); if (c.classList.contains('ev-wi')) snowCard(c); });
+  (function renderEvents() {
+    const box = $('#events');
+    evCards = (C.events || []).filter(e => e && e.on !== false && Date.parse(e.date)).sort((a, b) => Date.parse(a.date) - Date.parse(b.date)).map(buildEvent);
+    evCards.forEach(c => { box.appendChild(c); evRO.observe(c); if (c.classList.contains('ev-wi')) snowCard(c); });
+    if (!evCards.length) { const e = evEl('p', 'evempty'); e.textContent = 'Zatiaľ nie sú naplánované žiadne eventy.'; box.appendChild(e); }
+    evUpdate(); setInterval(evUpdate, 20000);
+  })();
 
   /* ---------- mapa (BlueMap v iframe) ---------- */
-  const MAP_URL = q.get('map') || 'http://176.9.21.120:25901';     // ?map=http://localhost:8100 na test
+  const MAP_URL = q.get('map') || C.map.url;     // ?map=http://localhost:8100 na test
   const mapEl = $('#mapFrame');
   let mapState = '', mapTimer = 0;
   $('#mapOpen').href = MAP_URL; $('#mapMsgBtn').href = MAP_URL;
@@ -1676,12 +1706,13 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
       checking: ['Kontrolujem mapu…', 'Chvíľku strpenia.', 'Kontrolujem mapu…', 'wait'],
       offline: ['Mapa je zatiaľ offline', 'Server ešte nespustil BlueMap. Skús to znova, keď sa server otvorí.', 'Mapa je offline', ''],
       mixed: ['Mapu otvor v novom okne', 'Táto stránka beží cez https a prehliadač z nej nepustí mapu z http adresy. V novom okne ti funguje bez problémov.', 'Mapa sa otvára v novom okne', 'wait'],
-      online: ['', '', 'Mapa beží', 'on']
+      online: ['', '', 'Mapa beží', 'on'],
+      disabled: [C.map.offTitle, C.map.offText, 'Mapa je vypnutá', '']
     }[state];
     $('#mapMsgT').textContent = t; $('#mapMsgP').textContent = p; $('#mapStatTxt').textContent = s;
     $('#mapStat').className = 'mstat ' + cls;
     $('#mapMsg').hidden = state === 'online'; $('#mapMsgBtn').hidden = state !== 'mixed';
-    $('#mapRetry').hidden = state === 'mixed'; $('#mapFs').disabled = state !== 'online';
+    $('#mapRetry').hidden = state === 'mixed' || state === 'disabled'; $('#mapOpen').hidden = state === 'disabled'; $('#mapFs').disabled = state !== 'online';
     let fr = mapEl.querySelector('iframe');
     if (state === 'online') {
       if (!fr) { fr = document.createElement('iframe'); fr.src = MAP_URL; fr.title = 'Mapa sveta Spacak SMP'; fr.allow = 'fullscreen'; fr.referrerPolicy = 'no-referrer'; mapEl.appendChild(fr); }
@@ -1689,6 +1720,7 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
   }
   async function probeMap() {
     clearTimeout(mapTimer);
+    if (!C.map.enabled) return showMap('disabled');
     if (mapState === 'online') return;
     if (location.protocol === 'https:' && MAP_URL.startsWith('http:')) return showMap('mixed');
     showMap('checking');
@@ -1732,37 +1764,28 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
   new ResizeObserver(drawMapArt).observe(mapEl);
 
   /* ---------- návod: príkazy, otázky, módy ---------- */
+  C.guide.steps.forEach((st, i, all) => {
+    const li = document.createElement('li'), no = document.createElement('span'), d = document.createElement('div'), b = document.createElement('b'), p = document.createElement('p');
+    no.className = 'no'; no.textContent = i + 1; b.textContent = sub(st.t); rich(p, sub(st.d)); if (i === all.length - 1) p.id = 'guideWhen';
+    d.append(b, p); li.append(no, d); $('#guideSteps').appendChild(li);
+  });
+  $('#guideIp').textContent = C.guide.closedIpText; $('#gcMc').textContent = C.general.mc; $('#gcLoader').textContent = C.general.loader;
+  $('#gcMax').textContent = C.general.maxPlayers; $('#gcNote').textContent = sub(C.guide.cardNote);
   $('#guideCopy').addEventListener('click', async () => { await copyIP(); toast({ title: 'Skopírované', text: IP }); });
-  const CMDS = [
-    ['/sethome', 'Uloží tvoje aktuálne miesto ako domov.'], ['/home', 'Teleportuje ťa domov.'],
-    ['/delhome', 'Zmaže uložený domov.'], ['/back', 'Vráti ťa na predošlé miesto.'],
-    ['/tpa <hráč>', 'Požiada hráča o teleport k nemu.'], ['/tpaccept', 'Prijme žiadosť o teleport.'],
-    ['/tpdeny', 'Odmietne žiadosť o teleport.'], ['/warp <meno>', 'Teleportuje ťa na verejné miesto servera.']
-  ];
+  const CMDS = C.guide.commands.map(x => [x.c, x.d]);
   CMDS.forEach(([c, d]) => {
     const b = document.createElement('button'), code = document.createElement('code'), s = document.createElement('span');
     b.type = 'button'; b.className = 'cmd'; code.textContent = c; s.textContent = d; b.append(code, s);
     b.addEventListener('click', async () => { const base = c.replace(/\s*<.*>/, ''); await copyText(base); toast({ title: 'Príkaz skopírovaný', text: base }); });
     $('#cmds').appendChild(b);
   });
-  const FAQ = [
-    ['Prečo sa nemôžem pripojiť?', 'Skontroluj, či hráš na Minecrafte 1.21.1 s NeoForge 21.1 a máš nainštalovaný modpack. Pripojiť sa dá až od štartu servera 1. novembra o 17:00.'],
-    ['Môžem hrať na cracknutom klientovi?', 'Nie. Server vyžaduje originálny Minecraft účet.'],
-    ['Čo sa stane, keď zomriem?', 'Tvoje veci ostanú v hrobe na mieste smrti. Zapamätaj si súradnice a vráť sa pre ne čo najskôr.'],
-    ['Ako sa rýchlo presúvam po svete?', 'Postav si waystone a odomkni cestovanie medzi nimi. Na ďalšie presuny použi /home a /tpa.'],
-    ['Môžem používať shadery a minimapu?', 'Áno, kozmetické úpravy sú v poriadku. Cheaty ako X-ray alebo fly sú zakázané, pozri záložku Pravidlá.'],
-    ['Koľko hráčov sa zmestí na server?', 'Naraz až 20.'],
-    ['Čo mám robiť, keď nájdem bug?', 'Nezneužívaj ho a napíš helperovi alebo na Discord. Opravíme ho čo najskôr.'],
-    ['Kde nájdem mapu sveta?', 'V záložke Mapa. Beží cez BlueMap a ukazuje stavby aj hráčov.']
-  ];
+  const FAQ = C.guide.faq.map(x => [x.q, x.a]);
   FAQ.forEach(([qs, a]) => {
     const d = document.createElement('details'), s = document.createElement('summary'), p = document.createElement('p');
-    s.textContent = qs; p.textContent = a; d.append(s, p); $('#faq').appendChild(d);
+    s.textContent = sub(qs); rich(p, sub(a)); d.append(s, p); $('#faq').appendChild(d);
   });
-  ['Create', 'Create: Aeronautics', 'Ars Nouveau', 'Aether', 'Twilight Forest', 'Biomes O\' Plenty', 'Regions Unexplored', 'Refined Storage', 'Sophisticated Backpacks',
-    'Sophisticated Storage', 'Waystones', 'Farmer\'s Delight', 'Alex\'s Mobs', 'Quark', 'Supplementaries', 'Powah', 'Steam \'n\' Rails', 'FTB Quests', 'Artifacts', 'Relics'
-  ].forEach((m, i) => {
-    const li = document.createElement('li'); li.textContent = m; li.style.setProperty('--c', ['#ffc233', '#5ee7ff', '#35dc84', '#ff6b8b', '#a98bff', '#ff9a3d'][i % 6]); $('#modChips').appendChild(li);
+  C.modpack.mods.forEach((m, i) => {
+    const li = document.createElement('li'); li.textContent = sub(m); li.style.setProperty('--c', ['#ffc233', '#5ee7ff', '#35dc84', '#ff6b8b', '#a98bff', '#ff9a3d'][i % 6]); $('#modChips').appendChild(li);
   });
 
   /* ---------- questy (štýl FTB Quests) ---------- */
@@ -2033,7 +2056,7 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
   })();
 
   /* ---------- discord ---------- */
-  const DISCORD_URL = '';                            // vlož pozvánku, napr. 'https://discord.gg/xxxxxx'
+  const DISCORD_URL = /^https?:\/\//.test(C.general.discord) ? C.general.discord : '';   // pozvánka sa nastavuje v admine
   const DISCORD = ['..####....####..', '.##############.', '################', '###...####...###', '###...####...###', '###...####...###', '################', '.##############.', '..####....####..', '...##......##...'];
   sprite($('#dcIco'), DISCORD, { '#': '#ffffff' }, 2); sprite($('#dcIco2'), DISCORD, { '#': '#ffffff' }, 2);
   $('#dcBtn').href = DISCORD_URL || '#';
@@ -2043,32 +2066,13 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
   });
 
   /* ---------- pravidlá ---------- */
-  const RULES = {
-    mc: [
-      ['Žiadny griefing', 'Nič nelámeš, nekradneš ani nevypaľuješ z cudzích stavieb a truhlíc. Čo nie je tvoje, nechaj na pokoji.'],
-      ['Žiadne cheaty', 'X-ray, fly, kill aura a podobné hacknuté klienty sú zakázané. Ak si nie si istý s modom, spýtaj sa helpera.'],
-      ['Žiadne dupe a zneužívanie bugov', 'Duplikovanie itemov a zneužívanie chýb je zakázané. Ak nájdeš bug, nahlás ho.'],
-      ['PvP len so súhlasom', 'Hráča môžeš zabiť len vtedy, keď s tým súhlasí. Spawn kill a obťažovanie nováčikov sú zakázané.'],
-      ['Rešpektuj základne', 'Stavaj aspoň 100 blokov od cudzej základne a nezaberaj pozemky, na ktorých už niekto stavia.'],
-      ['Nelaguj server', 'Veľké farmy, redstone hodiny a stovky entít stav tak, aby server nezaťažovali. Helper môže stroj vypnúť.'],
-      ['Slušný chat', 'V hernom chate žiadne urážky, spam ani reklama.']
-    ],
-    dc: [
-      ['Buď slušný', 'Žiadne urážky, vyhrážky, rasizmus ani nenávistné prejavy.'],
-      ['Žiadny spam', 'Nezahlcuj kanály, nepíš všetko veľkými písmenami a bezdôvodne nepinguj ownerov, helperov ani @everyone.'],
-      ['Správny kanál', 'Píš do kanála, ktorý patrí k tvojej téme.'],
-      ['Žiadna reklama', 'Bez pozvánok na iné servery, odkazov na cudzie projekty a predaja.'],
-      ['Žiadny nevhodný obsah', 'NSFW, násilie a šokujúce obrázky sú zakázané.'],
-      ['Súkromie', 'Nezverejňuj cudzie osobné údaje, fotky ani súkromné správy bez súhlasu.'],
-      ['Poslúchaj tím', 'Pokyny ownerov a helperov platia. Nesúhlasíš? Napíš im súkromne, nie do chatu.']
-    ]
-  };
+  const RULES = { mc: C.rules.mc.map(x => [x.t, x.d]), dc: C.rules.dc.map(x => [x.t, x.d]) };
   $('#rlGrass').src = window.__grassIcon;
   for (const k of ['mc', 'dc']) {
     const ol = $('#rl-' + k);
     RULES[k].forEach(([t, x], i) => {
       const li = document.createElement('li'), n = document.createElement('span'), d = document.createElement('div'), b = document.createElement('b'), p = document.createElement('p');
-      n.className = 'no'; n.textContent = i + 1; b.textContent = t; p.textContent = x; d.append(b, p); li.append(n, d); ol.appendChild(li);
+      n.className = 'no'; n.textContent = i + 1; b.textContent = sub(t); rich(p, sub(x)); d.append(b, p); li.append(n, d); ol.appendChild(li);
     });
     $('#rlc-' + k).textContent = `${RULES[k].length} ${plural(RULES[k].length, ['pravidlo', 'pravidlá', 'pravidiel'])}`;
   }
@@ -2088,11 +2092,8 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
     helper: { label: 'Helper',  rc: '#35dc84', rows: SHIELD, pal: { h: '#b9ffd0', m: '#2fd37a', d: '#0f6b3b', g: '#ffffff' } },
     clen:   { label: 'Člen',    rc: '#aab6cf', rows: SWORD,  pal: { h: '#f2f6ff', m: '#aab6cf', d: '#5d667d', b: '#8a5a32' } }
   };
-  const TEAM = [
-    ['Ferenzhy', 'owner'], ['Spacesov_MC', 'owner2'], ['People1Mc', 'helper'],
-    ['Between', 'clen'], ['MatuskoPlays', 'clen'], ['twowetsocks', 'clen'], ['Athummer', 'clen'], ['LeuskoR', 'clen'], ['Vietnamska_pivnica', 'clen'], ['hellcat_driver', 'clen']
-  ];
-  const GROUPS = [['Vedenie', ['owner', 'owner2']], ['Helper', ['helper']], ['Hráči', ['clen']]];
+  const TEAM = C.team.map(x => [x.n, x.r]).filter(([n, r]) => n && RANKS[r]);
+  const GROUPS = [[T('g_vedenie'), ['owner', 'owner2']], [T('g_helper'), ['helper']], [T('g_hraci'), ['clen']]];
   function sparkle(el, col) {
     const r = el.getBoundingClientRect(), d = dprNow();
     fxAdd(Array.from({ length: 14 }, () => ({ x: (r.left + Math.random() * r.width) * d, y: (r.top + r.height * (.25 + Math.random() * .6)) * d,
@@ -2131,9 +2132,39 @@ h1.h1s{font-size:clamp(56px,9vw,128px)}
     });
   })();
 
+  /* ---------- pätička: majitelia z tímu ---------- */
+  (function owners() {
+    const box = $('#owners');
+    TEAM.filter(([, r]) => r === 'owner' || r === 'owner2').forEach(([n, r]) => {
+      const p = document.createElement('div'), img = document.createElement('img'), d = document.createElement('div'), b = document.createElement('b'), sp = document.createElement('span');
+      p.className = 'person'; img.alt = 'Minecraft hlava ' + n; img.width = img.height = 48; loadHead(img, n, 112);
+      b.textContent = n; sp.textContent = r === 'owner' ? 'Majiteľ' : 'Majiteľ #2'; d.append(b, sp); p.append(img, d); box.appendChild(p);
+    });
+  })();
+
+  /* ---------- nastavenia z adminu: texty, vypínače, oznam ---------- */
+  document.querySelectorAll('[data-t]').forEach(e => { const v = T(e.dataset.t); if (v) e.textContent = sub(v); });
+  document.querySelector('meta[name=description]').content = sub(C.general.description);
+  Object.entries(F.tabs).forEach(([k, on]) => { if (on === false) document.querySelectorAll(`.tab[data-tab="${k}"]`).forEach(a => { a.hidden = true; }); });
+  if (F.countdown === false) $('#countdown').hidden = true;
+  if (F.navCountdown === false) $('#navCd').hidden = true;
+  if (F.livePill === false) $('#liveMini').hidden = true;
+  if (F.statusSection === false) $('#statusSec').classList.add('off');
+  if (F.playerList === false) { $('#playersH').hidden = true; $('#players').hidden = true; }
+  if (F.discordButton === false) $('#dcBtn').hidden = true;
+  if (F.themeButton === false) $('#themeBtn').hidden = true;
+  if (F.footerOwners === false) $('#owners').hidden = true;
+  if (C.banner.on && String(C.banner.text).trim()) { const b = $('#banner'); b.hidden = false; b.className = 'banner ' + (C.banner.kind === 'warn' || C.banner.kind === 'bad' ? C.banner.kind : ''); b.textContent = sub(C.banner.text); }
+
   route();
   applyTheme(false); tick();
-})();
+};
+
+/* nastavenia sa čítajú zo site-config.json pri každom načítaní, takže zmena súboru sa prejaví hneď (bez buildu) */
+fetch('site-config.json', { cache: 'no-store' })
+  .then(r => r.ok ? r.json() : {})
+  .catch(() => ({}))
+  .then(c => { window.SITE_CONFIG = c && typeof c === 'object' && !Array.isArray(c) ? c : {}; boot(); });
 </script>
 </body>
 </html>

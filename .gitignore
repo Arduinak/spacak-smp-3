@@ -3,3 +3,10 @@
 !index.html
 !quests-data.js
 !quest-icons.png
+!login.html
+!admin.html
+!admin-auth.json
+!site-defaults.js
+!site-config.json
+!files/
+!files/**

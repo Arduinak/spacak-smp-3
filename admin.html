@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin – Spacak SMP</title>
+<meta name="theme-color" content="#090b12">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Geist:wght@300..700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#090b12;--panel:#0f1424;--panel2:#141a2e;--ink:#f3f5fa;--dim:#9ba4be;--line:rgba(255,255,255,.12);--accent:#7be06b;--accent-ink:#07150a;--bad:#ff7d7d;--warn:#ffc233;
+  --display:'Bricolage Grotesque','Geist',system-ui,sans-serif;--sans:'Geist',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:400 15px/1.5 var(--sans);-webkit-font-smoothing:antialiased;visibility:hidden}
+body.ready{visibility:visible}
+:focus-visible{outline:2px solid #fff;outline-offset:2px}
+a{color:var(--accent)}
+[hidden]{display:none!important}
+
+.top{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:14px;padding:12px 24px;border-bottom:1px solid var(--line);background:rgba(9,11,18,.92);backdrop-filter:blur(14px)}
+.logo{display:flex;align-items:center;gap:10px;font:600 18px/1 var(--display)}
+.logo canvas{width:28px;height:28px;border-radius:6px;image-rendering:pixelated}
+.logo small{font:500 12px var(--sans);color:var(--accent-ink);background:var(--accent);padding:3px 8px;border-radius:99px}
+.state{margin-left:auto;display:flex;align-items:center;gap:8px;color:var(--dim);font-size:14px}
+.state i{width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.state.dirty{color:var(--warn)}.state.dirty i{background:var(--warn)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:38px;padding:0 16px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--ink);font:500 14px var(--sans);cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn:hover{background:rgba(255,255,255,.12)}
+.btn.pri{background:var(--accent);border-color:transparent;color:var(--accent-ink);font-weight:600}
+.btn.pri:hover{filter:brightness(1.08)}
+.btn.danger{color:var(--bad)}
+.btn.sm{height:30px;padding:0 10px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:default}
+
+.lay{display:grid;grid-template-columns:230px minmax(0,1fr);gap:0;max-width:1320px;margin:0 auto}
+.side{position:sticky;top:63px;align-self:start;height:calc(100vh - 63px);overflow:auto;padding:20px 12px 40px 24px}
+.side a{display:flex;align-items:center;gap:10px;padding:9px 12px;margin-bottom:2px;border-radius:9px;color:var(--dim);text-decoration:none;font-weight:500;cursor:pointer}
+.side a:hover{background:rgba(255,255,255,.06);color:var(--ink)}
+.side a[aria-current]{background:rgba(123,224,107,.12);color:var(--ink);box-shadow:inset 3px 0 0 var(--accent)}
+.side a em{margin-left:auto;font-style:normal;font-size:12px;color:var(--dim)}
+.main{padding:28px 24px 120px;min-width:0}
+h1{font:700 32px/1.05 var(--display);letter-spacing:-.03em;margin-bottom:6px}
+h2{font:600 19px/1.2 var(--display);margin:30px 0 12px}
+.lead{color:var(--dim);margin-bottom:24px;max-width:70ch}
+.note{padding:12px 16px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--dim);margin:0 0 18px;max-width:78ch;font-size:14px}
+.note.warn{border-color:rgba(255,194,51,.4);background:rgba(255,194,51,.07);color:#ecd6a0}
+.note b{color:var(--ink)}
+code{font:500 13px ui-monospace,Consolas,monospace;background:rgba(255,255,255,.08);padding:1px 6px;border-radius:5px}
+
+.card{padding:20px;border-radius:14px;border:1px solid var(--line);background:var(--panel);margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
+.f{display:block;margin-bottom:14px}
+.f .fl{display:block;font-size:13px;font-weight:500;color:var(--dim);margin-bottom:5px}
+.f small{display:block;color:var(--dim);font-size:12.5px;margin-top:4px}
+input[type=text],input[type=url],input[type=password],input[type=search],input[type=datetime-local],input[type=number],select,textarea{width:100%;padding:0 12px;height:40px;border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);font:inherit;color-scheme:dark}
+textarea{height:auto;padding:10px 12px;resize:vertical;line-height:1.45}
+select option{background:#141a2e}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);outline:none}
+input[type=color]{width:56px;height:40px;padding:3px;border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.05)}
+input[type=file]{color:var(--dim);font:inherit}
+
+.tg{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;margin-bottom:8px;border-radius:11px;border:1px solid var(--line);background:var(--panel);cursor:pointer}
+.tg:hover{background:var(--panel2)}
+.tg input{position:absolute;opacity:0;pointer-events:none}
+.tg i{flex:none;position:relative;width:42px;height:24px;margin-top:1px;border-radius:99px;background:rgba(255,255,255,.16);transition:background .15s}
+.tg i::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .15s}
+.tg input:checked+i{background:var(--accent)}
+.tg input:checked+i::after{transform:translateX(18px);background:var(--accent-ink)}
+.tg input:focus-visible+i{outline:2px solid #fff;outline-offset:2px}
+.tg span b{display:block;font-weight:500}
+.tg span small{display:block;color:var(--dim);font-size:13px}
+
+.list{display:flex;flex-direction:column;gap:10px}
+.row{border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow:hidden}
+.rh{display:flex;align-items:center;gap:8px;padding:8px 10px 8px 12px;background:rgba(255,255,255,.04)}
+.rh b{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.rh .sp{flex:1}
+.rn{flex:none;min-width:24px;height:24px;display:grid;place-items:center;border-radius:6px;background:rgba(123,224,107,.16);color:var(--accent);font-size:13px;font-weight:600}
+.rb{padding:14px 14px 2px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px}
+.rb .f.wide{grid-column:1/-1}
+.list.compact .rb{grid-template-columns:2fr 1fr;padding-top:12px}
+.add{align-self:flex-start;border-style:dashed}
+
+.dash{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-bottom:8px}
+.stat{display:block;padding:18px;border-radius:14px;border:1px solid var(--line);background:var(--panel);color:inherit;text-decoration:none;cursor:pointer}
+.stat:hover{background:var(--panel2)}
+.stat b{display:block;font:700 30px/1.1 var(--display);letter-spacing:-.02em}
+.stat span{color:var(--dim);font-size:14px}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:13px;font-weight:500;background:rgba(255,255,255,.1)}
+.pill.on{background:rgba(123,224,107,.18);color:var(--accent)}
+.pill.off{background:rgba(255,125,125,.15);color:var(--bad)}
+.tx{display:grid;grid-template-columns:minmax(0,230px) minmax(0,1fr) auto;gap:10px;align-items:start;padding:10px 0;border-bottom:1px solid var(--line)}
+.tx label{color:var(--dim);font-size:13.5px;padding-top:10px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:60;max-width:min(560px,92vw);padding:13px 20px;border-radius:12px;background:#1b2340;border:1px solid var(--line);box-shadow:0 20px 50px rgba(0,0,0,.6);font-weight:500}
+.toast.ok{border-color:rgba(123,224,107,.6)}.toast.bad{border-color:rgba(255,125,125,.7)}
+.log{font:13px/1.6 ui-monospace,Consolas,monospace;color:var(--dim);white-space:pre-wrap;margin-top:10px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
+.srch{max-width:360px}
+
+@media (max-width:860px){
+  .lay{grid-template-columns:1fr}
+  .side{position:static;height:auto;display:flex;gap:6px;overflow-x:auto;padding:12px 16px;border-bottom:1px solid var(--line)}
+  .side a{white-space:nowrap;margin:0}.side a em{display:none}
+  .main{padding:22px 16px 120px}
+  .g2,.rb,.list.compact .rb,.tx{grid-template-columns:1fr}
+  .top{padding:10px 14px;flex-wrap:wrap}.state span{display:none}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="logo"><canvas id="ic" width="16" height="16" aria-hidden="true"></canvas>Spacak SMP <small>Admin</small></div>
+  <div class="state" id="state"><i></i><span id="stateTxt">Načítavam…</span></div>
+  <button class="btn" id="bPrev" type="button">Náhľad</button>
+  <button class="btn pri" id="bSave" type="button">Uložiť zmeny</button>
+  <button class="btn" id="bOut" type="button">Odhlásiť</button>
+</header>
+<div class="lay">
+  <nav class="side" id="side" aria-label="Sekcie"></nav>
+  <main class="main" id="view"></main>
+</div>
+<div class="toast" id="toast" hidden role="status"></div>
+
+<script src="site-defaults.js"></script>
+<script>
+(async () => {
+  'use strict';
+  const $ = (s, r = document) => r.querySelector(s);
+  const DRAFT_KEY = 'spacak-admin-draft', SESSION_KEY = 'spacak-admin';
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+    del(k) { try { localStorage.removeItem(k); } catch (e) {} }
+  };
+
+  /* ---------- prístup (relácia z login.html) ---------- */
+  let sess = null; try { sess = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null'); } catch (e) {}
+  if (!sess || sess.exp < Date.now()) { location.replace('login.html'); return; }
+  document.body.classList.add('ready');
+  const logout = () => { try { sessionStorage.removeItem(SESSION_KEY); } catch (e) {} location.replace('login.html'); };
+  $('#bOut').addEventListener('click', logout);
+
+  /* ---------- pomocníci na DOM ---------- */
+  function h(tag, props, ...kids) {
+    const e = document.createElement(tag);
+    if (props) for (const [k, v] of Object.entries(props)) {
+      if (k === 'class') e.className = v;
+      else if (k === 'on') for (const [ev, fn] of Object.entries(v)) e.addEventListener(ev, fn);
+      else if (k === 'for' || k === 'aria-current' || k === 'data-s') e.setAttribute(k, v);
+      else if (k in e) e[k] = v; else e.setAttribute(k, v);
+    }
+    kids.flat(9).forEach(c => { if (c == null || c === false) return; e.append(c.nodeType ? c : document.createTextNode(c)); });
+    return e;
+  }
+  const pad = n => String(n).padStart(2, '0');
+  let toastT = 0;
+  function toast(msg, kind) { const t = $('#toast'); t.textContent = msg; t.className = 'toast ' + (kind || ''); t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, kind === 'bad' ? 7000 : 3500); }
+  const clone = o => JSON.parse(JSON.stringify(o));
+
+  /* ikona */
+  (() => {
+    let a = 7; const r = () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+    const dirt = ['#866043', '#79553a', '#6b4a30', '#5c3e27', '#7d5a3e'], grass = ['#5a9a38', '#4c8a2e', '#69ad42', '#3f7a26'], g = $('#ic').getContext('2d');
+    for (let j = 0; j < 16; j++) for (let i = 0; i < 16; i++) { const p = (j < 3 || (j === 3 && r() < .6) || (j === 4 && r() < .2)) ? grass : dirt; g.fillStyle = p[(r() * p.length) | 0]; g.fillRect(i, j, 1, 1); }
+  })();
+
+  /* ---------- čas v Bratislave <-> input datetime-local ---------- */
+  const TZ = 'Europe/Bratislava';
+  const tzParts = ms => { const o = {}; new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' }).formatToParts(ms).forEach(x => { o[x.type] = x.value; }); return o; };
+  const tzOffMin = ms => { const o = tzParts(ms); return (Date.UTC(+o.year, o.month - 1, +o.day, +o.hour, +o.minute, +o.second) - Math.floor(ms / 1000) * 1000) / 60000; };
+  const toInput = iso => { const ms = Date.parse(iso); if (isNaN(ms)) return ''; const o = tzParts(ms); return `${o.year}-${o.month}-${o.day}T${o.hour}:${o.minute}`; };
+  function fromInput(v) {
+    if (!v) return '';
+    const [d, t] = v.split('T'), [Y, M, D] = d.split('-').map(Number), [hh, mm] = t.split(':').map(Number), guess = Date.UTC(Y, M - 1, D, hh, mm);
+    let off = tzOffMin(guess); off = tzOffMin(guess - off * 60000);
+    return `${v}:00${off >= 0 ? '+' : '-'}${pad(Math.floor(Math.abs(off) / 60))}:${pad(Math.abs(off) % 60)}`;
+  }
+  const fmtLong = iso => { const ms = Date.parse(iso); return isNaN(ms) ? '–' : new Intl.DateTimeFormat('sk-SK', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: TZ }).format(ms); };
+
+  /* ---------- GitHub (zápis site-config.json priamo do repozitára) ---------- */
+  const GH = { repo: sess.repo || (/\.github\.io$/.test(location.hostname) ? location.hostname.split('.')[0] + '/' + (location.pathname.split('/')[1] || '') : 'Arduinak/spacak-smp-3'), branch: sess.branch || 'main', token: sess.token || '' };
+  const GHH = () => ({ Authorization: 'Bearer ' + GH.token, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' });
+  const ghUrl = p => `https://api.github.com/repos/${GH.repo}/contents/${p.split('/').map(encodeURIComponent).join('/')}`;
+  const ghErr = (r, what) => new Error(r.status === 401 ? 'Token je neplatný alebo vypršal.' : r.status === 403 ? 'Token nemá právo zapisovať (treba Contents: Read and write).' : r.status === 404 ? `${what}: repozitár alebo vetva sa nenašli.` : `GitHub odpovedal ${r.status}.`);
+  const b64e = u8 => { let t = ''; for (let i = 0; i < u8.length; i += 0x8000) t += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(t); };
+  const b64d = t => Uint8Array.from(atob(t.replace(/\s/g, '')), c => c.charCodeAt(0));
+  const fileB64 = f => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1] || ''); r.onerror = () => rej(r.error); r.readAsDataURL(f); });
+  async function ghGet(p, ref) {
+    const r = await fetch(`${ghUrl(p)}?ref=${encodeURIComponent(ref || GH.branch)}`, { headers: GHH(), cache: 'no-store' });
+    if (r.status === 404) return null; if (!r.ok) throw ghErr(r, p);
+    const d = await r.json(); return { sha: d.sha, text: d.content ? new TextDecoder().decode(b64d(d.content)) : '' };
+  }
+  async function ghPutB64(p, content, message) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const cur = await ghGet(p), r = await fetch(ghUrl(p), { method: 'PUT', headers: { ...GHH(), 'Content-Type': 'application/json' }, body: JSON.stringify({ message, content, branch: GH.branch, ...(cur ? { sha: cur.sha } : {}) }) });
+      if (r.ok) return; if (r.status !== 409 && r.status !== 422) throw ghErr(r, p);
+    }
+    throw new Error(`${p}: súbor sa medzitým zmenil, skús uložiť znova.`);
+  }
+  const ghPutText = (p, text, message) => ghPutB64(p, b64e(new TextEncoder().encode(text)), message);
+
+  /* heslo: overenie a šifrovanie tokenu (AES-GCM kľúč z hesla) */
+  const hex = buf => [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+  async function pwBits(pass, saltStr, iter) {
+    const enc = new TextEncoder(), k = await crypto.subtle.importKey('raw', enc.encode(pass), 'PBKDF2', false, ['deriveBits']);
+    return crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: enc.encode(saltStr), iterations: iter }, k, 256);
+  }
+  const pwHash = async (pass, A) => hex(await pwBits(pass, 'spacak:' + A.user + ':' + A.salt, A.iter));
+  async function aesKey(pass, A) {
+    const enc = new TextEncoder(), k = await crypto.subtle.importKey('raw', enc.encode(pass), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey({ name: 'PBKDF2', hash: 'SHA-256', salt: enc.encode('spacak-key:' + A.user + ':' + A.salt), iterations: A.iter }, k, { name: 'AES-GCM', length: 256 }, false, ['encrypt']);
+  }
+  async function encTok(pass, A, token) {
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    return { iv: b64e(iv), data: b64e(new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await aesKey(pass, A), new TextEncoder().encode(token)))) };
+  }
+  const readAuth = async () => { const r = await fetch('admin-auth.json?t=' + Date.now(), { cache: 'no-store' }); if (!r.ok) throw new Error('Chýba admin-auth.json.'); return r.json(); };
+  const saveSession = () => { try { sessionStorage.setItem(SESSION_KEY, JSON.stringify({ ...sess, token: GH.token, repo: GH.repo, branch: GH.branch })); } catch (e) {} };
+
+  function failScreen(msg) { const v = $('#view'); v.textContent = ''; v.append(h('h1', {}, 'Admin nedostupný'), h('p', { class: 'lead' }, msg), h('button', { type: 'button', class: 'btn', on: { click: () => location.reload() } }, 'Skúsiť znova')); }
+
+  /* prvé nastavenie: token sa zašifruje heslom a uloží do admin-auth.json, potom stačí meno a heslo */
+  function setupToken() {
+    return new Promise(resolve => {
+      const repo = h('input', { type: 'text', value: GH.repo }), br = h('input', { type: 'text', value: GH.branch }), tok = h('input', { type: 'password', placeholder: 'github_pat_…', autocomplete: 'off' }), pw = h('input', { type: 'password', autocomplete: 'current-password' });
+      const err = h('div', { class: 'note warn', hidden: true }), btn = h('button', { type: 'submit', class: 'btn pri' }, 'Uložiť a pokračovať');
+      const form = h('form', { class: 'card', on: { submit: async e => {
+        e.preventDefault(); err.hidden = true; btn.disabled = true;
+        try {
+          const A = await readAuth();
+          if (await pwHash(pw.value, A) !== A.hash) throw new Error('Heslo nesedí.');
+          GH.repo = repo.value.trim(); GH.branch = br.value.trim() || 'main'; GH.token = tok.value.trim();
+          const r = await fetch(`https://api.github.com/repos/${GH.repo}`, { headers: GHH() });
+          if (!r.ok) throw new Error(r.status === 401 ? 'Token je neplatný.' : r.status === 404 ? 'Repozitár sa nenašiel alebo ho token nevidí.' : 'GitHub odpovedal ' + r.status);
+          await ghPutText('admin-auth.json', JSON.stringify({ ...A, repo: GH.repo, branch: GH.branch, tok: await encTok(pw.value, A, GH.token) }, null, 2) + '\n', 'Admin: uložený zašifrovaný token');
+          saveSession(); $('#view').textContent = ''; resolve();
+        } catch (x) { err.textContent = x.message; err.hidden = false; GH.token = ''; btn.disabled = false; }
+      } } },
+        h('div', { class: 'g2' }, fld('Repozitár', repo), fld('Vetva', br)),
+        fld('GitHub token (fine-grained)', tok, 'Na github.com → Settings → Developer settings → Fine-grained tokens: vyber len tento repozitár a právo Contents: Read and write.'),
+        fld('Tvoje admin heslo', pw, 'Token sa ním zašifruje, takže sa uloží do repozitára bezpečne a nabudúce ho nezadávaš.'), err, h('div', { class: 'bar' }, btn));
+      $('#view').append(h('h1', {}, 'Prvé nastavenie'), h('p', { class: 'lead' }, 'Aby admin mohol meniť súbor site-config.json v gite, potrebuje token. Zadáš ho raz.'), form);
+    });
+  }
+
+  if (!GH.token) await setupToken();
+  try {
+    const cur = await ghGet('site-config.json');
+    window.SITE_CONFIG = cur && cur.text.trim() ? JSON.parse(cur.text) : {};
+  } catch (e) { if (/neplatný/.test(e.message)) { logout(); return; } return failScreen('Nastavenia sa nepodarilo načítať z GitHubu: ' + e.message); }
+
+  /* ---------- stav: konfigurácia, koncept ---------- */
+  let base = JSON.stringify(window.siteConfig());
+  let cfg = window.siteConfig(), restored = false;
+  const draft = store.get(DRAFT_KEY);
+  if (draft) { try { cfg = window.siteMerge(window.SITE_DEFAULTS, JSON.parse(draft)); restored = draft !== base; } catch (e) {} }
+  let saveT = 0;
+
+  const isSaved = () => JSON.stringify(cfg) === base;
+  function paintState() {
+    const ok = isSaved(), s = $('#state');
+    s.classList.toggle('dirty', !ok);
+    $('#stateTxt').textContent = ok ? 'Všetko uložené' : 'Neuložené zmeny (na stránke sa ešte neprejavili)';
+  }
+  const flush = () => { clearTimeout(saveT); store.set(DRAFT_KEY, JSON.stringify(cfg)); };
+  function touch() { clearTimeout(saveT); saveT = setTimeout(() => { flush(); paintState(); }, 150); paintState(); }
+  addEventListener('pagehide', flush); document.addEventListener('visibilitychange', () => { if (document.hidden) flush(); });
+
+  /* ---------- ovládacie prvky ---------- */
+  function fld(label, ctl, hint, wide) { return h('label', { class: 'f' + (wide ? ' wide' : '') }, h('span', { class: 'fl' }, label), ctl, hint ? h('small', {}, hint) : null); }
+  function inp(obj, key, o = {}) {
+    const e = o.area ? h('textarea', { rows: o.rows || 3, placeholder: o.ph || '' }) : h('input', { type: o.type || 'text', placeholder: o.ph || '' });
+    e.value = obj[key] ?? '';
+    e.addEventListener('input', () => { obj[key] = e.value; touch(); });
+    return e;
+  }
+  function sel(obj, key, opts) {
+    const e = h('select', {}, opts.map(([v, l]) => h('option', { value: v }, l))); e.value = obj[key];
+    e.addEventListener('change', () => { obj[key] = e.value; touch(); }); return e;
+  }
+  function dt(obj, key) { const e = h('input', { type: 'datetime-local', value: toInput(obj[key]) }); e.addEventListener('change', () => { obj[key] = fromInput(e.value); touch(); }); return e; }
+  function lines(obj, key, rows) {
+    const e = h('textarea', { rows: rows || 6 }); e.value = (obj[key] || []).join('\n');
+    e.addEventListener('input', () => { obj[key] = e.value.split('\n').map(x => x.trim()).filter(Boolean); touch(); }); return e;
+  }
+  function color(obj, key) { const e = h('input', { type: 'color', value: /^#[0-9a-f]{6}$/i.test(obj[key]) ? obj[key] : '#7be06b' }); e.addEventListener('input', () => { obj[key] = e.value; touch(); }); return e; }
+  function tog(obj, key, label, hint, after) {
+    const c = h('input', { type: 'checkbox', checked: !!obj[key] });
+    c.addEventListener('change', () => { obj[key] = c.checked; touch(); if (after) after(); });
+    return h('label', { class: 'tg' }, c, h('i'), h('span', {}, h('b', {}, label), hint ? h('small', {}, hint) : null));
+  }
+  const bt = (label, fn, cls) => h('button', { type: 'button', class: 'btn ' + (cls || ''), on: { click: fn } }, label);
+
+  function fieldFor(it, f) {
+    let c;
+    if (f.t === 'area') c = inp(it, f.k, { area: true, rows: f.rows || 3 });
+    else if (f.t === 'select') c = sel(it, f.k, f.opts);
+    else if (f.t === 'date') c = dt(it, f.k);
+    else if (f.t === 'color') c = color(it, f.k);
+    else if (f.t === 'lines') c = lines(it, f.k, f.rows);
+    else if (f.t === 'bool') return h('div', { class: 'f wide' }, tog(it, f.k, f.l, f.hint));
+    else c = inp(it, f.k, { ph: f.ph });
+    return fld(f.l, c, f.hint, f.wide);
+  }
+  function listEd(arr, o) {
+    const box = h('div', { class: 'list' + (o.compact ? ' compact' : '') });
+    const draw = (focusLast) => {
+      box.textContent = '';
+      const mv = (i, d) => { const j = i + d; if (j < 0 || j >= arr.length) return; [arr[i], arr[j]] = [arr[j], arr[i]]; touch(); draw(); };
+      arr.forEach((it, i) => {
+        const ttl = h('b', {}, o.title ? o.title(it, i) : '');
+        const head = h('div', { class: 'rh' }, h('span', { class: 'rn' }, i + 1), ttl, h('span', { class: 'sp' }),
+          bt('↑', () => mv(i, -1), 'sm'), bt('↓', () => mv(i, 1), 'sm'),
+          bt('Zmazať', () => { if (confirm('Naozaj odstrániť túto položku?')) { arr.splice(i, 1); touch(); draw(); } }, 'sm danger'));
+        const body = h('div', { class: 'rb' }, o.fields.map(f => fieldFor(it, f)));
+        const row = h('div', { class: 'row' }, head, body);
+        row.addEventListener('input', () => { if (o.title) ttl.textContent = o.title(it, i); });
+        box.append(row);
+      });
+      box.append(bt('+ ' + (o.add || 'Pridať'), () => { arr.push(o.blank()); touch(); draw(true); }, 'add'));
+      if (focusLast) { const r = box.querySelectorAll('.row'); const l = r[r.length - 1]; if (l) { l.scrollIntoView({ block: 'center' }); const i = l.querySelector('input,textarea'); if (i) i.focus(); } }
+    };
+    draw(); return box;
+  }
+  const secHead = (title, lead) => [h('h1', {}, title), lead ? h('p', { class: 'lead' }, lead) : null];
+  const TOKENS = h('div', { class: 'note' }, 'V textoch môžeš použiť značky, ktoré sa samy doplnia: ', h('code', {}, '{den}'), ' (1. novembra), ', h('code', {}, '{cas}'), ' (17:00), ', h('code', {}, '{datum}'), ', ',
+    h('code', {}, '{ip}'), ', ', h('code', {}, '{mc}'), ', ', h('code', {}, '{loader}'), ', ', h('code', {}, '{hraci}'), '. Odkaz vložíš ako ', h('code', {}, '[text](#modpack)'), ' alebo ', h('code', {}, '[text](https://…)'), '.');
+
+  /* ---------- sekcie ---------- */
+  const RANKS = [['owner', 'Owner'], ['owner2', 'Owner 2'], ['helper', 'Helper'], ['clen', 'Člen']];
+  const TABS = [['mapa', 'Mapa'], ['navod', 'Návod'], ['questy', 'Questy'], ['modpack', 'Modpack'], ['eventy', 'Eventy'], ['pravidla', 'Pravidlá'], ['clenovia', 'Členovia']];
+
+  const SECTIONS = [
+    ['prehlad', 'Prehľad', () => {
+      const open = cfg.server.forceOpen || Date.parse(cfg.server.start) <= Date.now();
+      const stat = (big, small, to) => h('a', { class: 'stat', on: { click: () => go(to) } }, h('b', {}, big), h('span', {}, small));
+      return [
+        secHead('Prehľad', 'Všetko, čo sa na stránke dá meniť, nájdeš vľavo. Zmeny sa najprv ukladajú ako koncept, na živú stránku idú po „Uložiť zmeny“ (commit do gitu).'),
+        restored ? h('div', { class: 'note warn' }, 'Obnovil som tvoj neuložený koncept z minulého sedenia. ',
+          bt('Zahodiť koncept', () => { store.del(DRAFT_KEY); location.reload(); }, 'sm')) : null,
+        h('div', { class: 'dash' },
+          stat(open ? 'Otvorený' : 'Zatvorený', 'Server: ' + fmtLong(cfg.server.start), 'server'),
+          stat(cfg.events.filter(e => e.on).length + ' / ' + cfg.events.length, 'Eventy zapnuté', 'eventy'),
+          stat(cfg.rules.mc.length + cfg.rules.dc.length, 'Pravidlá spolu', 'pravidla'),
+          stat(cfg.team.length, 'Členov tímu', 'clenovia'),
+          stat(cfg.modpack.url && !cfg.modpack.locked ? 'Odomknutý' : 'Zamknutý', 'Modpack v' + cfg.modpack.version, 'modpack'),
+          stat(cfg.map.enabled ? 'Zapnutá' : 'Vypnutá', 'Mapa (BlueMap)', 'mapa')),
+        h('h2', {}, 'Rýchle prepínače'),
+        tog(cfg.banner, 'on', 'Oznam na vrchu stránky', 'Text upravíš v sekcii Oznam.'),
+        tog(cfg.server, 'forceOpen', 'Označiť server ako otvorený', 'Preskočí odpočet a ukáže IP adresu.'),
+        tog(cfg.map, 'enabled', 'Mapa zapnutá', 'Keď je vypnutá, záložka Mapa ukáže len správu.'),
+        tog(cfg.modpack, 'locked', 'Modpack zamknúť', 'Zamkne stiahnutie, aj keď je nahraný súbor.')
+      ];
+    }],
+
+    ['server', 'Server a štart', () => [
+      secHead('Server a štart', 'Základné údaje servera a čas otvorenia. Čas zadávaj podľa slovenského času.'),
+      h('div', { class: 'card' },
+        h('div', { class: 'g2' },
+          fld('Štart servera (dátum a čas)', dt(cfg.server, 'start'), 'Odpočet na stránke počíta k tomuto času.'),
+          fld('IP adresa servera', inp(cfg.general, 'ip', { ph: '176.9.21.120:25739' }), 'Ukáže sa až po otvorení servera.')),
+        tog(cfg.server, 'forceOpen', 'Server je otvorený (preskočiť odpočet)'),
+        h('div', { class: 'g2', style: 'margin-top:14px' },
+          fld('Minecraft verzia', inp(cfg.general, 'mc')), fld('Loader', inp(cfg.general, 'loader')),
+          fld('Počet hráčov (text)', inp(cfg.general, 'maxPlayers'), 'Napr. „až 20“'),
+          fld('Discord pozvánka (odkaz)', inp(cfg.general, 'discord', { ph: 'https://discord.gg/…' }), 'Prázdne = tlačidlo ukáže „odkaz nie je nastavený“.'))),
+      h('div', { class: 'card' },
+        fld('Podnadpis pred štartom', inp(cfg.general, 'subtitle'), null, true),
+        fld('Podnadpis po otvorení', inp(cfg.general, 'subtitleOpened')),
+        fld('Popis stránky (pre Google a Discord náhľady)', inp(cfg.general, 'description', { area: true, rows: 2 })),
+        fld('Predvolená téma pozadia', sel(cfg, 'theme', [['auto', 'Automaticky podľa dátumu'], ['leto', 'Leto'], ['halloween', 'Halloween'], ['zima', 'Zima'], ['novyrok', 'Nový rok']]), 'Návštevník si ju môže prepnúť tlačidlom v pätičke.')),
+      TOKENS
+    ]],
+
+    ['oznam', 'Oznam', () => [
+      secHead('Oznam na vrchu', 'Pruh s dôležitou správou, viditeľný na každej záložke (údržba, reštart, zmena dátumu…).'),
+      tog(cfg.banner, 'on', 'Zobraziť oznam'),
+      h('div', { class: 'card' },
+        fld('Text oznamu', inp(cfg.banner, 'text', { area: true, rows: 3 })),
+        fld('Farba', sel(cfg.banner, 'kind', [['info', 'Zelená (info)'], ['warn', 'Žltá (pozor)'], ['bad', 'Červená (problém)']]))),
+      TOKENS
+    ]],
+
+    ['funkcie', 'Funkcie (zap/vyp)', () => [
+      secHead('Funkcie zapnúť / vypnúť', 'Každý vypínač hneď mení, čo uvidia návštevníci po uložení.'),
+      h('h2', {}, 'Záložky v menu'),
+      TABS.map(([k, l]) => tog(cfg.features.tabs, k, 'Záložka ' + l, k === 'questy' ? 'Obsah questov je v quests-data.js (export z FTB Quests), tu ho môžeš len skryť.' : null)),
+      h('h2', {}, 'Časti stránky'),
+      tog(cfg.features, 'countdown', 'Odpočet na domovskej stránke'),
+      tog(cfg.features, 'navCountdown', 'Odpočet / IP v menu'),
+      tog(cfg.features, 'livePill', 'Indikátor Online / Offline v menu'),
+      tog(cfg.features, 'statusSection', 'Sekcia „Stav servera“ na domovskej stránke'),
+      tog(cfg.features, 'playerList', 'Zoznam hráčov online'),
+      tog(cfg.features, 'discordButton', 'Tlačidlo Discord'),
+      tog(cfg.features, 'themeButton', 'Tlačidlo na zmenu témy v pätičke'),
+      tog(cfg.features, 'footerOwners', 'Majitelia v pätičke'),
+      tog(cfg.features, 'easterEgg', 'Easter egg: vykopanie loga'),
+      h('h2', {}, 'Server a doplnky'),
+      tog(cfg.map, 'enabled', 'Mapa (BlueMap) zapnutá'),
+      tog(cfg.server, 'forceOpen', 'Server je otvorený (preskočiť odpočet)'),
+      tog(cfg.modpack, 'locked', 'Modpack zamknutý'),
+      tog(cfg.banner, 'on', 'Oznam na vrchu stránky')
+    ]],
+
+    ['mapa', 'Mapa', () => [
+      secHead('Mapa sveta', 'Mapa sa na stránke zobrazuje z BlueMap (alebo Dynmap) bežiaceho na serveri.'),
+      tog(cfg.map, 'enabled', 'Mapa zapnutá'),
+      h('div', { class: 'card' },
+        fld('Adresa mapy', inp(cfg.map, 'url', { ph: 'http://176.9.21.120:25901' }), 'Odkaz na webové rozhranie mapy. Funguje aj Dynmap, napr. http://adresa:8123.'),
+        h('div', { class: 'g2' }, fld('Nadpis keď je mapa vypnutá', inp(cfg.map, 'offTitle')), fld('Text keď je mapa vypnutá', inp(cfg.map, 'offText')))),
+      h('div', { class: 'note' }, 'Ak stránka beží cez https a mapa na http, prehliadač mapu nepustí do rámčeka a návštevník dostane tlačidlo na otvorenie v novom okne.')
+    ]],
+
+    ['navod', 'Návod', () => [
+      secHead('Návod a príkazy'),
+      TOKENS,
+      h('h2', {}, 'Kroky pripojenia'),
+      listEd(cfg.guide.steps, { add: 'Pridať krok', title: s => s.t, blank: () => ({ t: 'Nový krok', d: '' }), fields: [{ k: 't', l: 'Nadpis kroku', wide: true }, { k: 'd', l: 'Popis', t: 'area', wide: true }] }),
+      h('div', { class: 'card', style: 'margin-top:16px' },
+        h('div', { class: 'g2' },
+          fld('Text posledného kroku po otvorení servera', inp(cfg.guide, 'openedText')),
+          fld('Text v poli IP pred otvorením', inp(cfg.guide, 'closedIpText'))),
+        fld('Poznámka v karte „Adresa servera“', inp(cfg.guide, 'cardNote'), 'Verziu, loader a počet hráčov meníš v sekcii Server a štart.')),
+      h('h2', {}, 'Príkazy'),
+      listEd(cfg.guide.commands, { add: 'Pridať príkaz', title: c => c.c, blank: () => ({ c: '/príkaz', d: '' }), fields: [{ k: 'c', l: 'Príkaz', ph: '/home' }, { k: 'd', l: 'Čo robí' }] }),
+      h('h2', {}, 'Časté otázky'),
+      listEd(cfg.guide.faq, { add: 'Pridať otázku', title: f => f.q, blank: () => ({ q: 'Nová otázka?', a: '' }), fields: [{ k: 'q', l: 'Otázka', wide: true }, { k: 'a', l: 'Odpoveď', t: 'area', wide: true }] })
+    ]],
+
+    ['modpack', 'Modpack', () => {
+      const m = cfg.modpack, status = h('span', { class: 'pill' });
+      const paint = () => { const ok = m.url && !m.locked; status.className = 'pill ' + (ok ? 'on' : 'off'); status.textContent = ok ? 'Odomknutý, dá sa stiahnuť' : (m.url ? 'Zamknutý vypínačom' : 'Zamknutý, chýba súbor alebo odkaz'); };
+      paint();
+      const urlIn = inp(m, 'url', { ph: 'https://… alebo files/spacak-modpack.zip' });
+      urlIn.addEventListener('input', paint);
+      const fileIn = h('input', { type: 'file', accept: '.zip,.mrpack,.7z,.rar,application/zip' });
+      const fnote = h('small', {}, m.file ? `Naposledy nahraný súbor: ${m.file}` : '');
+      fileIn.addEventListener('change', async () => {
+        const f = fileIn.files[0]; if (!f) return;
+        fileIn.disabled = true;
+        try {
+          fnote.textContent = `Nahrávam ${f.name}…`; const d = await upload(f);
+          m.url = d.path; m.file = d.name; urlIn.value = d.path; paint(); touch();
+          fnote.textContent = `Nahraté: ${d.name} (${(d.size / 1048576).toFixed(1)} MB). Súbor je už v repozitári, odkaz sa na stránke zmení po „Uložiť zmeny“.`;
+        } catch (e) { fnote.textContent = ''; toast('Nahrávanie zlyhalo: ' + e.message, 'bad'); }
+        fileIn.disabled = false; fileIn.value = '';
+      });
+      return [
+        secHead('Modpack', 'Keď vyplníš odkaz alebo nahráš súbor a modpack nie je zamknutý, na stránke sa odomkne tlačidlo Stiahnuť.'),
+        h('p', {}, 'Stav: ', status),
+        h('div', { class: 'card', style: 'margin-top:12px' },
+          h('div', { class: 'g2' }, fld('Verzia modpacku', inp(m, 'version', { ph: '1.0.0' })), fld('Odkaz na stiahnutie', urlIn, 'Môže byť odkaz na Google Drive, GitHub Release, CurseForge… alebo súbor nahraný nižšie.')),
+          tog(m, 'locked', 'Modpack zamknúť (aj keď je odkaz vyplnený)', null, paint),
+          h('label', { class: 'f' }, h('span', { class: 'fl' }, 'Nahrať súbor modpacku (.zip, .mrpack)'), fileIn, fnote,
+            h('small', {}, 'Súbor sa nahrá priamo do priečinka files/ v repozitári (limit GitHubu je 95 MB). Väčší modpack daj na Drive alebo do GitHub Release a vlož odkaz.'))),
+        h('h2', {}, 'Zoznam módov'),
+        h('div', { class: 'card' }, fld('Jeden mód na riadok', lines(m, 'mods', 12))),
+        h('div', { class: 'note' }, 'Minecraft verziu a loader meníš v sekcii Server a štart. Texty nad a pod zoznamom nájdeš v sekcii Texty.')
+      ];
+    }],
+
+    ['eventy', 'Eventy', () => [
+      secHead('Eventy', 'Dátum a čas zadávaj podľa slovenského času. Eventy sa na stránke radia podľa dátumu a po skončení sa označia ako „Skončilo“.'),
+      TOKENS,
+      listEd(cfg.events, {
+        add: 'Pridať event', title: e => `${e.on ? '' : '(vypnutý) '}${e.title || 'Bez názvu'}, ${fmtLong(e.date)}`,
+        blank: () => ({ id: 'event-' + Date.now().toString(36), on: true, scene: 'plain', title: 'Nový event', date: fromInput(toInput(new Date(Date.now() + 14 * 864e5).toISOString())), text: '', chips: [], color: '#7be06b' }),
+        fields: [
+          { k: 'on', l: 'Event je zapnutý (viditeľný na stránke)', t: 'bool' },
+          { k: 'title', l: 'Názov' }, { k: 'date', l: 'Dátum a čas', t: 'date' },
+          { k: 'scene', l: 'Vzhľad', t: 'select', opts: [['plain', 'Bežný (nočná krajina)'], ['halloween', 'Halloween (pavúk a tekvice)'], ['winter', 'Zima (sneh a ľad)']] },
+          { k: 'color', l: 'Zvýrazňovacia farba', t: 'color' },
+          { k: 'text', l: 'Popis', t: 'area', wide: true },
+          { k: 'chips', l: 'Bodky pod popisom (jedna na riadok)', t: 'lines', rows: 4, wide: true }
+        ]
+      })
+    ]],
+
+    ['pravidla', 'Pravidlá', () => [
+      secHead('Pravidlá', 'Poradie meníš šípkami, čísla sa prepočítajú samy.'),
+      h('h2', {}, 'Minecraft server'),
+      listEd(cfg.rules.mc, { add: 'Pridať pravidlo', title: r => r.t, blank: () => ({ t: 'Nové pravidlo', d: '' }), fields: [{ k: 't', l: 'Názov', wide: true }, { k: 'd', l: 'Vysvetlenie', t: 'area', wide: true }] }),
+      h('h2', {}, 'Discord'),
+      listEd(cfg.rules.dc, { add: 'Pridať pravidlo', title: r => r.t, blank: () => ({ t: 'Nové pravidlo', d: '' }), fields: [{ k: 't', l: 'Názov', wide: true }, { k: 'd', l: 'Vysvetlenie', t: 'area', wide: true }] }),
+      h('div', { class: 'note', style: 'margin-top:18px' }, 'Text pod pravidlami (o trestoch) a nadpisy upravíš v sekcii Texty.')
+    ]],
+
+    ['clenovia', 'Členovia', () => {
+      const nick = h('input', { type: 'text', placeholder: 'Minecraft nick', style: 'max-width:240px' }), rk = h('select', { style: 'max-width:160px' }, RANKS.map(([v, l]) => h('option', { value: v }, l)));
+      rk.value = 'clen';
+      const box = h('div'), draw = () => { box.textContent = ''; box.append(listEd(cfg.team, { compact: true, add: 'Pridať prázdny riadok', title: m => `${m.n || '…'} · ${(RANKS.find(r => r[0] === m.r) || [0, m.r])[1]}`, blank: () => ({ n: '', r: 'clen' }), fields: [{ k: 'n', l: 'Nick' }, { k: 'r', l: 'Rola', t: 'select', opts: RANKS }] })); };
+      draw();
+      const add = () => {
+        const n = nick.value.trim(); if (!n) return nick.focus();
+        if (!/^[A-Za-z0-9_]{1,16}$/.test(n)) return toast('Nick môže mať len písmená, čísla a _ (max 16 znakov).', 'bad');
+        if (cfg.team.some(m => m.n.toLowerCase() === n.toLowerCase())) return toast(n + ' už v tíme je.', 'bad');
+        cfg.team.push({ n, r: rk.value }); nick.value = ''; touch(); draw(); toast(n + ' pridaný.', 'ok'); nick.focus();
+      };
+      nick.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); add(); } });
+      return [
+        secHead('Členovia', 'Skupiny na stránke sa tvoria z rolí: Owner a Owner 2 sú Vedenie, potom Helper a Hráči. Majitelia v pätičke sa berú z rolí Owner.'),
+        h('div', { class: 'card' }, h('div', { class: 'bar', style: 'margin:0' }, h('b', {}, 'Rýchle pridanie:'), nick, rk, bt('Pridať', add, 'pri'))),
+        box
+      ];
+    }],
+
+    ['texty', 'Texty', () => {
+      const q = h('input', { type: 'search', placeholder: 'Hľadať text…', class: 'srch' }), box = h('div');
+      const defs = window.SITE_DEFAULTS.texts;
+      const draw = () => {
+        box.textContent = ''; const f = q.value.trim().toLowerCase();
+        Object.entries(cfg.texts).forEach(([k, t]) => {
+          if (f && !(t.l + ' ' + t.v).toLowerCase().includes(f)) return;
+          const long = t.v.length > 70, c = long ? h('textarea', { rows: 2 }) : h('input', { type: 'text' });
+          c.value = t.v;
+          const reset = bt('Pôvodný', () => { t.v = defs[k].v; c.value = t.v; touch(); reset.hidden = true; }, 'sm'); reset.hidden = t.v === (defs[k] || {}).v;
+          c.addEventListener('input', () => { t.v = c.value; reset.hidden = t.v === (defs[k] || {}).v; touch(); });
+          box.append(h('div', { class: 'tx' }, h('label', {}, t.l), c, reset));
+        });
+        if (!box.children.length) box.append(h('p', { class: 'lead' }, 'Nič sa nenašlo.'));
+      };
+      q.addEventListener('input', draw); draw();
+      return [secHead('Texty na stránke', 'Nadpisy, podnadpisy a popisy všetkých záložiek. Podnadpis na domovskej stránke meníš v sekcii Server a štart.'), TOKENS, h('div', { class: 'bar' }, q), box];
+    }],
+
+    ['ulozenie', 'Uloženie a história', () => saveView()]
+  ];
+
+  /* ---------- navigácia ---------- */
+  const view = $('#view'), side = $('#side');
+  let cur = 'prehlad';
+  const go = id => { location.hash = '#' + id; };
+  function render() {
+    const id = SECTIONS.some(s => s[0] === cur) ? cur : 'prehlad', sec = SECTIONS.find(s => s[0] === id);
+    side.textContent = '';
+    SECTIONS.forEach(([k, l]) => {
+      const a = h('a', { on: { click: () => go(k) }, tabindex: 0 }, l);
+      a.addEventListener('keydown', e => { if (e.key === 'Enter') go(k); });
+      if (k === id) a.setAttribute('aria-current', 'page');
+      const cnt = { eventy: cfg.events.length, pravidla: cfg.rules.mc.length + cfg.rules.dc.length, clenovia: cfg.team.length }[k];
+      if (cnt != null) a.append(h('em', {}, cnt));
+      side.append(a);
+    });
+    view.textContent = ''; view.append(...[].concat(sec[2]()).flat(9).filter(Boolean));
+    scrollTo({ top: 0 });
+  }
+  addEventListener('hashchange', () => { cur = location.hash.slice(1) || 'prehlad'; render(); });
+
+  /* ---------- náhľad ---------- */
+  function preview(open) { store.set(DRAFT_KEY, JSON.stringify(cfg)); window.open('index.html?preview=1' + (open ? '&open' : ''), '_blank'); }
+  $('#bPrev').addEventListener('click', () => preview(false));
+
+  /* ---------- ukladanie do gitu ---------- */
+  async function upload(file) {
+    const name = file.name.replace(/[^\w.\-]+/g, '_').slice(-120);
+    if (!/\.(zip|mrpack|7z|rar)$/i.test(name)) throw new Error('Povolené sú len súbory .zip, .mrpack, .7z, .rar.');
+    if (file.size > 95 * 1048576) throw new Error('Súbor je väčší ako 95 MB (limit GitHubu). Nahraj ho na Drive alebo do GitHub Release a vlož odkaz.');
+    await ghPutB64('files/' + name, await fileB64(file), 'Admin: nahratý modpack ' + name);
+    return { path: 'files/' + name, name, size: file.size };
+  }
+  let saving = false;
+  async function save() {
+    if (saving) return; saving = true;
+    const b = $('#bSave'); b.disabled = true; b.textContent = 'Ukladám…';
+    try {
+      await ghPutText('site-config.json', JSON.stringify(cfg, null, 2) + '\n', 'Admin: zmena nastavení stránky');
+      base = JSON.stringify(cfg); store.set(DRAFT_KEY, base); restored = false; paintState();
+      toast('Uložené do gitu. GitHub Pages stránku obnoví zvyčajne do minúty.', 'ok');
+    } catch (e) { toast('Uloženie zlyhalo: ' + e.message, 'bad'); }
+    saving = false; b.disabled = false; b.textContent = 'Uložiť zmeny';
+  }
+  $('#bSave').addEventListener('click', save);
+  addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') { e.preventDefault(); save(); } });
+
+  function saveView() {
+    const hist = h('div', { class: 'list' }, h('p', { class: 'lead' }, 'Načítavam históriu…'));
+    fetch(`https://api.github.com/repos/${GH.repo}/commits?path=site-config.json&sha=${encodeURIComponent(GH.branch)}&per_page=15`, { headers: GHH(), cache: 'no-store' })
+      .then(r => { if (!r.ok) throw ghErr(r, 'história'); return r.json(); })
+      .then(list => {
+        hist.textContent = '';
+        if (!list.length) return hist.append(h('p', { class: 'lead' }, 'Zatiaľ žiadne uloženia.'));
+        list.forEach(c => hist.append(h('div', { class: 'row' }, h('div', { class: 'rh' },
+          h('b', {}, new Intl.DateTimeFormat('sk-SK', { dateStyle: 'full', timeStyle: 'medium', timeZone: TZ }).format(Date.parse(c.commit.author.date))), h('span', { class: 'sp' }),
+          bt('Načítať do editora', async () => {
+            try { const v = await ghGet('site-config.json', c.sha); cfg = window.siteMerge(window.SITE_DEFAULTS, JSON.parse(v.text || '{}')); touch(); render(); toast('Verzia načítaná. Na stránke sa prejaví po „Uložiť zmeny“.', 'ok'); }
+            catch (e) { toast('Načítanie zlyhalo: ' + e.message, 'bad'); }
+          }, 'sm')))));
+      }).catch(e => { hist.textContent = ''; hist.append(h('p', { class: 'lead' }, 'Históriu sa nepodarilo načítať: ' + e.message)); });
+
+    const cur1 = h('input', { type: 'password', autocomplete: 'current-password' }), pw1 = h('input', { type: 'password', autocomplete: 'new-password' }), pw2 = h('input', { type: 'password', autocomplete: 'new-password' });
+    async function changePw() {
+      if (pw1.value.length < 8) return toast('Nové heslo musí mať aspoň 8 znakov.', 'bad');
+      if (pw1.value !== pw2.value) return toast('Nové heslá sa nezhodujú.', 'bad');
+      try {
+        const f = await ghGet('admin-auth.json'), A = f ? JSON.parse(f.text) : await readAuth();
+        if (await pwHash(cur1.value, A) !== A.hash) throw new Error('Terajšie heslo nesedí.');
+        const N = { user: A.user, salt: hex(crypto.getRandomValues(new Uint8Array(16))), iter: A.iter, repo: GH.repo, branch: GH.branch };
+        N.hash = await pwHash(pw1.value, N); N.tok = await encTok(pw1.value, N, GH.token);
+        await ghPutText('admin-auth.json', JSON.stringify(N, null, 2) + '\n', 'Admin: zmena hesla');
+        cur1.value = pw1.value = pw2.value = ''; toast('Heslo zmenené.', 'ok');
+      } catch (e) { toast(e.message, 'bad'); }
+    }
+    const imp = h('input', { type: 'file', accept: '.json,application/json' });
+    imp.addEventListener('change', async () => {
+      const f = imp.files[0]; if (!f) return;
+      try { cfg = window.siteMerge(window.SITE_DEFAULTS, JSON.parse(await f.text())); touch(); render(); toast('Nastavenia načítané. Skontroluj ich a ulož.', 'ok'); }
+      catch (e) { toast('Súbor sa nepodarilo načítať: ' + e.message, 'bad'); }
+    });
+
+    return [
+      secHead('Uloženie a história', 'Tlačidlo „Uložiť zmeny“ commitne súbor site-config.json do repozitára ' + GH.repo + '. Stránka ho číta pri každom načítaní, takže po zmene stačí počkať, kým GitHub Pages obnoví súbory (zvyčajne do minúty), a potom refresh.'),
+      h('div', { class: 'note' }, 'Všetko je v gite: žiadny vlastný server ani build. Každé uloženie je commit, takže história nižšie slúži ako zálohy. Súbor site-config.json môžeš kedykoľvek upraviť aj ručne.'),
+      h('div', { class: 'card' }, h('div', { class: 'bar', style: 'margin:0' }, bt('Uložiť zmeny', save, 'pri'), bt('Náhľad', () => preview(false)), bt('Náhľad po otvorení servera', () => preview(true)))),
+      h('h2', {}, 'História uložení'), hist,
+      h('h2', {}, 'Zmeniť heslo'),
+      h('div', { class: 'card' },
+        fld('Terajšie heslo', cur1),
+        h('div', { class: 'g2' }, fld('Nové heslo (min. 8 znakov)', pw1), fld('Nové heslo znova', pw2)),
+        h('div', { class: 'bar' }, bt('Zmeniť heslo', changePw), h('span', { class: 'fl' }, 'Token sa znova zašifruje novým heslom.'))),
+      h('h2', {}, 'Export, import a reset'),
+      h('div', { class: 'card' },
+        h('div', { class: 'bar' },
+          bt('Exportovať nastavenia (.json)', () => { const a = h('a', { href: URL.createObjectURL(new Blob([JSON.stringify(cfg, null, 2)], { type: 'application/json' })), download: 'spacak-nastavenia.json' }); document.body.append(a); a.click(); a.remove(); }),
+          bt('Zahodiť neuložený koncept', () => { if (confirm('Zahodiť všetky neuložené zmeny?')) { store.del(DRAFT_KEY); location.reload(); } }),
+          bt('Vrátiť všetko na pôvodné', () => { if (confirm('Vrátiť VŠETKY nastavenia na pôvodné hodnoty? Na stránke sa prejaví po „Uložiť zmeny“.')) { cfg = clone(window.SITE_DEFAULTS); touch(); render(); toast('Pôvodné hodnoty obnovené (zatiaľ len koncept).', 'ok'); } }, 'danger')),
+        fld('Načítať nastavenia zo súboru', imp))
+    ];
+  }
+
+  cur = location.hash.slice(1) || 'prehlad'; render(); paintState();
+  setInterval(() => { if (sess.exp < Date.now()) logout(); }, 60000);
+})();
+</script>
+</body>
+</html>

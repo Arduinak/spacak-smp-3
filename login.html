@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Prihlásenie – Spacak SMP</title>
+<meta name="theme-color" content="#090b12">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Geist:wght@300..700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#090b12;--ink:#f3f5fa;--dim:#9ba4be;--line:rgba(255,255,255,.12);--accent:#7be06b;--accent-ink:#07150a;--bad:#ff7d7d;
+  --display:'Bricolage Grotesque','Geist',system-ui,sans-serif;--sans:'Geist',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;display:grid;place-items:center;padding:24px;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--sans);-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(ellipse at 50% 0,rgba(123,224,107,.12),transparent 60%),linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:auto,48px 48px,48px 48px}
+:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.card{width:100%;max-width:400px;padding:34px 30px 30px;border-radius:20px;border:1px solid var(--line);background:rgba(14,18,32,.86);box-shadow:0 30px 70px -30px rgba(0,0,0,.9)}
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:26px;font:600 20px/1 var(--display);letter-spacing:-.01em}
+.logo canvas{width:34px;height:34px;image-rendering:pixelated;border-radius:7px}
+h1{font:700 30px/1.05 var(--display);letter-spacing:-.03em;margin-bottom:6px}
+p.s{color:var(--dim);margin-bottom:24px}
+label{display:block;font-size:14px;font-weight:500;color:var(--dim);margin:16px 0 6px}
+input{width:100%;height:46px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);font:inherit}
+input:focus{border-color:var(--accent);outline:none}
+button{margin-top:24px;width:100%;height:48px;border:0;border-radius:10px;background:var(--accent);color:var(--accent-ink);font:600 16px var(--sans);cursor:pointer}
+button:hover:not(:disabled){filter:brightness(1.08)}
+button:disabled{opacity:.55;cursor:default}
+.err{min-height:22px;margin-top:14px;color:var(--bad);font-size:14px}
+.back{display:block;margin-top:18px;text-align:center;color:var(--dim);font-size:14px;text-decoration:none}
+.back:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="logo"><canvas id="ic" width="16" height="16" aria-hidden="true"></canvas>Spacak SMP</div>
+  <h1>Admin prihlásenie</h1>
+  <p class="s">Úpravy stránky, eventov, pravidiel a modpacku.</p>
+  <form id="f" autocomplete="on">
+    <label for="u">Meno</label>
+    <input id="u" name="username" autocomplete="username" autocapitalize="off" spellcheck="false" required autofocus>
+    <label for="p">Heslo</label>
+    <input id="p" name="password" type="password" autocomplete="current-password" required>
+    <div class="err" id="err" role="alert"></div>
+    <button id="go" type="submit">Prihlásiť sa</button>
+  </form>
+  <a class="back" href="index.html">← Späť na stránku</a>
+</main>
+<script>
+(() => {
+  'use strict';
+  const $ = s => document.querySelector(s), SESSION_KEY = 'spacak-admin', TTL = 8 * 3600e3;
+
+  /* ikona: grass blok */
+  (() => {
+    let a = 7; const r = () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+    const dirt = ['#866043', '#79553a', '#6b4a30', '#5c3e27', '#7d5a3e'], grass = ['#5a9a38', '#4c8a2e', '#69ad42', '#3f7a26'], g = $('#ic').getContext('2d');
+    for (let j = 0; j < 16; j++) for (let i = 0; i < 16; i++) {
+      const p = (j < 3 || (j === 3 && r() < .6) || (j === 4 && r() < .2)) ? grass : dirt;
+      g.fillStyle = p[(r() * p.length) | 0]; g.fillRect(i, j, 1, 1);
+    }
+  })();
+
+  const enc = new TextEncoder(), hex = b => [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
+  const b64d = t => Uint8Array.from(atob(t.replace(/\s/g, '')), c => c.charCodeAt(0));
+  const same = (a, b) => { let d = a.length ^ b.length; for (let i = 0; i < Math.max(a.length, b.length); i++) d |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0); return d === 0; };
+  async function bits(pass, salt, iter) {
+    const k = await crypto.subtle.importKey('raw', enc.encode(pass), 'PBKDF2', false, ['deriveBits']);
+    return crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: enc.encode(salt), iterations: iter }, k, 256);
+  }
+  async function decryptToken(pass, A) {
+    const k = await crypto.subtle.importKey('raw', enc.encode(pass), 'PBKDF2', false, ['deriveKey']);
+    const key = await crypto.subtle.deriveKey({ name: 'PBKDF2', hash: 'SHA-256', salt: enc.encode('spacak-key:' + A.user + ':' + A.salt), iterations: A.iter }, k, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+    return new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64d(A.tok.iv) }, key, b64d(A.tok.data)));
+  }
+
+  try { const s = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null'); if (s && s.exp > Date.now()) location.replace('admin.html'); } catch (e) {}
+
+  let fails = 0, lockUntil = 0;
+  $('#f').addEventListener('submit', async e => {
+    e.preventDefault();
+    const err = $('#err'), btn = $('#go'), user = $('#u').value.trim().toLowerCase(), pass = $('#p').value;
+    err.textContent = '';
+    if (Date.now() < lockUntil) { err.textContent = `Príliš veľa pokusov. Skús o ${Math.ceil((lockUntil - Date.now()) / 1000)} s.`; return; }
+    if (!(window.crypto && crypto.subtle)) { err.textContent = 'Prihlásenie vyžaduje https alebo localhost.'; return; }
+    btn.disabled = true; btn.textContent = 'Overujem…';
+    try {
+      const r = await fetch('admin-auth.json?t=' + Date.now(), { cache: 'no-store' });
+      if (!r.ok) throw new Error('Chýba súbor admin-auth.json.');
+      const A = await r.json();
+      if (user === A.user && same(hex(await bits(pass, 'spacak:' + A.user + ':' + A.salt, A.iter)), A.hash)) {
+        let token = ''; if (A.tok) { try { token = await decryptToken(pass, A); } catch (x) {} }
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify({ u: A.user, exp: Date.now() + TTL, token, repo: A.repo || '', branch: A.branch || '' }));
+        location.replace('admin.html'); return;
+      }
+      fails++; if (fails >= 5) { lockUntil = Date.now() + 30000; fails = 0; err.textContent = 'Zlé meno alebo heslo. Počkaj 30 sekúnd.'; } else err.textContent = 'Zlé meno alebo heslo.';
+    } catch (x) { err.textContent = 'Prihlásenie zlyhalo: ' + x.message; }
+    btn.disabled = false; btn.textContent = 'Prihlásiť sa'; $('#p').select();
+  });
+})();
+</script>
+</body>
+</html>
