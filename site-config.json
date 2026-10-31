@@ -172,10 +172,11 @@
       "scene": "halloween",
       "title": "Halloween Event",
       "date": "2026-11-01T18:00:00+01:00",
-      "text": "Spacak SMP 3 ma svoj prvý Event, Halloween bude mať svoj Tech-Tree a ziskajte tekvice a dalšie veci na získanie užasných odmien a Discord medailu: Halloween 2026.\nLobby ma taktiež tému Jesene a Halloween",
+      "text": "Spacak SMP 3 ma svoj prvý Event, Halloween ma svoj Tech-Tree a ziskajte tekvice a dalšie veci na získanie užasných odmien a Discord medailu: Halloween 2026.\nLobby ma taktiež tému Jesene a Halloween",
       "chips": [
         "Jesený/Halloween spawn",
-        "Eventový Tech-Tree"
+        "Eventový Tech-Tree",
+        "Do 23.11.2026"
       ],
       "color": "#ff8a1f"
     },
