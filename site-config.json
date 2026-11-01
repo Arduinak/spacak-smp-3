@@ -2,11 +2,11 @@
   "general": {
     "ip": "176.9.21.120:25739",
     "discord": "",
-    "subtitle": "Zajtra o 17:00 sa otvorí Spacak SMP 3 z novým Halloween eventom",
+    "subtitle": "Session 3: open pokračovanie nášho serveru",
     "subtitleOpened": "Vitaj späť na Spacak SMP!",
-    "description": "Spacak SMP – Season 3. Open pokračovanie nášho serveru. Štart {den} o {cas}.",
+    "description": "Spacak SMP – Session 3. Open pokračovanie nášho serveru. Štart {den} o {cas}.",
     "mc": "1.21.1",
-    "loader": "NeoForge",
+    "loader": "NeoForge v21.1.250",
     "maxPlayers": "až 20"
   },
   "server": {
@@ -35,8 +35,8 @@
     "footerOwners": true
   },
   "banner": {
-    "on": false,
-    "text": "",
+    "on": true,
+    "text": "Modpack je už dostupný na nainštalovanie !",
     "kind": "info"
   },
   "map": {
@@ -49,7 +49,7 @@
     "steps": [
       {
         "t": "Nainštaluj Minecraft {mc} s NeoForge",
-        "d": "Server beží na Minecraft Java Edition {mc} a NeoForge verziu 21.1.250"
+        "d": "Server beží na Minecraft Java Edition {mc} a NeoForge 21.1. Potrebuješ originálny Minecraft účet."
       },
       {
         "t": "Stiahni modpack",
@@ -61,7 +61,7 @@
       },
       {
         "t": "Pripoj sa a hraj",
-        "d": "Maj zábavu"
+        "d": "Server sa otvára {den} o {cas}. Pred tým sa k nemu pripojiť nedá."
       }
     ],
     "openedText": "Server je otvorený, môžeš sa pripojiť.",
@@ -138,7 +138,7 @@
   },
   "modpack": {
     "version": "1.0.0",
-    "url": "",
+    "url": "https://drive.google.com/drive/u/1/folders/1KLi2RM3La7mIQYf5UXhUV_3EXyedpA82",
     "locked": false,
     "file": "",
     "mods": [
@@ -149,7 +149,6 @@
       "Twilight Forest",
       "Biomes O' Plenty",
       "Regions Unexplored",
-      "Applied Energistics 2 (AE2)",
       "Refined Storage",
       "Sophisticated Backpacks",
       "Sophisticated Storage",
@@ -170,13 +169,13 @@
       "id": "halloween",
       "on": true,
       "scene": "halloween",
-      "title": "Halloween Event",
-      "date": "2026-11-01T18:00:00+01:00",
-      "text": "Spacak SMP 3 ma svoj prvý Event, Halloween ma svoj Tech-Tree a ziskajte tekvice a dalšie veci na získanie užasných odmien a Discord medailu: Halloween 2026.\nLobby ma taktiež tému Jesene a Halloween",
+      "title": "Halloween Night",
+      "date": "2027-10-30T18:00:00+02:00",
+      "text": "Strašidelná noc na Spacak SMP. Spawn sa zmení na prekliate mestečko, po mape sa schovávajú tekvice a kto prežije do rána, dostane odmenu.",
       "chips": [
-        "Jesený/Halloween spawn",
-        "Eventový Tech-Tree",
-        "Do 23.11.2026"
+        "Strašidelný spawn",
+        "Tekvicový hon",
+        "Kostýmy"
       ],
       "color": "#ff8a1f"
     },
@@ -184,57 +183,15 @@
       "id": "zima",
       "on": true,
       "scene": "winter",
-      "title": "Zimný Event Chapter 1",
-      "date": "2026-12-01T16:00:00+01:00",
-      "text": "Work in Progress",
+      "title": "Zimný festival",
+      "date": "2026-12-19T18:00:00+01:00",
+      "text": "Sneh na spawne, ľadové stavby a súťaž o najkrajšiu vianočnú dedinku. Zahrej sa pri ohni a ukáž, čo vieš postaviť.",
       "chips": [
-        "Zimný/Vianočný Spawn",
-        "Eventový Tech-Tree",
-        "2 Chapter Event",
-        "Do 4.2.2027"
+        "Ľadová aréna",
+        "Snehové bitky",
+        "Vianočná dedinka"
       ],
-      "color": "#6bc4ff"
-    },
-    {
-      "id": "event-mvwdxu0o",
-      "on": true,
-      "scene": "winter",
-      "title": "Silvester 2026",
-      "date": "2026-12-31T19:00:00+01:00",
-      "text": "Oslavovanie nového roku 2027 a ohnostroj na spawne",
-      "chips": [
-        "Ohnostroj na Spawne",
-        "Krátky Event",
-        "Do 1.1.2027"
-      ],
-      "color": "#8f4fe8"
-    },
-    {
-      "id": "event-mvwe5u2p",
-      "on": true,
-      "scene": "winter",
-      "title": "Zimný Event Chapter 2",
-      "date": "2027-01-02T16:00:00+01:00",
-      "text": "Work in Progress",
-      "chips": [
-        "Zimný Spawn",
-        "Eventový Tech-Tree",
-        "2 Chapter Event",
-        "Do 4.2.2027"
-      ],
-      "color": "#558fec"
-    },
-    {
-      "id": "event-mvwe9f9j",
-      "on": true,
-      "scene": "plain",
-      "title": "???",
-      "date": "2027-02-06T16:00:00+01:00",
-      "text": "",
-      "chips": [
-        "Do 1.3.2027"
-      ],
-      "color": "#000000"
+      "color": "#8fd3ff"
     }
   ],
   "rules": {
@@ -252,27 +209,27 @@
         "d": "Duplikovanie itemov a zneužívanie chýb je zakázané. Ak nájdeš bug, nahlás ho."
       },
       {
-        "t": "PvP povolené len v prírode",
-        "d": "Hráča môžeš zabiť len vtedy, keď s tým súhlasí a ked si na pozemku. V prírode je povolené zabíjat ale prísne zakázane kradnut/blokovať telo. Spawn kill a obťažovanie nováčikov sú zakázané."
+        "t": "PvP len so súhlasom",
+        "d": "Hráča môžeš zabiť len vtedy, keď s tým súhlasí. Spawn kill a obťažovanie nováčikov sú zakázané."
       },
       {
         "t": "Rešpektuj základne",
-        "d": "Keď chceš mat base v blízkosti iného hrača (<500 blokov) tak sa spítaj Majitela pozemku či je to vpohode"
+        "d": "Stavaj aspoň 100 blokov od cudzej základne a nezaberaj pozemky, na ktorých už niekto stavia."
       },
       {
         "t": "Nelaguj server",
         "d": "Veľké farmy, redstone hodiny a stovky entít stav tak, aby server nezaťažovali. Helper môže stroj vypnúť."
       },
       {
-        "t": "Poloslušny chat",
-        "d": "V hernom chate nepiš uplne hlúposti"
-      },
-      {
-        "t": "Waystones",
-        "d": "waystone možeš mať len 1 a na Base nikde inde a može byť publický ked chceš"
+        "t": "Slušný chat",
+        "d": "V hernom chate žiadne urážky, spam ani reklama."
       }
     ],
     "dc": [
+      {
+        "t": "Buď slušný",
+        "d": "Žiadne urážky, vyhrážky, rasizmus ani nenávistné prejavy."
+      },
       {
         "t": "Žiadny spam",
         "d": "Nezahlcuj kanály, nepíš všetko veľkými písmenami a bezdôvodne nepinguj ownerov, helperov ani @everyone."
@@ -337,7 +294,7 @@
       "r": "clen"
     },
     {
-      "n": "hellcat_driver",
+      "n": "PolarMC1",
       "r": "clen"
     }
   ],
