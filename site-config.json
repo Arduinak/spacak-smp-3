@@ -169,13 +169,13 @@
       "id": "halloween",
       "on": true,
       "scene": "halloween",
-      "title": "Halloween Night",
-      "date": "2027-10-30T18:00:00+02:00",
-      "text": "Strašidelná noc na Spacak SMP. Spawn sa zmení na prekliate mestečko, po mape sa schovávajú tekvice a kto prežije do rána, dostane odmenu.",
+      "title": "Halloween Event",
+      "date": "2026-11-01T17:00:00+01:00",
+      "text": "",
       "chips": [
-        "Strašidelný spawn",
-        "Tekvicový hon",
-        "Kostýmy"
+        "Halloween spawn",
+        "Eventový Tech-Tree",
+        "Do 28.11.2026"
       ],
       "color": "#ff8a1f"
     },
@@ -183,15 +183,43 @@
       "id": "zima",
       "on": true,
       "scene": "winter",
-      "title": "Zimný festival",
-      "date": "2026-12-19T18:00:00+01:00",
-      "text": "Sneh na spawne, ľadové stavby a súťaž o najkrajšiu vianočnú dedinku. Zahrej sa pri ohni a ukáž, čo vieš postaviť.",
+      "title": "Zimný Event Chapter 1",
+      "date": "2026-12-01T16:00:00+01:00",
+      "text": "Work in Progress\n",
       "chips": [
-        "Ľadová aréna",
-        "Snehové bitky",
-        "Vianočná dedinka"
+        "Zimný/vianočný spawn",
+        "Eventový Tech-Tree",
+        "Do x.2.2026"
       ],
-      "color": "#8fd3ff"
+      "color": "#8eeeff"
+    },
+    {
+      "id": "event-mvy026r3",
+      "on": true,
+      "scene": "winter",
+      "title": "Silvester",
+      "date": "2026-11-15T16:43:00+01:00",
+      "text": "Oslavuj Silvester na serveri z ohnostrojom a dalšími \"bezpečnými\" aktivitami",
+      "chips": [
+        "Krátky Event",
+        "Ohnostroj na Spawne",
+        "Do 1.1.2027"
+      ],
+      "color": "#b7b4fc"
+    },
+    {
+      "id": "event-mvy07ogd",
+      "on": true,
+      "scene": "plain",
+      "title": "Zimný Event Chapter 2",
+      "date": "2027-01-02T16:00:00+01:00",
+      "text": "Work in Progress",
+      "chips": [
+        "Zimný Spawn",
+        "Eventový Tech-Tree",
+        "Do x.2.2027"
+      ],
+      "color": "#7be06b"
     }
   ],
   "rules": {
@@ -221,15 +249,11 @@
         "d": "Veľké farmy, redstone hodiny a stovky entít stav tak, aby server nezaťažovali. Helper môže stroj vypnúť."
       },
       {
-        "t": "Slušný chat",
-        "d": "V hernom chate žiadne urážky, spam ani reklama."
+        "t": "Waystones Limit",
+        "d": "Každý hráč môže mať len 1 Waystone a len na základni nikde inde a môže byť globálny* ked chceš\n*znamena to že hráči sa vedia portnút na tvoj waystone aj ked si ho neaktivovali"
       }
     ],
     "dc": [
-      {
-        "t": "Buď slušný",
-        "d": "Žiadne urážky, vyhrážky, rasizmus ani nenávistné prejavy."
-      },
       {
         "t": "Žiadny spam",
         "d": "Nezahlcuj kanály, nepíš všetko veľkými písmenami a bezdôvodne nepinguj ownerov, helperov ani @everyone."
