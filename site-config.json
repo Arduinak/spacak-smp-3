@@ -189,6 +189,7 @@
       "chips": [
         "Zimný/vianočný spawn",
         "Eventový Tech-Tree",
+        "Darčeky",
         "Do x.2.2026"
       ],
       "color": "#8eeeff"
@@ -198,7 +199,7 @@
       "on": true,
       "scene": "winter",
       "title": "Silvester",
-      "date": "2026-11-15T16:43:00+01:00",
+      "date": "2026-12-31T20:00:00+01:00",
       "text": "Oslavuj Silvester na serveri z ohnostrojom a dalšími \"bezpečnými\" aktivitami",
       "chips": [
         "Krátky Event",
@@ -210,7 +211,7 @@
     {
       "id": "event-mvy07ogd",
       "on": true,
-      "scene": "plain",
+      "scene": "winter",
       "title": "Zimný Event Chapter 2",
       "date": "2027-01-02T16:00:00+01:00",
       "text": "Work in Progress",
