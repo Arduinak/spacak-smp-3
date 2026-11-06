@@ -2,8 +2,8 @@
   "general": {
     "ip": "176.9.21.120:25739",
     "discord": "",
-    "subtitle": "Session 3: open pokračovanie nášho serveru",
-    "subtitleOpened": "Vitaj späť na Spacak SMP!",
+    "subtitle": "",
+    "subtitleOpened": "Officiálna Spacak SMP 3 Stránka",
     "description": "Spacak SMP 3",
     "mc": "1.21.1",
     "loader": "NeoForge v21.1.250",
@@ -36,7 +36,7 @@
   },
   "banner": {
     "on": true,
-    "text": "Modpack je už dostupný na nainštalovanie !",
+    "text": "Načo hrať GTA VI keď môžem hrať Spacak SMP 3\n-Hugo (PolarMC1)",
     "kind": "info"
   },
   "map": {
