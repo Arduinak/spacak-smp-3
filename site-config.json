@@ -36,8 +36,8 @@
   },
   "banner": {
     "on": true,
-    "text": "Načo hrať GTA VI keď môžem hrať Spacak SMP 3\n-Hugo (PolarMC1)",
-    "kind": "info"
+    "text": "Zajtra 15:00-22:00 bude server vypnutý",
+    "kind": "bad"
   },
   "map": {
     "enabled": true,
@@ -233,6 +233,16 @@
         "Do 1.3.2027"
       ],
       "color": "#8d7ccf"
+    },
+    {
+      "id": "event-mw87o17m",
+      "on": true,
+      "scene": "plain",
+      "title": "",
+      "date": "2026-11-22T20:14:00+01:00",
+      "text": "",
+      "chips": [],
+      "color": "#7be06b"
     }
   ],
   "rules": {
