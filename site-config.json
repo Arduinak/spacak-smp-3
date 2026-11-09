@@ -247,8 +247,8 @@
         "d": "Veľké farmy, redstone hodiny a stovky entít stav tak, aby server nezaťažovali. Helper môže stroj vypnúť."
       },
       {
-        "t": "Waystones Limit",
-        "d": "Každý hráč môže mať len 1 Waystone a len na základni nikde inde a môže byť globálny* ked chceš\n*znamena to že hráči sa vedia portnút na tvoj waystone aj ked si ho neaktivovali"
+        "t": "Viac pravidiel",
+        "d": "Pravidlá ako pozemky,obmedzené itemy,Waystones pravidla,.. najdeš v Radnici na Spawne (WIP)"
       }
     ],
     "dc": [
@@ -278,7 +278,7 @@
       },
       {
         "t": "Viac pravidiel",
-        "d": "Pravidlá ako pozemky,obmedzene itemy,Waystones pravidla,... najdeš v Radnici na Spawne"
+        "d": ""
       }
     ]
   },
