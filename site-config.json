@@ -100,6 +100,10 @@
       {
         "q": "Kde nájdem mapu sveta?",
         "a": "V záložke [Mapa](#mapa). Beží cez BlueMap a ukazuje stavby aj hráčov."
+      },
+      {
+        "q": "Viac pravidiel",
+        "a": "pravidla ako pozemky,obmedzené itemy,waystones pravidla,... najdeš v Radnici na Spawne"
       }
     ]
   },
