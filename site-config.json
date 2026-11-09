@@ -102,8 +102,8 @@
         "a": "V záložke [Mapa](#mapa). Beží cez BlueMap a ukazuje stavby aj hráčov."
       },
       {
-        "q": "Viac pravidiel",
-        "a": "pravidla ako pozemky,obmedzené itemy,waystones pravidla,... najdeš v Radnici na Spawne"
+        "q": "Pravidlá",
+        "a": "najdeš v sekcií pravidlá na stranke alebo v Radnici máš knížky ktoré si môžeš prečítať"
       }
     ]
   },
@@ -275,6 +275,10 @@
       {
         "t": "Poslúchaj tím",
         "d": "Pokyny ownerov a helperov platia. Nesúhlasíš? Napíš im súkromne, nie do chatu."
+      },
+      {
+        "t": "Viac pravidiel",
+        "d": "Pravidlá ako pozemky,obmedzene itemy,Waystones pravidla,... najdeš v Radnici na Spawne"
       }
     ]
   },
@@ -321,6 +325,10 @@
     },
     {
       "n": "Dragonus12",
+      "r": "clen"
+    },
+    {
+      "n": "kojbon",
       "r": "clen"
     }
   ],
