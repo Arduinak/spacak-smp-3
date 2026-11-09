@@ -41,7 +41,7 @@
   },
   "map": {
     "enabled": true,
-    "url": "http://176.9.21.120:25901",
+    "url": "http://176.9.21.120:25901/#world:0:0:32:1500:0:0:0:0:perspective",
     "offTitle": "Mapa je dočasne vypnutá",
     "offText": "Vrátime ju, keď bude server pripravený."
   },
