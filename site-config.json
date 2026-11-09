@@ -67,40 +67,7 @@
     "openedText": "Server je otvorený, môžeš sa pripojiť.",
     "closedIpText": "Odhalí sa pri štarte",
     "cardNote": "Whitelist nemáme, stačí adresa a modpack.",
-    "commands": [
-      {
-        "c": "/sethome",
-        "d": "Uloží tvoje aktuálne miesto ako domov."
-      },
-      {
-        "c": "/home",
-        "d": "Teleportuje ťa domov."
-      },
-      {
-        "c": "/delhome",
-        "d": "Zmaže uložený domov."
-      },
-      {
-        "c": "/back",
-        "d": "Vráti ťa na predošlé miesto."
-      },
-      {
-        "c": "/tpa <hráč>",
-        "d": "Požiada hráča o teleport k nemu."
-      },
-      {
-        "c": "/tpaccept",
-        "d": "Prijme žiadosť o teleport."
-      },
-      {
-        "c": "/tpdeny",
-        "d": "Odmietne žiadosť o teleport."
-      },
-      {
-        "c": "/warp <meno>",
-        "d": "Teleportuje ťa na verejné miesto servera."
-      }
-    ],
+    "commands": [],
     "faq": [
       {
         "q": "Prečo sa nemôžem pripojiť?",
