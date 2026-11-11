@@ -18,7 +18,7 @@
     "tabs": {
       "mapa": true,
       "navod": true,
-      "questy": true,
+      "questy": false,
       "modpack": true,
       "eventy": true,
       "pravidla": true,
@@ -35,7 +35,7 @@
     "footerOwners": true
   },
   "banner": {
-    "on": true,
+    "on": false,
     "text": "10.11.2026 15:00-22:00 bude server vypnutý",
     "kind": "bad"
   },
@@ -146,7 +146,7 @@
       "chips": [
         "Halloween spawn",
         "Eventový Tech-Tree",
-        "Do 28.11.2026"
+        "Do 23.11.2026"
       ],
       "color": "#ff8a1f"
     },
@@ -159,9 +159,10 @@
       "text": "Work in Progress\n",
       "chips": [
         "Zimný/vianočný spawn",
-        "Eventový Tech-Tree",
+        "Vainočný Stromček",
         "Darčeky",
-        "Do x.2.2026"
+        "Eventový Tech-Tree",
+        "Do 11.1.2026"
       ],
       "color": "#8eeeff"
     },
@@ -190,7 +191,7 @@
         "Zimný Spawn",
         "Eventový Tech-Tree",
         "Eventová Mini-hra",
-        "Do x.2.2027"
+        "Do 1.2.2027"
       ],
       "color": "#55a4fb"
     },
