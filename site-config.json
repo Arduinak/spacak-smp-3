@@ -206,19 +206,6 @@
         "Do 1.3.2027"
       ],
       "color": "#8d7ccf"
-    },
-    {
-      "id": "event-mw87o17m",
-      "on": true,
-      "scene": "halloween",
-      "title": "Boj na Ender Draka",
-      "date": "2026-11-14T17:00:00+01:00",
-      "text": "íde sa na draka a taktiež aj do endu nezabudnite sa vybaviť",
-      "chips": [
-        "ísť do endu",
-        "boj proti drakovy"
-      ],
-      "color": "#b36cff"
     }
   ],
   "rules": {
